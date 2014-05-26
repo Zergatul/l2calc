@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>L2 Calc</title>
+	<script type="text/javascript" src="jquery-2.1.1.js"></script>
+	<script type="text/javascript" src="l2.data.js"></script>
+	<script type="text/javascript" src="l2.data.weapons.js"></script>
+	<script type="text/javascript" src="l2.data.armor.js"></script>
+	<script type="text/javascript" src="l2.data.armorsets.js"></script>
+	<script type="text/javascript" src="l2.data.skilltree.js"></script>
+	<script type="text/javascript" src="l2.data.skills.js"></script>
+	<script type="text/javascript" src="l2.ui.js"></script>
+	<link rel="stylesheet" type="text/css" href="l2calc.css" />
+</head>
+<body>
+	<fieldset id="profession">
+		<legend>Profession</legend>
+		<div class="left prof-header">Race:</div>
+		<select id="race"></select>
+		<div class="clear"></div>
+		<div class="left prof-header">Prof:</div>
+		<select id="prof"></select>
+		<div class="clear"></div>
+		<div class="left prof-header">Class:</div>
+		<select id="l2class"></select>
+		<div class="clear"></div>
+		<div class="left prof-header">Level:</div>
+		<select id="lvl"></select>
+	</fieldset>
+	<fieldset id="bstats">
+		<legend>Base Stats</legend>
+		<div class="left bstat-header">STR</div>
+		<div class="left bstat" id="str">00</div>
+		<div class="left bstat-divider"></div>
+		<div class="left bstat-header">DEX</div>
+		<div class="left bstat" id="dex">00</div>
+		<div class="left bstat-divider"></div>
+		<div class="left bstat-header">CON</div>
+		<div class="left bstat" id="con">00</div>
+		<div class="clear"></div>
+		<div class="left bstat-header">INT</div>
+		<div class="left bstat" id="int">00</div>
+		<div class="left bstat-divider"></div>
+		<div class="left bstat-header">WIT</div>
+		<div class="left bstat" id="wit">00</div>
+		<div class="left bstat-divider"></div>
+		<div class="left bstat-header">MEN</div>
+		<div class="left bstat" id="men">00</div>
+		<div class="clear"></div>
+		<hr />
+		Tatoo Slot 1: <br />
+		Tatoo Slot 2: <br />
+		Tatoo Slot 3: <br />
+	</fieldset>
+	<div class="clear"></div>
+	<fieldset id="stats">
+		<legend>Stats</legend>
+		<div class="left stat-header">HP</div>
+		<div class="left stat" id="hp">50000</div>
+		<div class="left stat-divider"></div>
+		<div class="left stat-header">MP</div>
+		<div class="left stat" id="mp">50000</div>
+		<div class="clear"></div>
+		<div class="left stat-header">CP</div>
+		<div class="left stat" id="cp">50000</div>
+		<div class="clear"></div>
+		<div class="left stat-header">P. Atk</div>
+		<div class="left stat" id="patk">50000</div>
+		<div class="left stat-divider"></div>
+		<div class="left stat-header">M. Atk</div>
+		<div class="left stat" id="matk">50000</div>
+		<div class="clear"></div>
+		<div class="left stat-header">P. Def</div>
+		<div class="left stat" id="pdef">50000</div>
+		<div class="left stat-divider"></div>
+		<div class="left stat-header">M. Def</div>
+		<div class="left stat" id="mdef">50000</div>
+		<div class="clear"></div>
+		<div class="left stat-header">Accuracy</div>
+		<div class="left stat" id="accuracy">50000</div>
+		<div class="left stat-divider"></div>
+		<div class="left stat-header">Evasion</div>
+		<div class="left stat" id="evasion">50000</div>
+		<div class="clear"></div>
+		<div class="left stat-header">Critical</div>
+		<div class="left stat" id="critical">50000</div>
+		<div class="left stat-divider"></div>
+		<div class="left stat-header">Speed</div>
+		<div class="left stat" id="speed">50000</div>
+		<div class="clear"></div>
+		<div class="left stat-header">Atk. Spd.</div>
+		<div class="left stat" id="atkspd">50000</div>
+		<div class="left stat-divider"></div>
+		<div class="left stat-header">Cast. Spd.</div>
+		<div class="left stat" id="castspd">50000</div>
+		<div class="clear"></div>
+		<hr />
+		<div class="left astat-header">P. Crit. Multiplier</div>
+		<div class="left astat">1.0992</div>
+		<div class="clear"></div>
+		<div class="left astat-header">M. Crit. Multiplier</div>
+		<div class="left astat">3.5</div>
+		<div class="clear"></div>
+		<div class="left astat-header">P. DPS</div>
+		<div class="left astat">101233</div>
+		<div class="clear"></div>
+		<div class="left astat-header">M. DPS</div>
+		<div class="left astat">456009</div>
+		<div class="clear"></div>
+	</fieldset>
+	<div class="clear"></div>
+	<fieldset id="equipment">
+		<legend>Equipment</legend>
+		<div class="left eq-header">Weapon</div>
+		<div class="left eq-grade">Grade</div>
+		<div class="left">
+			<select id="weapon-grade" class="grade"></select>
+		</div>
+		<div class="left eq-type">Type</div>
+		<div class="left">
+			<select id="weapon-type"></select>
+		</div>
+		<div class="left">
+			<select id="weapon"></select>
+		</div>
+		<div class="clear"></div>
+		<div class="left eq-header">Shield</div>
+		<div class="left eq-grade">Grade</div>
+		<div class="left">
+			<select id="shield-grade" class="grade"></select>
+		</div>
+		<div class="left">
+			<select id="shield"></select>
+		</div>
+		<div class="clear"></div>
+		<hr />
+		<div class="left eq-set-header">Quick select armor set</div>
+		<div class="left eq-grade">Grade</div>
+		<div class="left">
+			<select id="set-grade" class="grade"></select>
+		</div>
+		<div class="left">
+			<select id="set"></select>
+		</div>
+		<div class="clear"></div>
+		<hr />
+
+		<div class="left eq-header">Helmet</div>
+		<div class="left eq-grade">Grade</div>
+		<div class="left">
+			<select id="helmet-grade" class="grade"></select>
+		</div>
+		<div class="left">
+			<select id="helmet"></select>
+		</div>
+		<div class="clear"></div>
+
+		<div class="left eq-header">Body Upper</div>
+		<div class="left eq-grade">Grade</div>
+		<div class="left">
+			<select id="body-upper-grade" class="grade"></select>
+		</div>
+		<div class="left">
+			<select id="body-upper"></select>
+		</div>
+		<div class="clear"></div>
+
+		<div class="left eq-header">Body Lower</div>
+		<div class="left eq-grade">Grade</div>
+		<div class="left">
+			<select id="body-lower-grade" class="grade"></select>
+		</div>
+		<div class="left">
+			<select id="body-lower"></select>
+		</div>
+		<div class="clear"></div>
+
+		<div class="left eq-header">Gloves</div>
+		<div class="left eq-grade">Grade</div>
+		<div class="left">
+			<select id="gloves-grade" class="grade"></select>
+		</div>
+		<div class="left">
+			<select id="gloves"></select>
+		</div>
+		<div class="clear"></div>
+
+		<div class="left eq-header">Boots</div>
+		<div class="left eq-grade">Grade</div>
+		<div class="left">
+			<select id="boots-grade" class="grade"></select>
+		</div>
+		<div class="left">
+			<select id="boots"></select>
+		</div>
+		<div class="clear"></div>
+		<hr />
+
+		Jewerly
+	</fieldset>
+	<div class="clear"></div>
+	<fieldset id="passives">
+		<legend>Passives</legend>
+		<div class="left">
+			<label><input type="checkbox" id="auto-select-passives" />Auto Select</label>
+		</div>
+		<div class="clear"></div>
+	</fieldset>
+</body>
+</html>
