@@ -10,6 +10,9 @@
 	<script type="text/javascript" src="l2.data.skilltree.js"></script>
 	<script type="text/javascript" src="l2.data.skills.js"></script>
 	<script type="text/javascript" src="l2.ui.js"></script>
+	<script type="text/javascript" src="l2.ui.tools.js"></script>
+	<script type="text/javascript" src="l2.calc.js"></script>
+	<script type="text/javascript" src="l2.data.tools.js"></script>
 	<link rel="stylesheet" type="text/css" href="l2calc.css" />
 </head>
 <body>
@@ -57,55 +60,72 @@
 		<legend>Stats</legend>
 		<div class="left stat-header">HP</div>
 		<div class="left stat" id="hp">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="left stat-divider"></div>
 		<div class="left stat-header">MP</div>
 		<div class="left stat" id="mp">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<div class="left stat-header">CP</div>
 		<div class="left stat" id="cp">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<div class="left stat-header">P. Atk</div>
 		<div class="left stat" id="patk">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="left stat-divider"></div>
 		<div class="left stat-header">M. Atk</div>
 		<div class="left stat" id="matk">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<div class="left stat-header">P. Def</div>
 		<div class="left stat" id="pdef">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="left stat-divider"></div>
 		<div class="left stat-header">M. Def</div>
 		<div class="left stat" id="mdef">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<div class="left stat-header">Accuracy</div>
 		<div class="left stat" id="accuracy">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="left stat-divider"></div>
 		<div class="left stat-header">Evasion</div>
 		<div class="left stat" id="evasion">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<div class="left stat-header">Critical</div>
-		<div class="left stat" id="critical">50000</div>
+		<div class="left stat" id="pcritical">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="left stat-divider"></div>
 		<div class="left stat-header">Speed</div>
 		<div class="left stat" id="speed">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<div class="left stat-header">Atk. Spd.</div>
 		<div class="left stat" id="atkspd">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="left stat-divider"></div>
 		<div class="left stat-header">Cast. Spd.</div>
 		<div class="left stat" id="castspd">50000</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<hr />
 		<div class="left astat-header">P. Crit. Multiplier</div>
-		<div class="left astat">1.0992</div>
+		<div class="left astat" id="pcritmult">1.0992</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<div class="left astat-header">M. Crit. Multiplier</div>
-		<div class="left astat">3.5</div>
+		<div class="left astat">1</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<div class="left astat-header">P. DPS</div>
-		<div class="left astat">101233</div>
+		<div class="left astat" id="pdps">1</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 		<div class="left astat-header">M. DPS</div>
-		<div class="left astat">456009</div>
+		<div class="left astat">1</div>
+		<div class="left stat-delta"></div>
 		<div class="clear"></div>
 	</fieldset>
 	<div class="clear"></div>
@@ -199,10 +219,26 @@
 		Jewerly
 	</fieldset>
 	<div class="clear"></div>
+	<fieldset id="selfbuffs">
+		<legend>Self Buffs</legend>
+	</fieldset>
+	<div class="clear"></div>
+	<fieldset id="commonbuffs">
+		<legend>Common Buffs</legend>
+	</fieldset>
+	<div class="clear"></div>
+	<fieldset id="songbuffs">
+		<legend>Songs</legend>
+	</fieldset>
+	<div class="clear"></div>
+	<fieldset id="dancebuffs">
+		<legend>Dances</legend>
+	</fieldset>
+	<div class="clear"></div>
 	<fieldset id="passives">
 		<legend>Passives</legend>
 		<div class="left">
-			<label><input type="checkbox" id="auto-select-passives" />Auto Select</label>
+			<label><input type="checkbox" id="auto-select-passives" checked="checked" />Auto Select</label>
 		</div>
 		<div class="clear"></div>
 	</fieldset>

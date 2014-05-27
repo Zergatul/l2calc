@@ -9,6 +9,9 @@ legend {
 select {
 	border: 1px #555555 solid;
 }
+select:disabled {
+	border: 1px #bbbbbb solid;	
+}
 
 .clear {
 	clear: both;
@@ -33,7 +36,7 @@ select {
 	text-align: right;
 }
 .bstat-divider {
-	width: 20px;
+	width: 10px;
 	height: 1px;
 }
 .stat {
@@ -45,8 +48,25 @@ select {
 	text-align: right;
 }
 .stat-divider {
-	width: 40px;
+	width: 12px;
 	height: 1px;
+}
+.stat-delta {
+	width: 60px;
+	height: 14px;
+	padding-left: 6px;
+}
+.stat-plus {
+	font-weight: bold;
+	color: green;
+}
+.stat-minus {
+	font-weight: bold;
+	color: red;
+}
+.stat-equal {
+	font-weight: bold;
+	color: #444444;
 }
 .astat {
 	padding-left: 8px;
@@ -73,7 +93,7 @@ select {
 	padding-top: 7px;
 	padding-right: 32px;
 }
-.passive-skill {
+.passive-skill, .song-skill, .dance-skill, .common-skill {
 	margin: 2px;
 	border: 1px solid #aaaaaa;
 	padding: 1px 4px;
@@ -88,10 +108,16 @@ select {
 	float: left;
 }
 #stats {
-	width: 300px;
+	width: 400px;
 }
 #equipment {
 	width: 800px;
+}
+#selfbuffs {
+	width: 600px;
+}
+#commonbuffs, #songbuffs, #dancebuffs {
+	width: 600px;
 }
 #passives {
 	width: 600px;
