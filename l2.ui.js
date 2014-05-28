@@ -11,6 +11,7 @@ l2.ui.bindClasses = function () {
 	});
 	if (l2.ui.canChangeStorage)
 		localStorage.classId = $('#l2class').val();
+	l2.ui.bindPassives();
 	l2.ui.recalc();
 };
 
