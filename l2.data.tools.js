@@ -2,16 +2,10 @@ window.l2 = window.l2 || {};
 window.l2.data = window.l2.data || {};
 window.l2.data.tools = window.l2.data.tools || {};
 
-l2.data.tools.getArmor = function (id) {
-	for (var i = 0; i < l2.data.armor.length; i++)
-		if (l2.data.armor[i].id == id)
-			return l2.data.armor[i];
-	return null;
-};
-l2.data.tools.getWeapon = function (id) {
-	for (var i = 0; i < l2.data.weapons.length; i++)
-		if (l2.data.weapons[i].id == id)
-			return l2.data.weapons[i];
+l2.data.tools.getItem = function (id) {
+	for (var i = 0; i < l2.data.items.length; i++)
+		if (l2.data.items[i].id == id)
+			return l2.data.items[i];
 	return null;
 };
 l2.data.tools.getSkill = function (id) {
@@ -68,4 +62,35 @@ l2.data.tools.getBaseAtkSpeed = function (weaponType) {
 		if (l2.data.weaponBaseData[i].name == weaponType)
 			return l2.data.weaponBaseData[i].baseAtkSpeed;
 	throw 'Unknown weapon type';
+};
+l2.data.tools.sortItems = function (items) {
+	items.sort(function (i1, i2) {
+		if (i1.name < i2.name) return -1;
+		if (i1.name > i2.name) return 1;
+		return 0;
+	});
+};
+l2.data.tools.findWeapons = function (grade, type) {
+	var weapons = l2.data.items.filter(function (item) {
+		if (item.weaponType != type)
+			return false;
+		if (grade == 'none')
+			return item.grade == null;
+		else
+			return item.grade == grade;
+	});
+	l2.data.tools.sortItems(weapons);
+	return weapons;
+};
+l2.data.tools.findShields = function (grade) {
+	var shields = l2.data.items.filter(function (item) {
+		if (item.bodyPart != 'lhand' || item.sDef == null)
+			return false;
+		if (grade == 'none')
+			return item.grade == null;
+		else
+			return item.grade == grade;
+	});
+	l2.data.tools.sortItems(shields);
+	return shields;
 };

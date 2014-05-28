@@ -20,16 +20,7 @@ l2.ui.bindWeapons = function () {
 	var type = $('#weapon-type').val();
 	$('#weapon').empty();
 	l2.ui.tools.addOption('#weapon', '', 'Unequipped');
-	var weapons = [];
-	$.each(l2.data.weapons, function () {
-		if (this.grade == grade && this.weaponType == type && (this.bodypart == 'rhand' || this.bodypart == 'lrhand'))
-			weapons.push(this);
-	});
-	weapons.sort(function (w1, w2) {
-		if (w1.name < w2.name) return -1;
-		if (w1.name > w2.name) return 1;
-		return 0;
-	});
+	var weapons = l2.data.tools.findWeapons(grade, type);
 	$.each(weapons, function () {
 		l2.ui.tools.addOption('#weapon', this.id, this.name);
 	});
@@ -41,30 +32,24 @@ l2.ui.bindShields = function () {
 	var type = $('#shield-type').val();
 	$('#shield').empty();
 	l2.ui.tools.addOption('#shield', '', 'Unequipped');
-	var shields = [];
-	$.each(l2.data.weapons, function () {
-		if (this.grade == grade && this.weaponType == 'none' && this.bodypart == 'lhand' && this.shieldDef > 0)
-			shields.push(this);
-	});
-	shields.sort(function (w1, w2) {
-		if (w1.name < w2.name) return -1;
-		if (w1.name > w2.name) return 1;
-		return 0;
-	});
+	var shields = l2.data.tools.findShields(grade);
 	$.each(shields, function () {
-		l2.ui.tools.addOption('#shield', this.id, this.name);
+		var name = this.name;
+		if (this.skill != null)
+			name = name + ' [Rare]';
+		l2.ui.tools.addOption('#shield', this.id, name);
 	});	
 };
 
 l2.ui.bindSets = function () {
-	var grade = $('#set-grade').val();
+	/*var grade = $('#set-grade').val();
 	$('#set').empty();
 	l2.ui.tools.addOption('#set', '', 'Unequipped');
 	$.each(l2.data.armorSets, function () {
 		var chest = l2.data.tools.getArmor(this.chest);
 		if (chest.grade == grade)
 			l2.ui.tools.addOption('#set', this.skillId, l2.data.tools.getSkill(this.skillId).name);
-	});
+	});*/
 };
 
 l2.ui.applySet = function () {
@@ -110,7 +95,7 @@ l2.ui.applySet = function () {
 };
 
 l2.ui.bindHelmets = function () {
-	var grade = $('#helmet-grade').val();
+	/*var grade = $('#helmet-grade').val();
 	$('#helmet').empty();
 	l2.ui.tools.addOption('#helmet', '', 'Unequipped');
 	var helmets = [];
@@ -125,11 +110,11 @@ l2.ui.bindHelmets = function () {
 	});
 	$.each(helmets, function () {
 		l2.ui.tools.addOption('#helmet', this.id, this.name);
-	});
+	});*/
 };
 
 l2.ui.bindBodyUpper = function () {
-	var grade = $('#body-upper-grade').val();
+	/*var grade = $('#body-upper-grade').val();
 	$('#body-upper').empty();
 	l2.ui.tools.addOption('#body-upper', '', 'Unequipped');
 	var bodyUpper = [];
@@ -144,11 +129,11 @@ l2.ui.bindBodyUpper = function () {
 	});
 	$.each(bodyUpper, function () {
 		l2.ui.tools.addOption('#body-upper', this.id, this.name);
-	});
+	});*/
 };
 
 l2.ui.bindBodyLower = function () {
-	var grade = $('#body-lower-grade').val();
+	/*var grade = $('#body-lower-grade').val();
 	$('#body-lower').empty();
 	l2.ui.tools.addOption('#body-lower', '', 'Unequipped');
 	var bodyLower = [];
@@ -163,11 +148,11 @@ l2.ui.bindBodyLower = function () {
 	});
 	$.each(bodyLower, function () {
 		l2.ui.tools.addOption('#body-lower', this.id, this.name);
-	});
+	});*/
 };
 
 l2.ui.bindGloves = function () {
-	var grade = $('#gloves-grade').val();
+	/*var grade = $('#gloves-grade').val();
 	$('#gloves').empty();
 	l2.ui.tools.addOption('#gloves', '', 'Unequipped');
 	var gloves = [];
@@ -182,11 +167,11 @@ l2.ui.bindGloves = function () {
 	});
 	$.each(gloves, function () {
 		l2.ui.tools.addOption('#gloves', this.id, this.name);
-	});
+	});*/
 };
 
 l2.ui.bindBoots = function () {
-	var grade = $('#boots-grade').val();
+	/*var grade = $('#boots-grade').val();
 	$('#boots').empty();
 	l2.ui.tools.addOption('#boots', '', 'Unequipped');
 	var boots = [];
@@ -201,7 +186,7 @@ l2.ui.bindBoots = function () {
 	});
 	$.each(boots, function () {
 		l2.ui.tools.addOption('#boots', this.id, this.name);
-	});
+	});*/
 };
 
 l2.ui.bindPassives = function () {
@@ -379,7 +364,7 @@ l2.ui.recalc = function () {
 	char.lm = (char.lvl + 89) / 100;
 
 	if ($('#weapon').val() != '')
-		char.weapon = l2.data.tools.getWeapon($('#weapon').val());
+		char.weapon = l2.data.tools.getItem($('#weapon').val());
 	else
 		char.weapon = null;
 
