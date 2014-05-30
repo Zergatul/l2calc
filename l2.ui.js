@@ -11,8 +11,6 @@ l2.ui.bindClasses = function () {
 	});
 	if (l2.ui.canChangeStorage)
 		localStorage.classId = $('#l2class').val();
-	l2.ui.bindPassives();
-	l2.ui.recalc();
 };
 
 l2.ui.bindWeapons = function () {
@@ -24,7 +22,6 @@ l2.ui.bindWeapons = function () {
 	$.each(weapons, function () {
 		l2.ui.tools.addOption('#weapon', this.id, this.name);
 	});
-	l2.ui.recalc();
 };
 
 l2.ui.bindShields = function () {
@@ -42,151 +39,144 @@ l2.ui.bindShields = function () {
 };
 
 l2.ui.bindSets = function () {
-	/*var grade = $('#set-grade').val();
+	var grade = $('#set-grade').val();
 	$('#set').empty();
 	l2.ui.tools.addOption('#set', '', 'Unequipped');
-	$.each(l2.data.armorSets, function () {
-		var chest = l2.data.tools.getArmor(this.chest);
-		if (chest.grade == grade)
-			l2.ui.tools.addOption('#set', this.skillId, l2.data.tools.getSkill(this.skillId).name);
-	});*/
+	l2.data.armorSets.filter(function (s) {
+		return (s.grade || 'none') == grade;
+	}).forEach(function (s) {
+		var skill = l2.data.tools.getSkill(s.skill[1]);
+		l2.ui.tools.addOption('#set', s.id, skill.name);
+	});
 };
 
 l2.ui.applySet = function () {
-	var skillId = $('#set').val();
-	var set;
-	for (var i = 0; i < l2.data.armorSets.length; i++)
-		if (l2.data.armorSets[i].skillId == skillId) {
-			set = l2.data.armorSets[i];
-			break;
-		}
+	var id = $('#set').val();
+	var set = l2.data.tools.getSet(id);
 	if (!set)
 		return;
-	if (set.chest != 0) {
-		var armor = l2.data.tools.getArmor(set.chest);
-		$('#body-upper-grade').val(armor.grade);
+	if (set.chest != null) {
+		var armor = l2.data.tools.getItem(set.chest[0]);
+		$('#body-upper-grade').val(armor.grade || 'none');
 		l2.ui.bindBodyUpper();
-		$('#body-upper').val(set.chest);
+		$('#body-upper').val(set.chest[0]);
 	}
-	if (set.legs != 0) {
-		var armor = l2.data.tools.getArmor(set.legs);
-		$('#body-lower-grade').val(armor.grade);
+	if (set.legs != null) {
+		var armor = l2.data.tools.getItem(set.legs[0]);
+		$('#body-lower-grade').val(armor.grade || 'none');
 		l2.ui.bindBodyLower();
-		$('#body-lower').val(set.legs);
+		$('#body-lower').val(set.legs[0]);
 	}
-	if (set.head != 0) {
-		var armor = l2.data.tools.getArmor(set.head);
-		$('#helmet-grade').val(armor.grade);
+	if (set.head != null) {
+		var armor = l2.data.tools.getItem(set.head[0]);
+		$('#helmet-grade').val(armor.grade || 'none');
 		l2.ui.bindHelmets();
-		$('#helmet').val(set.head);
+		$('#helmet').val(set.head[0]);
 	}
-	if (set.gloves != 0) {
-		var armor = l2.data.tools.getArmor(set.gloves);
-		$('#gloves-grade').val(armor.grade);
+	if (set.gloves != null) {
+		var armor = l2.data.tools.getItem(set.gloves[0]);
+		$('#gloves-grade').val(armor.grade || 'none');
 		l2.ui.bindGloves();
-		$('#gloves').val(set.gloves);
+		$('#gloves').val(set.gloves[0]);
 	}
-	if (set.feet != 0) {
-		var armor = l2.data.tools.getArmor(set.feet);
-		$('#boots-grade').val(armor.grade);
+	if (set.feet != null) {
+		var armor = l2.data.tools.getItem(set.feet[0]);
+		$('#boots-grade').val(armor.grade || 'none');
 		l2.ui.bindBoots();
-		$('#boots').val(set.feet);
+		$('#boots').val(set.feet[0]);
 	}
+
+	$('#body-upper-grade, #body-upper, #body-lower-grade, #body-lower, #helmet-grade, #helmet, #gloves-grade, #gloves, #boots-grade, #boots').each(l2.ui.onChangeSaveToStorage);
+
+	l2.ui.recalc();
+};
+
+l2.ui.checkSet = function (char) {
+	var helmet = parseInt($('#helmet').val());
+	var bodyUpper = parseInt($('#body-upper').val());
+	var bodyLower = parseInt($('#body-lower').val());
+	var gloves = parseInt($('#gloves').val());
+	var boots = parseInt($('#boots').val());
+	var shield = parseInt($('#shield').val());
+
+	var equipedSet = null;
+	l2.data.armorSets.forEach(function (set) {
+		if (set.chest.indexOf(bodyUpper) == -1)
+			return;
+		if (set.legs && set.legs.indexOf(bodyLower) == -1)
+			return;
+		if (set.head && set.head.indexOf(helmet) == -1)
+			return;
+		if (set.gloves && set.gloves.indexOf(gloves) == -1)
+			return;
+		if (set.feet && set.feet.indexOf(boots) == -1)
+			return;
+		equipedSet = set;
+	});
+
+	if (equipedSet == null)
+		return;
+
+	char.passives.push({ id: equipedSet.skill[1], lvl: 1});
+	if (equipedSet.shield && equipedSet.shield.indexOf(shield) >= 0 && equipedSet.shieldSkill != null)
+		char.passives.push({ id: equipedSet.shieldSkill, lvl: 1});
+
+	if (equipedSet.str) char.stats.str += equipedSet.str;
+	if (equipedSet.dex) char.stats.dex += equipedSet.dex;
+	if (equipedSet.con) char.stats.con += equipedSet.con;
+	if (equipedSet.int) char.stats.int += equipedSet.int;
+	if (equipedSet.wit) char.stats.wit += equipedSet.wit;
+	if (equipedSet.men) char.stats.men += equipedSet.men;
 };
 
 l2.ui.bindHelmets = function () {
-	/*var grade = $('#helmet-grade').val();
+	var grade = $('#helmet-grade').val();
 	$('#helmet').empty();
 	l2.ui.tools.addOption('#helmet', '', 'Unequipped');
-	var helmets = [];
-	$.each(l2.data.armor, function () {
-		if (this.grade == grade && this.bodypart == 'head')
-			helmets.push(this);
-	});
-	helmets.sort(function (h1, h2) {
-		if (h1.name < h2.name) return -1;
-		if (h1.name > h2.name) return 1;
-		return 0;
-	});
+	var helmets = l2.data.tools.findHelmets(grade);
 	$.each(helmets, function () {
 		l2.ui.tools.addOption('#helmet', this.id, this.name);
-	});*/
+	});
 };
 
 l2.ui.bindBodyUpper = function () {
-	/*var grade = $('#body-upper-grade').val();
+	var grade = $('#body-upper-grade').val();
 	$('#body-upper').empty();
 	l2.ui.tools.addOption('#body-upper', '', 'Unequipped');
-	var bodyUpper = [];
-	$.each(l2.data.armor, function () {
-		if (this.grade == grade && (this.bodypart == 'chest' || this.bodypart == 'fullarmor'))
-			bodyUpper.push(this);
-	});
-	bodyUpper.sort(function (bu1, bu2) {
-		if (bu1.name < bu2.name) return -1;
-		if (bu1.name > bu2.name) return 1;
-		return 0;
-	});
-	$.each(bodyUpper, function () {
+	var bodyUppers = l2.data.tools.findBodyUppers(grade);
+	$.each(bodyUppers, function () {
 		l2.ui.tools.addOption('#body-upper', this.id, this.name);
-	});*/
+	});
 };
 
 l2.ui.bindBodyLower = function () {
-	/*var grade = $('#body-lower-grade').val();
+	var grade = $('#body-lower-grade').val();
 	$('#body-lower').empty();
 	l2.ui.tools.addOption('#body-lower', '', 'Unequipped');
-	var bodyLower = [];
-	$.each(l2.data.armor, function () {
-		if (this.grade == grade && this.bodypart == 'legs')
-			bodyLower.push(this);
-	});
-	bodyLower.sort(function (bl1, bl2) {
-		if (bl1.name < bl2.name) return -1;
-		if (bl1.name > bl2.name) return 1;
-		return 0;
-	});
-	$.each(bodyLower, function () {
+	var bodyLowers = l2.data.tools.findBodyLowers(grade);
+	$.each(bodyLowers, function () {
 		l2.ui.tools.addOption('#body-lower', this.id, this.name);
-	});*/
+	});
 };
 
 l2.ui.bindGloves = function () {
-	/*var grade = $('#gloves-grade').val();
+	var grade = $('#gloves-grade').val();
 	$('#gloves').empty();
 	l2.ui.tools.addOption('#gloves', '', 'Unequipped');
-	var gloves = [];
-	$.each(l2.data.armor, function () {
-		if (this.grade == grade && this.bodypart == 'gloves')
-			gloves.push(this);
-	});
-	gloves.sort(function (g1, g2) {
-		if (g1.name < g2.name) return -1;
-		if (g1.name > g2.name) return 1;
-		return 0;
-	});
+	var gloves = l2.data.tools.findGloves(grade);
 	$.each(gloves, function () {
 		l2.ui.tools.addOption('#gloves', this.id, this.name);
-	});*/
+	});
 };
 
 l2.ui.bindBoots = function () {
-	/*var grade = $('#boots-grade').val();
+	var grade = $('#boots-grade').val();
 	$('#boots').empty();
 	l2.ui.tools.addOption('#boots', '', 'Unequipped');
-	var boots = [];
-	$.each(l2.data.armor, function () {
-		if (this.grade == grade && this.bodypart == 'feet')
-			boots.push(this);
-	});
-	boots.sort(function (b1, b2) {
-		if (b1.name < b2.name) return -1;
-		if (b1.name > b2.name) return 1;
-		return 0;
-	});
+	var boots = l2.data.tools.findBoots(grade);
 	$.each(boots, function () {
 		l2.ui.tools.addOption('#boots', this.id, this.name);
-	});*/
+	});
 };
 
 l2.ui.bindPassives = function () {
@@ -203,7 +193,7 @@ l2.ui.bindPassives = function () {
 	$('#passives > div.passive-skill').remove();
 	for (var i = 0; i < skills.length; i++) {
 		var skill = l2.data.tools.getSkill(skills[i]);
-		if (skill && skill.operateType == 'OP_PASSIVE') {
+		if (skill && skill.operateType == 'P') {
 			var div = $('<div>').addClass('left passive-skill');
 			var skillLevels = l2.data.tools.getSkillLevels(skill.id, classesId);
 			var select = $('<select>').data('skill-id', skill.id);
@@ -243,30 +233,106 @@ l2.ui.autoSelectPassives = function () {
 	})
 };
 
+l2.ui.bindSelfBuffs = function () {
+	var classId = $('#l2class').val();
+	var classesId = l2.data.tools.getBaseClasses(classId);
+	var skills = [];
+	for (var i = 0; i < l2.data.skillTree.length; i++) {
+		var st = l2.data.skillTree[i];
+		if (classesId.indexOf(st.classId) >= 0)
+			if (skills.indexOf(st.skillId) == -1)
+				skills.push(st.skillId);
+	}
+	$('#selfbuffs > div > div.self-skill').remove();
+	for (var i = 0; i < skills.length; i++) {
+		var skill = l2.data.tools.getSkill(skills[i]);
+		if (skill && skill.operateType.charAt(0) == 'A' && skill.target == 'SELF') {
+			var div = $('<div>').addClass('left self-skill');
+			var skillLevels = l2.data.tools.getSkillLevels(skill.id, classesId);
+			var select = $('<select>').data('skill-id', skill.id);
+			select.change(l2.ui.recalc);
+			l2.ui.tools.addOption(select, '', '---');
+			for (var j = 0; j < skillLevels.length; j++)
+				l2.ui.tools.addOption(select, skillLevels[j].skillLvl, skillLevels[j].skillLvl + ' [' + skillLevels[j].minLvl + ']');
+			div.append(select);
+			div.append($('<span>').text(skill.name));
+			$('#selfbuffs > div').append(div);
+		}
+	}
+};
+
+l2.ui.bindToggles = function () {
+	var classId = $('#l2class').val();
+	var classesId = l2.data.tools.getBaseClasses(classId);
+	var skills = [];
+	for (var i = 0; i < l2.data.skillTree.length; i++) {
+		var st = l2.data.skillTree[i];
+		if (classesId.indexOf(st.classId) >= 0)
+			if (skills.indexOf(st.skillId) == -1)
+				skills.push(st.skillId);
+	}
+	$('#toggles > div > div.toggle-skill').remove();
+	for (var i = 0; i < skills.length; i++) {
+		var skill = l2.data.tools.getSkill(skills[i]);
+		if (skill && skill.operateType == 'T') {
+			var div = $('<div>').addClass('left toggle-skill');
+			var skillLevels = l2.data.tools.getSkillLevels(skill.id, classesId);
+			var select = $('<select>').data('skill-id', skill.id);
+			select.change(l2.ui.recalc);
+			l2.ui.tools.addOption(select, '', '---');
+			for (var j = 0; j < skillLevels.length; j++)
+				l2.ui.tools.addOption(select, skillLevels[j].skillLvl, skillLevels[j].skillLvl + ' [' + skillLevels[j].minLvl + ']');
+			div.append(select);
+			div.append($('<span>').text(skill.name));
+			$('#toggles > div').append(div);
+		}
+	}
+};
+
+l2.ui.classChanged = function () {
+	l2.ui.bindPassives();
+	l2.ui.bindSelfBuffs();
+	l2.ui.bindToggles();
+	l2.ui.autoSelectPassives();
+	l2.ui.recalc();
+};
+
 l2.ui.bindCommonBuffs = function () {
-	var stacks = {};
-	for (var i = 0; i < l2.data.commonBuffs.length; i++) {
-		var skill = l2.data.tools.getSkill(l2.data.commonBuffs[i]);
-		if (skill.stackType == null) {
-			throw 'not implemented';
-		} else
-			if (stacks[skill.stackType] == undefined) {
+	l2.data.commonBuffs.forEach(function (group) {
+		var stacks = {};
+		var groupDiv = $('<div>').addClass('common-skill-group');
+		groupDiv.append($('<div>').addClass('left common-skill-group-header').text(group.group));
+		$('#commonbuffs').append(groupDiv);
+		group.ids.forEach(function (id) {
+			id = parseInt(id);
+			var skill = l2.data.tools.getSkill(id);
+			if (skill.abnormalType == null)
+				throw 'not implemented';
+
+			if (stacks[skill.abnormalType] == undefined) {
 				var div = $('<div>').addClass('left common-skill');
 				var select = $('<select>').data('skill-id', skill.id);
-				select.attr('data-stack', skill.stackType);
+				select.attr('data-stack', skill.abnormalType);
 				select.change(l2.ui.recalc);
 				l2.ui.tools.addOption(select, '', '---');
-				for (var j = 0; j < skill.levels; j++)
-					l2.ui.tools.addOption(select, skill.id + ':' + (j + 1), skill.name + ' ' + (j + 1));
+				if (skill.levels > 1)
+					for (var j = 0; j < skill.levels; j++)
+						l2.ui.tools.addOption(select, skill.id + ':' + (j + 1), skill.name + ' ' + (j + 1));
+				else
+					l2.ui.tools.addOption(select, skill.id + ':' + (j + 1), skill.name);
 				div.append(select);
-				$('#commonbuffs').append(div);
-				stacks[skill.stackType] = { select: select };
+				groupDiv.append(div);
+				stacks[skill.abnormalType] = { select: select };
 			} else {
-				for (var j = 0; j < skill.levels; j++)
-					l2.ui.tools.addOption(stacks[skill.stackType].select, skill.id + ':' + (j + 1), skill.name + ' ' + (j + 1));
-			}
-		
-	}
+				if (skill.levels > 1)
+					for (var j = 0; j < skill.levels; j++)
+						l2.ui.tools.addOption(stacks[skill.abnormalType].select, skill.id + ':' + (j + 1), skill.name + ' ' + (j + 1));
+				else
+					l2.ui.tools.addOption(stacks[skill.abnormalType].select, skill.id + ':' + (j + 1), skill.name);
+			}		
+		});
+		groupDiv.append($('<div>').addClass('clear'));
+	});
 };
 
 l2.ui.bindSongs = function () {
@@ -307,25 +373,78 @@ l2.ui.canChangeStorage = false;
 l2.ui.canShowDelta = false;
 l2.ui.prevStats = null;
 
+l2.ui.restoreSingleItem = function (element) {
+	if ($(element).is('select'))
+		$(element).val(localStorage[$(element).attr('data-storage')]);
+	if ($(element).is('input[type=checkbox]'))
+		if (localStorage[$(element).attr('data-storage')] == '1')
+			$(element).prop('checked', true);
+		else
+			$(element).removeProp('checked');
+};
+
+l2.ui.onChangeSaveToStorage = function () {
+	if ($(this).is('select'))
+		localStorage[$(this).attr('data-storage')] = $(this).val();
+	if ($(this).is('input[type=checkbox]'))
+		localStorage[$(this).attr('data-storage')] = $(this).is(':checked') ? 1 : 0;
+};
+
 l2.ui.restoreFromStorage = function () {
-	$('#race').val(localStorage.race);
-	$('#prof').val(localStorage.prof);
+	l2.ui.restoreSingleItem('#race');
+	l2.ui.restoreSingleItem('#prof');
 	l2.ui.bindClasses();
 
-	$('#l2class').val(localStorage.classId);
-	l2.ui.bindPassives();
+	l2.ui.restoreSingleItem('#l2class');
+	l2.ui.restoreSingleItem('#lvl');
+	l2.ui.classChanged();
 
-	$('#lvl').val(localStorage.lvl);
-	l2.ui.autoSelectPassives();
+	$('.tatoo-chb, .tatoo-stat, .tatoo-plus, .tatoo-minus').each(function () {
+		l2.ui.restoreSingleItem(this);
+	});
 
-	$('#weapon-grade').val(localStorage.weaponGrade);
-	$('#weapon-type').val(localStorage.weaponType);
+	l2.ui.restoreSingleItem('#weapon-grade');
+	l2.ui.restoreSingleItem('#weapon-type');
 	l2.ui.bindWeapons();
-	$('#weapon').val(localStorage.weaponId);
+	l2.ui.restoreSingleItem('#weapon');
+
+	l2.ui.restoreSingleItem('#shield-grade');
+	l2.ui.bindShields();
+	l2.ui.restoreSingleItem('#shield');
+
+	l2.ui.restoreSingleItem('#set-grade');
+
+	l2.ui.restoreSingleItem('#helmet-grade');
+	l2.ui.bindHelmets();
+	l2.ui.restoreSingleItem('#helmet');
+
+	l2.ui.restoreSingleItem('#body-upper-grade');
+	l2.ui.bindBodyUpper();
+	l2.ui.restoreSingleItem('#body-upper');
+
+	l2.ui.restoreSingleItem('#body-lower-grade');
+	l2.ui.bindBodyLower();
+	l2.ui.restoreSingleItem('#body-lower')
+
+	l2.ui.restoreSingleItem('#gloves-grade');
+	l2.ui.bindGloves();
+	l2.ui.restoreSingleItem('#gloves');
+
+	l2.ui.restoreSingleItem('#boots-grade');
+	l2.ui.bindBoots();
+	l2.ui.restoreSingleItem('#boots');
 
 	l2.ui.recalc();
 
 	l2.ui.canChangeStorage = true;
+};
+
+l2.ui.formatPercent = function (val) {
+	if (val >= 10)
+		return Math.round(val).toString();
+	if (val >= 1)
+		return val.toFixed(1);
+	return val.toFixed(2);
 };
 
 l2.ui.highlightStat = function (oldStats, newStats, key, div) {
@@ -341,32 +460,43 @@ l2.ui.highlightStat = function (oldStats, newStats, key, div) {
 				div.addClass('stat-equal').text('');
 			else
 				if (oldStats[key] < newStats[key])
-					div.addClass('stat-plus').text('+' + Math.round(100 * (newStats[key] - oldStats[key]) / oldStats[key]) + '%');
+					div.addClass('stat-plus').text('+' + l2.ui.formatPercent(100 * (newStats[key] - oldStats[key]) / oldStats[key]) + '%');
 				else
-					div.addClass('stat-minus').text('-' + Math.round(100 * (oldStats[key] - newStats[key]) / oldStats[key]) + '%');
+					div.addClass('stat-minus').text('-' + l2.ui.formatPercent(100 * (oldStats[key] - newStats[key]) / oldStats[key]) + '%');
 	div.css({ opacity: 1 }).stop().animate({ opacity: 0 }, 3000);
 };
 
 l2.ui.recalc = function () {
 	var classId = parseInt($('#l2class').val());
+	if (isNaN(classId))
+		return;
 	var $class = l2.data.tools.getClass(classId);
 	var baseStats = l2.data.subRace[$class.subRace];
 	var stats = $.extend({}, baseStats.stats);
+	var hpPerc = parseInt($('#hpperc').val());
 
 	var char = {
 		classId: classId,
 		$class: $class,
 		stats: stats,
 		lvl: parseInt($('#lvl').val()),
+		hpPerc: hpPerc,
 		passives: [],
 		buffs: []
 	};
 	char.lm = (char.lvl + 89) / 100;
 
-	if ($('#weapon').val() != '')
+	if ($('#weapon').val() != '') {
 		char.weapon = l2.data.tools.getItem($('#weapon').val());
-	else
+	} else
 		char.weapon = null;
+	if (char.weapon && char.weapon.skill != null) {
+		var skills = char.weapon.skill.split(';');
+		skills.forEach(function (str) {
+			var ss = str.split('-');
+			char.passives.push({ id: parseInt(ss[0]), lvl: parseInt(ss[1]) });
+		});
+	}
 
 	$('#passives > div.passive-skill').each(function () {
 		var select = $(this).find('select');
@@ -374,7 +504,18 @@ l2.ui.recalc = function () {
 			char.passives.push({ id: select.data('skill-id'), lvl: parseInt(select.val()) })
 	});
 
-	$('#commonbuffs > div.common-skill').each(function () {
+	$('#selfbuffs > div > div.self-skill').each(function () {
+		var select = $(this).find('select');
+		if (select.val() != '')
+			char.passives.push({ id: select.data('skill-id'), lvl: parseInt(select.val()) })
+	});
+	$('#toggles > div > div.toggle-skill').each(function () {
+		var select = $(this).find('select');
+		if (select.val() != '')
+			char.passives.push({ id: select.data('skill-id'), lvl: parseInt(select.val()) })
+	});
+
+	$('#commonbuffs div.common-skill').each(function () {
 		var select = $(this).find('select');
 		if (select.val() != '') {
 			var ss = select.val().split(':');
@@ -392,6 +533,16 @@ l2.ui.recalc = function () {
 			char.buffs.push({ id : input.data('skill-id'), lvl: 1 });
 	});
 
+	l2.ui.checkSet(char);
+
+	for (var i = 1; i <= 3; i++) {
+		var div = $('#tatoo-slot-' + i);
+		if (div.find('input[type=checkbox]').is(':checked')) {
+			stats[div.find('select:eq(0)').val()] += parseInt(div.find('select:eq(1)').val());
+			stats[div.find('select:eq(2)').val()] += parseInt(div.find('select:eq(3)').val());
+		}
+	}
+
 	$('#str').text(stats.str);
 	$('#dex').text(stats.dex);
 	$('#con').text(stats.con);
@@ -401,15 +552,19 @@ l2.ui.recalc = function () {
 
 	char.hp = l2.calc.HP(char);
 	char.pAtk = l2.calc.pAtk(char);
+	char.mAtk = l2.calc.mAtk(char);
 	char.pCritical = l2.calc.pCritical(char);
 	char.pCritMultiplier = l2.calc.pCritMultiplier(char);
 	char.atkSpeed = l2.calc.atkSpeed(char);
+	char.castSpeed = l2.calc.castSpeed(char);
 	char.pDPS = l2.calc.pDPS(char);
 	$('#hp').text(char.hp);
 	$('#patk').text(char.pAtk);
+	$('#matk').text(char.mAtk);
 	$('#pcritical').text(char.pCritical);
 	$('#pcritmult').text(char.pCritMultiplier.toFixed(5));
 	$('#atkspd').text(char.atkSpeed);
+	$('#castspd').text(char.castSpeed);
 	$('#pdps').text(l2.ui.tools.formatNumber(Math.round(char.pDPS)));
 
 	var prevStats = l2.ui.prevStats;
@@ -434,13 +589,31 @@ $(function () {
 	for (var i = 1; i <= 85; i++)
 		l2.ui.tools.addOption('#lvl', i, i);
 
+	[100, 60, 30].forEach(function (hp) {
+		l2.ui.tools.addOption('#hpperc', hp, hp);
+	})
+
 	$('#race').change(l2.ui.bindClasses);
+	$('#race').change(l2.ui.classChanged);
 	$('#prof').change(l2.ui.bindClasses);
+	$('#prof').change(l2.ui.classChanged);
 	l2.ui.bindClasses();
-	$('#l2class').change(l2.ui.bindPassives);
-	$('#lvl').change(l2.ui.autoSelectPassives);
-	$('#lvl').change(l2.ui.recalc);
-	l2.ui.bindPassives();
+	$('#l2class').change(l2.ui.classChanged);
+	$('#lvl').change(l2.ui.classChanged);
+	l2.ui.classChanged();
+	$('#hpperc').change(l2.ui.recalc);
+
+	$.each(['str', 'dex', 'con', 'int', 'wit', 'men'], function () {
+		l2.ui.tools.addOption('.tatoo-stat', this, this.toUpperCase());
+	});
+	for (var i = 1; i <= 4; i++)
+		l2.ui.tools.addOption('.tatoo-plus', i, '+' + i);
+	for (var i = 1; i <= 6; i++)
+		l2.ui.tools.addOption('.tatoo-minus', -i, '-' + i);
+	$('.tatoo-chb').click(l2.ui.recalc);
+	$('.tatoo-stat').change(l2.ui.recalc);
+	$('.tatoo-plus').change(l2.ui.recalc);
+	$('.tatoo-minus').change(l2.ui.recalc);
 
 	$.each(l2.data.grades, function () {
 		l2.ui.tools.addOption('.grade', this.code, this.name);
@@ -452,9 +625,14 @@ $(function () {
 	
 	$('#weapon-grade').change(l2.ui.bindWeapons);
 	$('#weapon-type').change(l2.ui.bindWeapons);
-	$('#weapon').change(l2.ui.recalc);
 	l2.ui.bindWeapons();
 
+	$('#equipment-chb').click(function () {
+		if ($(this).is(':checked'))
+			$('#equipment > div').show();
+		else
+			$('#equipment > div').hide();
+	});
 	$('#shield-grade').change(l2.ui.bindShields);
 	$('#shield-type').change(l2.ui.bindShields);
 	l2.ui.bindShields();
@@ -472,26 +650,36 @@ $(function () {
 	$('#boots-grade').change(l2.ui.bindBoots);
 	l2.ui.bindBoots();
 
+	$('#weapon').change(l2.ui.recalc);
+	$('#shield').change(l2.ui.recalc);
+	$('#helmet').change(l2.ui.recalc);
+	$('#body-upper').change(l2.ui.recalc);
+	$('#body-lower').change(l2.ui.recalc);
+	$('#boots').change(l2.ui.recalc);
+	$('#gloves').change(l2.ui.recalc);
+
 	l2.ui.bindBuffs();
 
-	$('#race').change(l2.ui.tools.storageChange('race'));
-	$('#prof').change(l2.ui.tools.storageChange('prof'));
-	$('#l2class').change(l2.ui.tools.storageChange('classId'));
-	$('#lvl').change(l2.ui.tools.storageChange('lvl'));
-	$('#weapon-grade').change(l2.ui.tools.storageChange('weaponGrade'));
-	$('#weapon-type').change(l2.ui.tools.storageChange('weaponType'));
-	$('#weapon').change(l2.ui.tools.storageChange('weaponId'));
+	$('#selfbuffs-chb').click(function () {
+		if ($(this).is(':checked'))
+			$('#selfbuffs > div').show();
+		else
+			$('#selfbuffs > div').hide();
+	});
+	$('#toggles-chb').click(function () {
+		if ($(this).is(':checked'))
+			$('#toggles > div').show();
+		else
+			$('#toggles > div').hide();
+	});
+
+	$('select[data-storage]').change(l2.ui.onChangeSaveToStorage);
+	$('input[type=checkbox][data-storage]').click(l2.ui.onChangeSaveToStorage);
 
 	if (localStorage.length == 0) {
-		localStorage.race = $('#race').val();
-		localStorage.prof = $('#prof').val();
-		localStorage.classId = $('#l2class').val();
-		localStorage.lvl = $('#lvl').val();
-		localStorage.weaponGrade = $('#weapon-grade').val();
-		localStorage.weaponType = $('#weapon-type').val();
-		localStorage.weaponId = $('#weapon').val();
-	}
-	l2.ui.restoreFromStorage();
+		$('select[data-storage], input[type=checkbox][data-storage]').each(l2.ui.onChangeSaveToStorage);
+	} else
+		l2.ui.restoreFromStorage();
 
 	l2.ui.canShowDelta = true;
 });

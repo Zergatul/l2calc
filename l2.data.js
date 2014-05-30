@@ -253,5 +253,90 @@ l2.data.baseHPCoef = [
 l2.data.songs = [264, 265, 266, 267, 268, 269, 270, 304, 305, 306, 308, 349, 363, 364, 529, 764, 914];
 l2.data.dances = [271, 272, 273, 274, 275, 276, 277, 307, 309, 310, 311, 365, 366, 530, 765, 915];
 l2.data.commonBuffs = [
-	1077, 1242, 1068, 1040, 1045, 1048, 1059, 1062, 1085, 1086, 1087, 1204, 1240, 1388, 1389,
-	1006, 1007, 1008, 1009, 1010, 1251, 1252, 1253, 1260, 1261, 1282];
+	{ group: 'P. Atk/Def', ids: [
+		1068, // Might
+		1007, // Chant of Battle
+		1040, // Shield
+		1009, // Chant Of Shielding
+		1010, // Soul Shield
+		1388, // Greater Might
+		1389, // Greater Shield		
+	]},
+	{ group: 'Tank Buff', ids: [
+		982
+	]},
+	{ group: 'Accuracy', ids: [
+		1240, // Guidance
+	]},
+	{ group: 'P. Critical', ids: [
+		1077, // Focus
+		1242, // Death Whisper
+		1253, // Chant of Rage
+	]},
+	{ group: 'M. Atk/Def', ids: [
+		1059, // Empower
+		1006, // Chant of Fire
+		1008, // The Glory of Pa'agrio
+	]},
+	{ group: 'Atk/Cast Speed', ids: [
+		1086, // Haste
+		1251, // Chant of Fury
+		1085, // Acumen
+	]},
+	{ group: 'Bers', ids: [
+		1062, // Bers Spirit
+		1261, // The Rage of Pa'agrio
+	]},
+	{ group: 'Speed/Agility', ids: [
+		1204, // Wind Walk
+		1282, // Pa'agrian Haste
+		1087, // Agility
+		1252, // Chant of Evasion
+		1260, // The Tact of Pa'agrio
+	]},
+	{ group: 'Max HP/MP', ids: [
+		1045, // Bless Body
+		1048, // Bless Soul
+	]},
+	{ group: 'Prophecy', ids: [
+		1363, // COV
+		1355, // Water
+		1356, // Fire
+		1357, // Wind
+		1413, // Magnus
+		1414, // Victory of Paagio
+	]},
+	{ group: 'Cat/Horse', ids: [
+		4699, // Bless of Queen
+		4700, // Gift of Queen
+		4702, // Blessing of Seraphim
+		4703, // Gift of Seraphim
+	]},
+	{ group: 'Crafter Buffs', ids: [
+		825, // Sharp Edge
+		826, // Spike
+		827, // Restring
+		828,
+		829,
+		830
+	]},
+	{ group: 'Tank 83 buff', ids: [
+		785, // Paladin
+		789, // SK
+	]},
+	{ group: 'Inspector', ids: [
+		1476, // Appetite for Destruction
+		1477, // Vampiric Impulse
+		1478, // Protection Instinct
+		1479, // Magic Impulse
+		1480, // Soul Harmony
+	]},
+	{ group: 'Subclass 80', ids: [
+		679, // warrior
+		685, // knight
+		691, // rogue
+		697, // wizard
+		709, // enchanter
+		714, // summoner
+	]},
+];

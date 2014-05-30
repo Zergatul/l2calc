@@ -11,7 +11,7 @@ l2.calc.forEachBuff = function (buffs, stat, callback) {
 		for (var j = 0; j < skill.effects.length; j++)
 			if (skill.effects[j].stat == stat) {
 				var val = (typeof skill.effects[j].val == 'number' ? skill.effects[j].val : skill.effects[j].val[skillLvl - 1]);
-				callback(skill.effects[j].op, val, skill.effects[j].using);
+				callback(skill.effects[j].op, val, skill.effects[j].using, skill.effects[j].hp);
 			}
 	}
 };
@@ -19,6 +19,8 @@ l2.calc.forEachBuff = function (buffs, stat, callback) {
 l2.calc.checkUsing = function (char, using) {
 	if (!using)
 		return true;
+	if (!char.weapon)
+		return false;
 	switch (using) {
 		case 'Pole': return char.weapon.weaponType == 'pole';
 		case 'Sword': return char.weapon.weaponType == 'sword';
@@ -26,6 +28,12 @@ l2.calc.checkUsing = function (char, using) {
 		case 'Blunt': return char.weapon.weaponType == 'blunt';
 		case 'Big Blunt': return char.weapon.weaponType == 'bigblunt';
 		case 'Dual Fist': return char.weapon.weaponType == 'dualfist';
+		case 'Bow': return char.weapon.weaponType == 'bow';
+		case 'Dagger': return char.weapon.weaponType == 'dagger';
+		case 'Dual Dagger': return char.weapon.weaponType == 'dualdagger';
+		case 'Rapier': return char.weapon.weaponType == 'rapier';
+		case 'Ancient': return char.weapon.weaponType == 'ancientsword';
+		case 'Dual Sword': return char.weapon.weaponType == 'dual';
 		default: throw 'Using [' + using + '] not implemented';
 	}
 };
@@ -40,6 +48,12 @@ l2.calc.checkUsings = function (char, usings) {
 	return ok;
 };
 
+l2.calc.checkHP = function (char, hp) {
+	if (!hp)
+		return true;
+	return char.hpPerc <= hp;
+};
+
 l2.calc.HP = function (char) {
 	var $class = l2.data.tools.getClass(char.classId);
 	if ($class.prof == 3)
@@ -51,14 +65,16 @@ l2.calc.HP = function (char) {
 	var coefs = l2.data.baseHPCoef[$class.id];
 	var baseHP = coefs.a + coefs.b * char.lvl + coefs.c * char.lvl * char.lvl;
 	var addHP = 0;
-	l2.calc.forEachBuff(char.passives, 'maxHp', function (op, val) {
-		if (op == 'add')
-			addHP += val;
-		else
-			throw 'not implemented';
+	var multHP = 1;
+	l2.calc.forEachBuff(char.passives, 'maxHp', function (op, val, usings, hp) {
+		if (!l2.calc.checkUsings(char, usings) || !l2.calc.checkHP(char, hp))
+			return;
+		if (op == 'add') { addHP += val; return; }
+		if (op == 'mul') { multHP *= val; return; }
+		throw 'not implemented';
 	})
 	var conBonus = l2.data.statBonus['con'][char.stats.con];
-	return Math.floor(baseHP * conBonus + addHP);
+	return Math.floor(baseHP * conBonus * multHP + addHP);
 };
 
 l2.calc.pAtk = function (char) {
@@ -66,8 +82,8 @@ l2.calc.pAtk = function (char) {
 		return 0;	
 	var addPAtk = 0;
 	var multPAtk = 1;
-	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'pAtk', function (op, val, usings) {
-		if (!l2.calc.checkUsings(char, usings))
+	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'pAtk', function (op, val, usings, hp) {
+		if (!l2.calc.checkUsings(char, usings) || !l2.calc.checkHP(char, hp))
 			return;
 		if (op == 'add') { addPAtk += val; return; }
 		if (op == 'mul') { multPAtk *= val; return; }
@@ -83,19 +99,20 @@ l2.calc.pCritical = function (char) {
 	var dexBonus = l2.data.statBonus['dex'][char.stats.dex];
 	var baseCritial = l2.data.tools.getBaseCritital(char.weapon.weaponType) * dexBonus;
 	var addCritial = 0;
-	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'rCrit', function (op, val, usings) {
-		if (!l2.calc.checkUsings(char, usings))
+	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'rCrit', function (op, val, usings, hp) {
+		if (!l2.calc.checkUsings(char, usings) || !l2.calc.checkHP(char, hp))
 			return;
 		if (op == 'basemul') { addCritial += baseCritial * val; return; }
+		if (op == 'add') { addCritial += val; return; }
 		throw 'not implemented';
 	});
-	return Math.floor(baseCritial + addCritial);
+	return Math.min(Math.floor(baseCritial + addCritial), 500);
 };
 
 l2.calc.pCritMultiplier = function (char) {
 	var mult = 2;
-	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'cAtk', function (op, val, usings) {
-		if (!l2.calc.checkUsings(char, usings))
+	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'cAtk', function (op, val, usings, hp) {
+		if (!l2.calc.checkUsings(char, usings) || !l2.calc.checkHP(char, hp))
 			return;
 		if (op == 'mul') { mult *= val; return; }
 		if (op == 'add') return;
@@ -110,15 +127,45 @@ l2.calc.atkSpeed = function (char) {
 	var baseWeaponAtkSpeed = l2.data.tools.getBaseAtkSpeed(char.weapon.weaponType);
 	var dexBonus = l2.data.statBonus['dex'][char.stats.dex];
 	var multAtkSpeed = 1;
-	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'pAtkSpd', function (op, val, usings) {
-		if (!l2.calc.checkUsings(char, usings))
+	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'pAtkSpd', function (op, val, usings, hp) {
+		if (!l2.calc.checkUsings(char, usings) || !l2.calc.checkHP(char, hp))
 			return;
 		if (op == 'mul') { multAtkSpeed *= val; return; }
 		throw 'not implemented';
 	});
-	return Math.floor(dexBonus * baseWeaponAtkSpeed * multAtkSpeed);
+	return Math.min(Math.floor(dexBonus * baseWeaponAtkSpeed * multAtkSpeed), 1500);
 };
 
 l2.calc.pDPS = function (char) {
 	return char.pAtk * ((1 - char.pCritical / 1000) + char.pCritMultiplier * char.pCritical / 1000) * char.atkSpeed / 100;
-}
+};
+
+l2.calc.mAtk = function (char) {
+	if (char.weapon == null)
+		return 0;	
+	var addMAtk = 0;
+	var multMAtk = 1;
+	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'mAtk', function (op, val, usings) {
+		if (!l2.calc.checkUsings(char, usings))
+			return;
+		if (op == 'add') { addMAtk += val; return; }
+		if (op == 'mul') { multMAtk *= val; return; }
+		throw 'not implemented';
+	});
+	var intBonus = l2.data.statBonus['int'][char.stats.int];
+	return Math.floor(char.weapon.mAtk * char.lm * char.lm * intBonus * intBonus * multMAtk + addMAtk);
+};
+
+l2.calc.castSpeed = function (char) {
+	var addCSpeed = 0;
+	var multCSpeed = 1;
+	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'mAtkSpd', function (op, val, usings) {
+		if (!l2.calc.checkUsings(char, usings))
+			return;
+		if (op == 'add') { addCSpeed += val; return; }
+		if (op == 'mul') { multCSpeed *= val; return; }
+		throw 'not implemented';
+	});
+	var witBonus = l2.data.statBonus['wit'][char.stats.wit];
+	return Math.floor(333 * witBonus * multCSpeed + addCSpeed);
+};

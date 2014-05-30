@@ -29,7 +29,7 @@ select:disabled {
 .bstat {
 	padding-left: 10px;
 	text-align: left;
-	width: 30px;
+	width: 50px;
 }
 .bstat-header {
 	width: 25px;
@@ -38,6 +38,12 @@ select:disabled {
 .bstat-divider {
 	width: 10px;
 	height: 1px;
+}
+.tatoo-chb {
+	margin: 6px 6px 0px 8px;
+}
+.tatoo-header {
+	margin: 6px 2px 0px 0px;
 }
 .stat {
 	text-align: right;
@@ -93,10 +99,19 @@ select:disabled {
 	padding-top: 7px;
 	padding-right: 32px;
 }
-.passive-skill, .song-skill, .dance-skill, .common-skill {
+.passive-skill, .song-skill, .dance-skill, .self-skill, .toggle-skill {
 	margin: 2px;
 	border: 1px solid #aaaaaa;
 	padding: 1px 4px;
+}
+.common-skill-group {
+	border: 1px solid #aaaaaa;
+	padding: 2px;
+	margin-bottom: 2px;
+}
+.common-skill-group-header {
+	margin: 6px 6px 0px 4px;
+	width: 90px;
 }
 
 #profession {
@@ -104,7 +119,7 @@ select:disabled {
 	float: left;
 }
 #bstats {
-	width: 240px;
+	width: 340px;
 	float: left;
 }
 #stats {
@@ -113,7 +128,7 @@ select:disabled {
 #equipment {
 	width: 800px;
 }
-#selfbuffs {
+#selfbuffs, #toggles {
 	width: 600px;
 }
 #commonbuffs, #songbuffs, #dancebuffs {

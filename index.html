@@ -12,22 +12,26 @@
 	<script type="text/javascript" src="l2.ui.tools.js"></script>
 	<script type="text/javascript" src="l2.calc.js"></script>
 	<script type="text/javascript" src="l2.data.tools.js"></script>
+	<script type="text/javascript" src="l2.data.fix.js"></script>
 	<link rel="stylesheet" type="text/css" href="l2calc.css" />
 </head>
 <body>
 	<fieldset id="profession">
 		<legend>Profession</legend>
 		<div class="left prof-header">Race:</div>
-		<select id="race"></select>
+		<select id="race" data-storage="race"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Prof:</div>
-		<select id="prof"></select>
+		<select id="prof" data-storage="prof"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Class:</div>
-		<select id="l2class"></select>
+		<select id="l2class" data-storage="classId"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Level:</div>
-		<select id="lvl"></select>
+		<select id="lvl" data-storage="lvl"></select>
+		<div class="clear"></div>
+		<div class="left prof-header">HP:</div>
+		<select id="hpperc" data-storage="lvl"></select>
 	</fieldset>
 	<fieldset id="bstats">
 		<legend>Base Stats</legend>
@@ -50,9 +54,35 @@
 		<div class="left bstat" id="men">00</div>
 		<div class="clear"></div>
 		<hr />
-		Tatoo Slot 1: <br />
-		Tatoo Slot 2: <br />
-		Tatoo Slot 3: <br />
+		<div id="tatoo-slot-1">
+			<div class="left tatoo-header">Tatoo Slot 1: </div>
+			<div class="left"><input type="checkbox" class="tatoo-chb" data-storage="tattoSlot1" /></div>
+			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot1Stat1"></select></div>
+			<div class="left"><select class="tatoo-plus" data-storage="tattoSlot1Plus"></select></div>
+			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot1Stat2"></select></div>
+			<div class="left"><select class="tatoo-minus" data-storage="tattoSlot1Minus"></select></div>
+		</div>
+		<div class="clear"></div>
+		<div id="tatoo-slot-2">
+			<div class="left tatoo-header">Tatoo Slot 2: </div>
+			<div class="left"><input type="checkbox" class="tatoo-chb" data-storage="tattoSlot2" /></div>
+			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot2Stat1"></select></div>
+			<div class="left"><select class="tatoo-plus" data-storage="tattoSlot2Plus"></select></div>
+			<div class="left"> </div>
+			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot2Stat2"></select></div>
+			<div class="left"><select class="tatoo-minus" data-storage="tattoSlot2Minus"></select></div>
+		</div>
+		<div class="clear"></div>
+		<div id="tatoo-slot-3">
+			<div class="left tatoo-header">Tatoo Slot 3: </div>
+			<div class="left"><input type="checkbox" class="tatoo-chb" data-storage="tattoSlot3" /></div>
+			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot3Stat1"></select></div>
+			<div class="left"><select class="tatoo-plus" data-storage="tattoSlot3Plus"></select></div>
+			<div class="left"> </div>
+			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot3Stat2"></select></div>
+			<div class="left"><select class="tatoo-minus" data-storage="tattoSlot3Minus"></select></div>
+		</div>
+		<div class="clear"></div>
 	</fieldset>
 	<div class="clear"></div>
 	<fieldset id="stats">
@@ -129,97 +159,111 @@
 	</fieldset>
 	<div class="clear"></div>
 	<fieldset id="equipment">
-		<legend>Equipment</legend>
-		<div class="left eq-header">Weapon</div>
-		<div class="left eq-grade">Grade</div>
-		<div class="left">
-			<select id="weapon-grade" class="grade"></select>
-		</div>
-		<div class="left eq-type">Type</div>
-		<div class="left">
-			<select id="weapon-type"></select>
-		</div>
-		<div class="left">
-			<select id="weapon"></select>
-		</div>
-		<div class="clear"></div>
-		<div class="left eq-header">Shield</div>
-		<div class="left eq-grade">Grade</div>
-		<div class="left">
-			<select id="shield-grade" class="grade"></select>
-		</div>
-		<div class="left">
-			<select id="shield"></select>
-		</div>
-		<div class="clear"></div>
-		<hr />
-		<div class="left eq-set-header">Quick select armor set</div>
-		<div class="left eq-grade">Grade</div>
-		<div class="left">
-			<select id="set-grade" class="grade"></select>
-		</div>
-		<div class="left">
-			<select id="set"></select>
-		</div>
-		<div class="clear"></div>
-		<hr />
+		<legend>
+			<label><input type="checkbox" id="equipment-chb" checked="checked" />Equipment</label>
+		</legend>
+		<div>
+			<div class="left eq-header">Weapon</div>
+			<div class="left eq-grade">Grade</div>
+			<div class="left">
+				<select id="weapon-grade" class="grade" data-storage="weaponGrade"></select>
+			</div>
+			<div class="left eq-type">Type</div>
+			<div class="left">
+				<select id="weapon-type" data-storage="weaponType"></select>
+			</div>
+			<div class="left">
+				<select id="weapon" data-storage="weaponId"></select>
+			</div>
+			<div class="clear"></div>
+			<div class="left eq-header">Shield</div>
+			<div class="left eq-grade">Grade</div>
+			<div class="left">
+				<select id="shield-grade" class="grade" data-storage="shieldGrade"></select>
+			</div>
+			<div class="left">
+				<select id="shield" data-storage="shieldId"></select>
+			</div>
+			<div class="clear"></div>
+			<hr />
+			<div class="left eq-set-header">Quick select armor set</div>
+			<div class="left eq-grade">Grade</div>
+			<div class="left">
+				<select id="set-grade" class="grade" data-storage="set-grade"></select>
+			</div>
+			<div class="left">
+				<select id="set"></select>
+			</div>
+			<div class="clear"></div>
+			<hr />
 
-		<div class="left eq-header">Helmet</div>
-		<div class="left eq-grade">Grade</div>
-		<div class="left">
-			<select id="helmet-grade" class="grade"></select>
-		</div>
-		<div class="left">
-			<select id="helmet"></select>
-		</div>
-		<div class="clear"></div>
+			<div class="left eq-header">Helmet</div>
+			<div class="left eq-grade">Grade</div>
+			<div class="left">
+				<select id="helmet-grade" class="grade" data-storage="helmetGrade"></select>
+			</div>
+			<div class="left">
+				<select id="helmet" data-storage="helmetId"></select>
+			</div>
+			<div class="clear"></div>
 
-		<div class="left eq-header">Body Upper</div>
-		<div class="left eq-grade">Grade</div>
-		<div class="left">
-			<select id="body-upper-grade" class="grade"></select>
-		</div>
-		<div class="left">
-			<select id="body-upper"></select>
-		</div>
-		<div class="clear"></div>
+			<div class="left eq-header">Body Upper</div>
+			<div class="left eq-grade">Grade</div>
+			<div class="left">
+				<select id="body-upper-grade" class="grade" data-storage="bodyUpperGrade"></select>
+			</div>
+			<div class="left">
+				<select id="body-upper" data-storage="bodyUpperId"></select>
+			</div>
+			<div class="clear"></div>
 
-		<div class="left eq-header">Body Lower</div>
-		<div class="left eq-grade">Grade</div>
-		<div class="left">
-			<select id="body-lower-grade" class="grade"></select>
-		</div>
-		<div class="left">
-			<select id="body-lower"></select>
-		</div>
-		<div class="clear"></div>
+			<div class="left eq-header">Body Lower</div>
+			<div class="left eq-grade">Grade</div>
+			<div class="left">
+				<select id="body-lower-grade" class="grade" data-storage="bodyLowerGrade"></select>
+			</div>
+			<div class="left">
+				<select id="body-lower" data-storage="bodyLowerId"></select>
+			</div>
+			<div class="clear"></div>
 
-		<div class="left eq-header">Gloves</div>
-		<div class="left eq-grade">Grade</div>
-		<div class="left">
-			<select id="gloves-grade" class="grade"></select>
-		</div>
-		<div class="left">
-			<select id="gloves"></select>
-		</div>
-		<div class="clear"></div>
+			<div class="left eq-header">Gloves</div>
+			<div class="left eq-grade">Grade</div>
+			<div class="left">
+				<select id="gloves-grade" class="grade" data-storage="glovesGrade">></select>
+			</div>
+			<div class="left">
+				<select id="gloves" data-storage="glovesId"></select>
+			</div>
+			<div class="clear"></div>
 
-		<div class="left eq-header">Boots</div>
-		<div class="left eq-grade">Grade</div>
-		<div class="left">
-			<select id="boots-grade" class="grade"></select>
-		</div>
-		<div class="left">
-			<select id="boots"></select>
-		</div>
-		<div class="clear"></div>
-		<hr />
+			<div class="left eq-header">Boots</div>
+			<div class="left eq-grade">Grade</div>
+			<div class="left">
+				<select id="boots-grade" class="grade" data-storage="bootsGrade">></select>
+			</div>
+			<div class="left">
+				<select id="boots" data-storage="bootsId"></select>
+			</div>
+			<div class="clear"></div>
+			<hr />
 
-		Jewerly
+			Jewerly
+		<div>
 	</fieldset>
 	<div class="clear"></div>
 	<fieldset id="selfbuffs">
-		<legend>Self Buffs</legend>
+		<legend>
+			<label><input type="checkbox" id="selfbuffs-chb" checked="checked" />Self Buffs</label>
+		</legend>
+		<div></div>
+	</fieldset>
+	<div class="clear"></div>
+	<fieldset id="toggles">
+		<legend>
+			<label><input type="checkbox" id="toggles-chb" checked="checked" />Toggles</label>
+		</legend>
+		<div></div>
 	</fieldset>
 	<div class="clear"></div>
 	<fieldset id="commonbuffs">

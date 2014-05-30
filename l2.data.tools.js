@@ -14,6 +14,12 @@ l2.data.tools.getSkill = function (id) {
 			return l2.data.skills[i];
 	return null;
 };
+l2.data.tools.getSet = function (id) {
+	for (var i = 0; i < l2.data.armorSets.length; i++)
+		if (l2.data.armorSets[i].id == id)
+			return l2.data.armorSets[i];
+	return null;	
+};
 l2.data.tools.getClass = function (id) {
 	for (var i = 0; i < l2.data.classes.length; i++)
 		if (l2.data.classes[i].id == id)
@@ -74,10 +80,7 @@ l2.data.tools.findWeapons = function (grade, type) {
 	var weapons = l2.data.items.filter(function (item) {
 		if (item.weaponType != type)
 			return false;
-		if (grade == 'none')
-			return item.grade == null;
-		else
-			return item.grade == grade;
+		return (item.grade || 'none') == grade;
 	});
 	l2.data.tools.sortItems(weapons);
 	return weapons;
@@ -86,11 +89,53 @@ l2.data.tools.findShields = function (grade) {
 	var shields = l2.data.items.filter(function (item) {
 		if (item.bodyPart != 'lhand' || item.sDef == null)
 			return false;
-		if (grade == 'none')
-			return item.grade == null;
-		else
-			return item.grade == grade;
+		return (item.grade || 'none') == grade;
 	});
 	l2.data.tools.sortItems(shields);
 	return shields;
+};
+l2.data.tools.findBodyUppers = function (grade) {
+	var bu = l2.data.items.filter(function (item) {
+		if (item.bodyPart != 'chest' && item.bodyPart != 'onepiece')
+			return false;
+		return (item.grade || 'none') == grade;
+	});
+	l2.data.tools.sortItems(bu);
+	return bu;
+};
+l2.data.tools.findBodyLowers = function (grade) {
+	var bl = l2.data.items.filter(function (item) {
+		if (item.bodyPart != 'legs')
+			return false;
+		return (item.grade || 'none') == grade;
+	});
+	l2.data.tools.sortItems(bl);
+	return bl;
+};
+l2.data.tools.findHelmets = function (grade) {
+	var helmets = l2.data.items.filter(function (item) {
+		if (item.bodyPart != 'head')
+			return false;
+		return (item.grade || 'none') == grade;
+	});
+	l2.data.tools.sortItems(helmets);
+	return helmets;
+};
+l2.data.tools.findGloves = function (grade) {
+	var gloves = l2.data.items.filter(function (item) {
+		if (item.bodyPart != 'gloves')
+			return false;
+		return (item.grade || 'none') == grade;
+	});
+	l2.data.tools.sortItems(gloves);
+	return gloves;
+};
+l2.data.tools.findBoots = function (grade) {
+	var boots = l2.data.items.filter(function (item) {
+		if (item.bodyPart != 'feet')
+			return false;
+		return (item.grade || 'none') == grade;
+	});
+	l2.data.tools.sortItems(boots);
+	return boots;
 };
