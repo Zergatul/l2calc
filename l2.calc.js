@@ -34,6 +34,9 @@ l2.calc.checkUsing = function (char, using) {
 		case 'Rapier': return char.weapon.weaponType == 'rapier';
 		case 'Ancient': return char.weapon.weaponType == 'ancientsword';
 		case 'Dual Sword': return char.weapon.weaponType == 'dual';
+		case 'Light': return char.armorType == 'light';
+		case 'Heavy': return char.armorType == 'heavy';
+		case 'Magic': return char.armorType == 'magic';
 		default: throw 'Using [' + using + '] not implemented';
 	}
 };
@@ -75,6 +78,63 @@ l2.calc.HP = function (char) {
 	})
 	var conBonus = l2.data.statBonus['con'][char.stats.con];
 	return Math.floor(baseHP * conBonus * multHP + addHP);
+};
+
+l2.calc.CP = function (char) {
+	var $class = l2.data.tools.getClass(char.classId);
+	if ($class.prof == 3)
+		$class = l2.data.tools.getClass($class.parent);
+	if ($class.prof == 2 && char.lvl < 40)
+		$class = l2.data.tools.getClass($class.parent);
+	if ($class.prof == 1 && char.lvl < 20)
+		$class = l2.data.tools.getClass($class.parent);
+	var coefs = l2.data.baseHPCoef[$class.id];
+	var baseHP = coefs.a + coefs.b * char.lvl + coefs.c * char.lvl * char.lvl;
+	var addCP = 0;
+	var multCP = 1;
+	l2.calc.forEachBuff(char.passives, 'maxCp', function (op, val, usings, hp) {
+		if (!l2.calc.checkUsings(char, usings) || !l2.calc.checkHP(char, hp))
+			return;
+		if (op == 'add') { addCP += val; return; }
+		if (op == 'mul') { multCP *= val; return; }
+		throw 'not implemented';
+	});
+	var conBonus = l2.data.statBonus['con'][char.stats.con];
+	return Math.floor(baseHP * conBonus * coefs.cpMod * multCP + addCP);
+};
+
+l2.calc.pDef = function (char) {
+	var armorPdef = 0;
+	if (char.helmet)
+		armorPdef += char.helmet.pDef;
+	else
+		armorPdef += 12;
+	if (char.bodyUpper)
+		armorPdef += char.bodyUpper.pDef;
+	else
+		armorPdef += (l2.data.tools.isMystic(char.$class.id) ? 15 : 31);
+	if (char.bodyLower)
+		armorPdef += char.bodyLower.pDef;
+	else
+		armorPdef += (l2.data.tools.isMystic(char.$class.id) ? 8 : 18);
+	if (char.gloves)
+		armorPdef += char.gloves.pDef;
+	else
+		armorPdef += 8;
+	if (char.boots)
+		armorPdef += char.boots.pDef;
+	else
+		armorPdef += 7;
+	var addPdef = 0;
+	var multPdef = 1;
+	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'pDef', function (op, val, usings, hp) {
+		if (!l2.calc.checkUsings(char, usings) || !l2.calc.checkHP(char, hp))
+			return;
+		if (op == 'add') { addPdef += val; return; }
+		if (op == 'mul') { multPdef *= val; return; }
+		throw 'not implemented';
+	});
+	return Math.floor((4 + armorPdef) * char.lm * multPdef + addPdef);
 };
 
 l2.calc.pAtk = function (char) {
@@ -134,6 +194,23 @@ l2.calc.atkSpeed = function (char) {
 		throw 'not implemented';
 	});
 	return Math.min(Math.floor(dexBonus * baseWeaponAtkSpeed * multAtkSpeed), 1500);
+};
+
+l2.calc.accuracy = function (char) {
+	var addAcc = 0;
+	if (char.weapon) {
+		if (['dagger', 'bow', 'pole', 'dualdagger'].indexOf(char.weapon.weaponType) >= 0)
+			addAcc -= 3.75;
+		if (['blunt', 'bigblunt', 'dualfist'].indexOf(char.weapon.weaponType) >= 0)
+			addAcc += 4.75;
+	}
+	l2.calc.forEachBuff(char.passives.concat(char.buffs), 'accCombat', function (op, val, usings, hp) {
+		if (!l2.calc.checkUsings(char, usings) || !l2.calc.checkHP(char, hp))
+			return;
+		if (op == 'add') { addAcc += val; return; }
+		throw 'not implemented';
+	});
+	return Math.floor(Math.sqrt(char.stats.dex) * 6 + char.lvl + addAcc) + l2.data.accuracyFix[char.lvl];
 };
 
 l2.calc.pDPS = function (char) {

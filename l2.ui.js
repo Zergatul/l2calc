@@ -190,7 +190,7 @@ l2.ui.bindPassives = function () {
 			if (skills.indexOf(st.skillId) == -1)
 				skills.push(st.skillId);
 	}
-	$('#passives > div.passive-skill').remove();
+	$('#passives > div > div.passive-skill').remove();
 	for (var i = 0; i < skills.length; i++) {
 		var skill = l2.data.tools.getSkill(skills[i]);
 		if (skill && skill.operateType == 'P') {
@@ -204,7 +204,7 @@ l2.ui.bindPassives = function () {
 				select.attr('disabled', 'disabled');
 			div.append(select);
 			div.append($('<span>').text(skill.name));
-			$('#passives').append(div);
+			$('#passives > div').append(div);
 		}
 	}
 
@@ -302,7 +302,7 @@ l2.ui.bindCommonBuffs = function () {
 		var stacks = {};
 		var groupDiv = $('<div>').addClass('common-skill-group');
 		groupDiv.append($('<div>').addClass('left common-skill-group-header').text(group.group));
-		$('#commonbuffs').append(groupDiv);
+		$('#commonbuffs > div').append(groupDiv);
 		group.ids.forEach(function (id) {
 			id = parseInt(id);
 			var skill = l2.data.tools.getSkill(id);
@@ -345,7 +345,7 @@ l2.ui.bindSongs = function () {
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
-		$('#songbuffs').append(div);
+		$('#songbuffs > div').append(div);
 	}
 };
 
@@ -359,7 +359,7 @@ l2.ui.bindDances = function () {
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
-		$('#dancebuffs').append(div);
+		$('#dancebuffs > div').append(div);
 	}
 };
 
@@ -439,6 +439,15 @@ l2.ui.restoreFromStorage = function () {
 	l2.ui.canChangeStorage = true;
 };
 
+
+l2.ui.toggleFieldSet = function () {
+	var div = $(this).closest('fieldset').children('div');
+	if ($(this).is(':checked'))
+		div.show();
+	else
+		div.hide();
+};
+
 l2.ui.formatPercent = function (val) {
 	if (val >= 10)
 		return Math.round(val).toString();
@@ -486,9 +495,9 @@ l2.ui.recalc = function () {
 	};
 	char.lm = (char.lvl + 89) / 100;
 
-	if ($('#weapon').val() != '') {
+	if ($('#weapon').val() != '')
 		char.weapon = l2.data.tools.getItem($('#weapon').val());
-	} else
+	else
 		char.weapon = null;
 	if (char.weapon && char.weapon.skill != null) {
 		var skills = char.weapon.skill.split(';');
@@ -498,7 +507,25 @@ l2.ui.recalc = function () {
 		});
 	}
 
-	$('#passives > div.passive-skill').each(function () {
+	if ($('#helmet').val() != '')
+		char.helmet = l2.data.tools.getItem($('#helmet').val());
+	if ($('#body-upper').val() != '')
+		char.bodyUpper = l2.data.tools.getItem($('#body-upper').val());
+	if ($('#body-lower').val() != '')
+		char.bodyLower = l2.data.tools.getItem($('#body-lower').val());
+	if ($('#gloves').val() != '')
+		char.gloves = l2.data.tools.getItem($('#gloves').val());
+	if ($('#boots').val() != '')
+		char.boots = l2.data.tools.getItem($('#boots').val());
+
+	if (char.bodyUpper)
+		if (char.bodyUpper.bodyPart == 'onepiece')
+			char.armorType = char.bodyUpper.bodyPart;
+		else
+			if (char.bodyUpper.bodyPart == char.bodyLower.bodyPart)
+				char.armorType = char.bodyUpper.bodyPart;
+
+	$('#passives > div > div.passive-skill').each(function () {
 		var select = $(this).find('select');
 		if (select.val() != '')
 			char.passives.push({ id: select.data('skill-id'), lvl: parseInt(select.val()) })
@@ -515,19 +542,19 @@ l2.ui.recalc = function () {
 			char.passives.push({ id: select.data('skill-id'), lvl: parseInt(select.val()) })
 	});
 
-	$('#commonbuffs div.common-skill').each(function () {
+	$('#commonbuffs > div > div > div.common-skill').each(function () {
 		var select = $(this).find('select');
 		if (select.val() != '') {
 			var ss = select.val().split(':');
 			char.buffs.push({ id: parseInt(ss[0]), lvl: parseInt(ss[1]) })
 		}
 	});
-	$('#songbuffs > div.song-skill').each(function () {
+	$('#songbuffs > div > div.song-skill').each(function () {
 		var input = $(this).find('input');
 		if (input.is(':checked'))
 			char.buffs.push({ id : input.data('skill-id'), lvl: 1 });
 	});
-	$('#dancebuffs > div.dance-skill').each(function () {
+	$('#dancebuffs > div > div.dance-skill').each(function () {
 		var input = $(this).find('input');
 		if (input.is(':checked'))
 			char.buffs.push({ id : input.data('skill-id'), lvl: 1 });
@@ -551,16 +578,22 @@ l2.ui.recalc = function () {
 	$('#men').text(stats.men);
 
 	char.hp = l2.calc.HP(char);
+	char.cp = l2.calc.CP(char);
+	char.pDef = l2.calc.pDef(char);
 	char.pAtk = l2.calc.pAtk(char);
 	char.mAtk = l2.calc.mAtk(char);
+	char.accuracy = l2.calc.accuracy(char);
 	char.pCritical = l2.calc.pCritical(char);
 	char.pCritMultiplier = l2.calc.pCritMultiplier(char);
 	char.atkSpeed = l2.calc.atkSpeed(char);
 	char.castSpeed = l2.calc.castSpeed(char);
 	char.pDPS = l2.calc.pDPS(char);
 	$('#hp').text(char.hp);
+	$('#cp').text(char.cp);
+	$('#pdef').text(char.pDef);
 	$('#patk').text(char.pAtk);
 	$('#matk').text(char.mAtk);
+	$('#accuracy').text(char.accuracy);
 	$('#pcritical').text(char.pCritical);
 	$('#pcritmult').text(char.pCritMultiplier.toFixed(5));
 	$('#atkspd').text(char.atkSpeed);
@@ -571,6 +604,9 @@ l2.ui.recalc = function () {
 	l2.ui.prevStats = char;
 
 	if (l2.ui.canShowDelta && prevStats) {
+		l2.ui.highlightStat(prevStats, char, 'hp', $('#hp').next());
+		l2.ui.highlightStat(prevStats, char, 'cp', $('#cp').next());
+		l2.ui.highlightStat(prevStats, char, 'pDef', $('#pdef').next());
 		l2.ui.highlightStat(prevStats, char, 'pAtk', $('#patk').next());
 		l2.ui.highlightStat(prevStats, char, 'atkSpeed', $('#atkspd').next());
 		l2.ui.highlightStat(prevStats, char, 'pDPS', $('#pdps').next());
@@ -627,12 +663,6 @@ $(function () {
 	$('#weapon-type').change(l2.ui.bindWeapons);
 	l2.ui.bindWeapons();
 
-	$('#equipment-chb').click(function () {
-		if ($(this).is(':checked'))
-			$('#equipment > div').show();
-		else
-			$('#equipment > div').hide();
-	});
 	$('#shield-grade').change(l2.ui.bindShields);
 	$('#shield-type').change(l2.ui.bindShields);
 	l2.ui.bindShields();
@@ -660,18 +690,13 @@ $(function () {
 
 	l2.ui.bindBuffs();
 
-	$('#selfbuffs-chb').click(function () {
-		if ($(this).is(':checked'))
-			$('#selfbuffs > div').show();
-		else
-			$('#selfbuffs > div').hide();
-	});
-	$('#toggles-chb').click(function () {
-		if ($(this).is(':checked'))
-			$('#toggles > div').show();
-		else
-			$('#toggles > div').hide();
-	});
+	$('#equipment-chb').click(l2.ui.toggleFieldSet);
+	$('#selfbuffs-chb').click(l2.ui.toggleFieldSet);
+	$('#toggles-chb').click(l2.ui.toggleFieldSet);
+	$('#commonbuffs-chb').click(l2.ui.toggleFieldSet);
+	$('#songbuffs-chb').click(l2.ui.toggleFieldSet);
+	$('#dancebuffs-chb').click(l2.ui.toggleFieldSet);
+	$('#passives-chb').click(l2.ui.toggleFieldSet);
 
 	$('select[data-storage]').change(l2.ui.onChangeSaveToStorage);
 	$('input[type=checkbox][data-storage]').click(l2.ui.onChangeSaveToStorage);

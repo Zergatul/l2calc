@@ -49,13 +49,18 @@ l2.data.tools.getSkillCurrentLvl = function (id, classesId, lvl) {
 };
 l2.data.tools.getBaseClasses = function (classId) {
 	var classesId = [];
-	var currClassId = classId;
+	var currClassId = parseInt(classId);
 	while (currClassId != null) {
 		var _class = l2.data.tools.getClass(currClassId);
 		classesId.push(_class.id);
 		currClassId = _class.parent;
 	}
 	return classesId;
+};
+l2.data.tools.isMystic = function (classId) {
+	var base = l2.data.tools.getBaseClasses(classId);
+	var baseClassId = base[base.length - 1];
+	return [10, 25, 38, 49].indexOf(baseClassId) >= 0;
 };
 l2.data.tools.getBaseCritital = function (weaponType) {
 	for (var i = 0; i < l2.data.weaponBaseData.length; i++)
