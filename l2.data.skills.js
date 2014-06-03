@@ -4,6 +4,8 @@ window.l2.data = window.l2.data || {};
 l2.data.skills = [
 	{ id: 4, levels: 2, name: 'Dash', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up_special', effects: [
 		{ stat: 'runSpd', val: [40, 66], op: 'add' } ]},
+	{ id: 18, levels: 37, name: 'Aura of Hate', target: 'AURA', operateType: 'A2', effectType: 'TargetMe', abnormalType: 'lock' },
+	{ id: 48, levels: 37, name: 'Thunder Storm', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 60, levels: 1, name: 'Fake Death', target: 'SELF', operateType: 'T', effectType: 'FakeDeath' },
 	{ id: 72, levels: 3, name: 'Iron Will', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'md_up', effects: [
 		{ stat: 'mDef', val: [1.15, 1.23, 1.3], op: 'mul' } ]},
@@ -25,6 +27,7 @@ l2.data.skills = [
 	{ id: 83, levels: 1, name: 'Wolf Spirit Totem', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'possession', effects: [
 		{ stat: 'runSpd', val: 1.2, op: 'mul', using: 'Dual Fist' },
 		{ stat: 'accCombat', val: 3, op: 'add', using: 'Dual Fist' } ]},
+	{ id: 84, levels: 3, name: 'Poison Blade Dance', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'poison' },
 	{ id: 86, levels: 3, name: 'Reflect Damage', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'dmg_shield', effects: [
 		{ stat: 'reflectDam', val: [10, 15, 20], op: 'add' } ]},
 	{ id: 87, levels: 1, name: 'Detect Animal Weakness', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'detect_weakness', effects: [
@@ -62,6 +65,8 @@ l2.data.skills = [
 		{ stat: 'crossbowWpnVuln', val: [0.92, 0.88, 0.84, 0.8], op: 'mul' } ]},
 	{ id: 113, levels: 2, name: 'Long Shot', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtkRange', val: [200, 400], op: 'add', using: 'Bow' } ]},
+	{ id: 116, levels: 14, name: 'Howl', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'pa_down', effects: [
+		{ stat: 'pAtk', val: 0.77, op: 'mul' } ]},
 	{ id: 118, levels: 1, name: 'Magician\'s Movement', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtkSpd', val: 0.8, op: 'mul' } ]},
 	{ id: 121, levels: 6, name: 'Battle Roar', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'max_hp_up', effects: [
@@ -270,6 +275,8 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: 1.2, op: 'mul', using: 'Dual Fist' } ]},
 	{ id: 285, levels: 27, name: 'Higher Mana Gain', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'manaCharge', val: [22, 24, 28, 29, 31, 32, 38, 39, 41, 42, 48, 49, 50, 52, 53, 59, 61, 62, 64, 66, 72, 73, 75, 76, 78, 79, 81], op: 'add' } ]},
+	{ id: 286, levels: 3, name: 'Provoke', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'real_target', effects: [
+		{ stat: 'poleWpnVuln', val: [1.1, 1.15, 1.2], op: 'mul' } ]},
 	{ id: 287, levels: 3, name: 'Lionheart', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'resist_spiritless', effects: [
 		{ stat: 'cancelVuln', val: 40, op: 'sub' },
 		{ stat: 'stunVuln', val: [40, 60, 80], op: 'sub' },
@@ -396,6 +403,7 @@ l2.data.skills = [
 		{ stat: 'cancelVuln', val: 100, op: 'sub' },
 		{ stat: 'debuffVuln', val: 30, op: 'sub' },
 		{ stat: 'healEffect', val: 1.3, op: 'mul' } ]},
+	{ id: 347, levels: 1, name: 'Earthquake', target: 'AURA', operateType: 'A1', effectType: 'RemoveTarget' },
 	{ id: 349, levels: 1, name: 'Song of Renewal', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'song_of_renewal', effects: [
 		{ stat: 'mReuse', val: 0.8, op: 'mul' },
 		{ stat: 'pReuse', val: 0.8, op: 'mul' },
@@ -441,6 +449,11 @@ l2.data.skills = [
 		{ stat: 'mCritRate', val: 1, op: 'basemul' } ]},
 	{ id: 366, levels: 1, name: 'Dance of Shadows', target: 'PARTY', operateType: 'A2', effectType: 'SilentMove', abnormalType: 'dance_of_shadow', effects: [
 		{ stat: 'runSpd', val: 0.5, op: 'mul' } ]},
+	{ id: 367, levels: 1, name: 'Dance of Medusa', target: 'AURA', operateType: 'A2', effectType: 'Petrification', abnormalType: 'turn_stone' },
+	{ id: 368, levels: 1, name: 'Vengeance', target: 'AURA', operateType: 'A3', effectType: 'ImmobileBuff', abnormalType: 'pd_up_special', effects: [
+		{ stat: 'pDef', val: 5400, op: 'add' },
+		{ stat: 'mDef', val: 4050, op: 'add' },
+		{ stat: 'cancelVuln', val: 80, op: 'sub' } ]},
 	{ id: 370, levels: 3, name: 'Clan Body', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'maxHp', val: [1.03, 1.05, 1.06], op: 'mul' } ]},
 	{ id: 371, levels: 3, name: 'Clan Spirituality', target: 'SELF', operateType: 'P', effects: [
@@ -501,6 +514,7 @@ l2.data.skills = [
 		{ stat: 'pDef', val: 0.75, op: 'mul' },
 		{ stat: 'rEvas', val: 8, op: 'sub' },
 		{ stat: 'runSpd', val: 20, op: 'add' } ]},
+	{ id: 404, levels: 5, name: 'Mass Shackling', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_physically' },
 	{ id: 406, levels: 3, name: 'Angelic Icon', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'possession', effects: [
 		{ stat: 'debuffVuln', val: 40, op: 'sub' },
 		{ stat: 'pDef', val: 1.5, op: 'mul' },
@@ -512,6 +526,13 @@ l2.data.skills = [
 		{ stat: 'cAtk', val: [1.33, 1.66, 2], op: 'mul', using: 'Blunt,Big Blunt' },
 		{ stat: 'cancelVuln', val: 40, op: 'sub' },
 		{ stat: 'healEffect', val: 0.2, op: 'mul' } ]},
+	{ id: 407, levels: 10, name: 'Psycho Symphony', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'all_speed_down', effects: [
+		{ stat: 'runSpd', val: [0.9, 0.9, 0.9, 0.85, 0.85, 0.8, 0.8, 0.75, 0.75, 0.7], op: 'mul' },
+		{ stat: 'pAtkSpd', val: [0.9, 0.9, 0.9, 0.85, 0.85, 0.8, 0.8, 0.75, 0.75, 0.7], op: 'mul' },
+		{ stat: 'mAtkSpd', val: [0.9, 0.9, 0.9, 0.85, 0.85, 0.8, 0.8, 0.75, 0.75, 0.7], op: 'mul' } ]},
+	{ id: 408, levels: 10, name: 'Demonic Blade Dance', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'all_attack_down', effects: [
+		{ stat: 'mAtk', val: [0.9, 0.9, 0.9, 0.85, 0.85, 0.8, 0.8, 0.75, 0.75, 0.7], op: 'mul' },
+		{ stat: 'pAtk', val: [0.9, 0.9, 0.9, 0.85, 0.85, 0.8, 0.8, 0.75, 0.75, 0.7], op: 'mul' } ]},
 	{ id: 410, levels: 3, name: 'Mortal Strike', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'might_mortal', effects: [
 		{ stat: 'blowRate', val: [1.1, 1.15, 1.2], op: 'mul' } ]},
 	{ id: 411, levels: 3, name: 'Stealth', target: 'SELF', operateType: 'A2', effectType: 'SilentMove', abnormalType: 'stealth', effects: [
@@ -590,6 +611,7 @@ l2.data.skills = [
 		{ stat: 'MagicalMpConsumeRate', val: 0.97, op: 'mul', using: 'Magic' } ]},
 	{ id: 436, levels: 1, name: 'Divine Lore', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'MagicalMpConsumeRate', val: 0.95, op: 'mul' } ]},
+	{ id: 437, levels: 1, name: 'Song of Silence', target: 'AURA', operateType: 'A2', effectType: 'Mute', abnormalType: 'silence_all' },
 	{ id: 438, levels: 1, name: 'Soul of the Phoenix', target: 'SELF', operateType: 'A2', effectType: 'PhoenixBless', abnormalType: 'resurrection_special' },
 	{ id: 439, levels: 1, name: 'Shield of Revenge', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'counter_skill', effects: [
 		{ stat: 'vengeancePdam', val: 20, op: 'add' } ]},
@@ -604,6 +626,7 @@ l2.data.skills = [
 		{ stat: 'vengeancePdam', val: 90, op: 'add' } ]},
 	{ id: 451, levels: 2, name: 'Sonic Move', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up_special', effects: [
 		{ stat: 'runSpd', val: [40, 66], op: 'add' } ]},
+	{ id: 452, levels: 5, name: 'Shock Stomp', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 462, levels: 1, name: 'Guilted Body', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'healEffect', val: 0.95, op: 'mul' },
 		{ stat: 'weightLimit', val: 1.25, op: 'mul' } ]},
@@ -828,6 +851,11 @@ l2.data.skills = [
 		{ stat: 'pAtk', val: 1.12, op: 'mul' } ]},
 	{ id: 562, levels: 4, name: 'Wind of Angel', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'song_of_water', effects: [
 		{ stat: 'rEvas', val: 3, op: 'add' } ]},
+	{ id: 564, levels: 4, name: 'Gravity Control', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'speed_down', effects: [
+		{ stat: 'pAtkSpd', val: [0.9, 0.85, 0.8, 0.75], op: 'mul' },
+		{ stat: 'runSpd', val: [0.8, 0.7, 0.65, 0.6], op: 'mul' } ]},
+	{ id: 573, levels: 4, name: 'Earthquake', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 578, levels: 4, name: 'Blaze Quake', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'dot_attr' },
 	{ id: 579, levels: 4, name: 'Fire Armor', target: 'SELF', operateType: 'A2', effectType: 'ImmobileBuff', abnormalType: 'pd_up_special', effects: [
 		{ stat: 'pDef', val: [1000, 1100, 1200, 1300], op: 'add' },
 		{ stat: 'mDef', val: [800, 900, 1000, 1100], op: 'add' },
@@ -1111,6 +1139,8 @@ l2.data.skills = [
 		{ stat: 'pAtk', val: 1.25, op: 'mul' } ]},
 	{ id: 679, levels: 1, name: 'Sacrifice Warrior', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
 		{ stat: 'pAtk', val: 1.2, op: 'mul' } ]},
+	{ id: 681, levels: 1, name: 'Divine Knight Hate Aura', target: 'AURA', operateType: 'A2', effectType: 'TargetMe', abnormalType: 'lock' },
+	{ id: 683, levels: 1, name: 'Divine Knight Thunder Storm', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 684, levels: 1, name: 'Divine Knight Ultimate Defense', target: 'SELF', operateType: 'A2', effectType: 'ImmobileBuff', abnormalType: 'pd_up_special', effects: [
 		{ stat: 'pDef', val: 3600, op: 'add' },
 		{ stat: 'mDef', val: 2700, op: 'add' },
@@ -1177,6 +1207,7 @@ l2.data.skills = [
 		{ stat: 'debuffVuln', val: 10, op: 'sub' },
 		{ stat: 'accCombat', val: 4, op: 'add' },
 		{ stat: 'runSpd', val: 0.8, op: 'mul' } ]},
+	{ id: 708, levels: 1, name: 'Divine Enchanter Mass Binding', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
 	{ id: 709, levels: 1, name: 'Sacrifice Enchanter', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
 		{ stat: 'runSpd', val: 10, op: 'add' },
 		{ stat: 'accCombat', val: 2, op: 'add' },
@@ -1197,10 +1228,15 @@ l2.data.skills = [
 		{ stat: 'absorbDam', val: 9, op: 'add' } ]},
 	{ id: 727, levels: 1, name: 'Venom Disillusion', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: 1.08, op: 'mul' } ]},
+	{ id: 730, levels: 1, name: 'Gordon Press', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'attack_time_up', effects: [
+		{ stat: 'runSpd', val: 0.77, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.77, op: 'mul' },
+		{ stat: 'mAtkSpd', val: 0.77, op: 'mul' } ]},
 	{ id: 737, levels: 1, name: 'Devil Ultimate Defense', target: 'SELF', operateType: 'A2', effectType: 'ImmobileBuff', abnormalType: 'pd_up_special', effects: [
 		{ stat: 'pDef', val: 1800, op: 'add' },
 		{ stat: 'mDef', val: 1350, op: 'add' },
 		{ stat: 'cancelVuln', val: 80, op: 'sub' } ]},
+	{ id: 747, levels: 3, name: 'Saber Tooth Tiger Fear', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'turn_flee' },
 	{ id: 748, levels: 1, name: 'Saber Tooth Tiger Sprint', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up', effects: [
 		{ stat: 'runSpd', val: 33, op: 'add' } ]},
 	{ id: 750, levels: 1, name: 'Oel Mahum Ultimate Defense', target: 'SELF', operateType: 'A2', effectType: 'ImmobileBuff', abnormalType: 'pd_up_special', effects: [
@@ -1222,6 +1258,14 @@ l2.data.skills = [
 		{ stat: 'mDef', val: 5000, op: 'add' } ]},
 	{ id: 761, levels: 1, name: 'Seed of Revenge', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
 		{ stat: 'pAtk', val: 100, op: 'add' } ]},
+	{ id: 762, levels: 1, name: 'Insane Crusher', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'touch_of_death', effects: [
+		{ stat: 'maxCp', val: 0.1, op: 'mul' },
+		{ stat: 'debuffVuln', val: 30, op: 'add' },
+		{ stat: 'healEffect', val: 0.7, op: 'mul' } ]},
+	{ id: 763, levels: 1, name: 'Hell Scream', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'turn_flee', effects: [
+		{ stat: 'mDef', val: 0.7, op: 'mul' },
+		{ stat: 'pDef', val: 0.7, op: 'mul' },
+		{ stat: 'runSpd', val: 0.7, op: 'mul' } ]},
 	{ id: 764, levels: 1, name: 'Song of Wind Storm', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'song_of_windstorm', effects: [
 		{ stat: 'bowWpnVuln', val: 0.9, op: 'mul' },
 		{ stat: 'crossbowWpnVuln', val: 0.95, op: 'mul' } ]},
@@ -1250,6 +1294,10 @@ l2.data.skills = [
 		{ stat: 'blowRate', val: 1.4, op: 'mul' },
 		{ stat: 'cancelVuln', val: 90, op: 'sub' },
 		{ stat: 'pSkillEvas', val: 60, op: 'add' } ]},
+	{ id: 774, levels: 1, name: 'Dread Pool', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'turn_flee', effects: [
+		{ stat: 'runSpd', val: 0.67, op: 'mul' },
+		{ stat: 'pDef', val: 0.67, op: 'mul' },
+		{ stat: 'rEvas', val: 10, op: 'sub' } ]},
 	{ id: 778, levels: 1, name: 'Golem Armor', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform', effects: [
 		{ stat: 'STR', val: 39, op: 'set' },
 		{ stat: 'INT', val: 20, op: 'set' },
@@ -1287,6 +1335,12 @@ l2.data.skills = [
 		{ stat: 'cAtk', val: 2, op: 'mul', using: 'Blunt,Big Blunt' },
 		{ stat: 'absorbDam', val: 40, op: 'add' },
 		{ stat: 'healEffect', val: 0.2, op: 'mul' } ]},
+	{ id: 791, levels: 1, name: 'Lightning Shock', target: 'AURA', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'paralyze', effects: [
+		{ stat: 'pAtkSpd', val: 0.5, op: 'mul' },
+		{ stat: 'runSpd', val: 0.5, op: 'mul' },
+		{ stat: 'mAtkSpd', val: 0.5, op: 'mul' } ]},
+	{ id: 794, levels: 1, name: 'Mass Disarm', target: 'AURA', operateType: 'A2', effectType: 'Disarm', abnormalType: 'disarm', effects: [
+		{ stat: 'pAtk', val: 0.6, op: 'mul' } ]},
 	{ id: 799, levels: 3, name: 'Master Ability - Defense', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pDef', val: [59.5, 119, 178.5], op: 'add', using: 'Heavy' },
 		{ stat: 'pDef', val: [44.625, 89.25, 133.875], op: 'add', using: 'Light' },
@@ -1302,6 +1356,7 @@ l2.data.skills = [
 		{ stat: 'holyRes', val: 5, op: 'add' } ]},
 	{ id: 804, levels: 1, name: 'Knight Ability - Resist Critical', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'critVuln', val: 0.95, op: 'mul' } ]},
+	{ id: 806, levels: 1, name: 'Magic Obstacle', target: 'AURA', operateType: 'A1', effectType: 'Cancel' },
 	{ id: 807, levels: 1, name: 'Over-hit', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: 1.4, op: 'mul' } ]},
 	{ id: 810, levels: 1, name: 'Vanguard', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform', effects: [
@@ -1405,6 +1460,8 @@ l2.data.skills = [
 		{ stat: 'pDef', val: 3600, op: 'add' },
 		{ stat: 'mDef', val: 2700, op: 'add' },
 		{ stat: 'cancelVuln', val: 80, op: 'sub' } ]},
+	{ id: 883, levels: 7, name: 'Commander Mercenary Seal of Binding', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
+	{ id: 885, levels: 1, name: 'Air Blink', target: 'AURA', operateType: 'A1', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 894, levels: 1, name: 'Exhilarate', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'multi_buff', effects: [
 		{ stat: 'maxHp', val: 1.2, op: 'mul' },
 		{ stat: 'pAtk', val: 1.08, op: 'mul' },
@@ -1418,6 +1475,17 @@ l2.data.skills = [
 		{ stat: 'mDef', val: 1.2, op: 'mul' },
 		{ stat: 'mAtkSpd', val: 1.2, op: 'mul' },
 		{ stat: 'debuffVuln', val: 10, op: 'sub' } ]},
+	{ id: 899, levels: 6, name: 'Cat Roar', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'multi_debuff', effects: [
+		{ stat: 'pDef', val: 0.6, op: 'mul' },
+		{ stat: 'mDef', val: 0.6, op: 'mul' },
+		{ stat: 'runSpd', val: 0.6, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.6, op: 'mul' },
+		{ stat: 'mAtkSpd', val: 0.6, op: 'mul' } ]},
+	{ id: 905, levels: 6, name: 'Dark Detonation', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 909, levels: 6, name: 'Ice Focus', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'poison', effects: [
+		{ stat: 'runSpd', val: 0.3, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.8, op: 'mul' },
+		{ stat: 'mAtkSpd', val: 0.8, op: 'mul' } ]},
 	{ id: 913, levels: 1, name: 'Deflect Magic', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'dd_resist', effects: [
 		{ stat: 'magicSuccRes', val: 2, op: 'mul' } ]},
 	{ id: 914, levels: 1, name: 'Song of Purification', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'song_of_purification', effects: [
@@ -1562,6 +1630,7 @@ l2.data.skills = [
 		{ stat: 'accCombat', val: 6, op: 'add', using: 'Bow' },
 		{ stat: 'rCrit', val: 0.2, op: 'basemul', using: 'Bow' },
 		{ stat: 'pAtkRange', val: 200, op: 'add', using: 'Bow' } ]},
+	{ id: 980, levels: 6, name: 'Hate Aura', target: 'AURA', operateType: 'A2', effectType: 'TargetMe', abnormalType: 'lock' },
 	{ id: 982, levels: 3, name: 'Combat Aura', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'knight_aura', effects: [
 		{ stat: 'pAtk', val: [1.03, 1.04, 1.05], op: 'mul' },
 		{ stat: 'pAtkSpd', val: [1.03, 1.04, 1.05], op: 'mul' } ]},
@@ -1641,6 +1710,14 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: [1.15, 1.33], op: 'mul' } ]},
 	{ id: 1087, levels: 3, name: 'Agility', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'avoid_up', effects: [
 		{ stat: 'rEvas', val: [2, 3, 4], op: 'add' } ]},
+	{ id: 1096, levels: 16, name: 'Seal of Chaos', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'hit_down', effects: [
+		{ stat: 'accCombat', val: [9, 9, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12], op: 'sub' } ]},
+	{ id: 1099, levels: 15, name: 'Seal of Slow', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'speed_down', effects: [
+		{ stat: 'runSpd', val: [0.8, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7], op: 'mul' } ]},
+	{ id: 1101, levels: 2, name: 'Blaze Quake', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'dot_attr' },
+	{ id: 1104, levels: 14, name: 'Seal of Winter', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'attack_time_up', effects: [
+		{ stat: 'pAtkSpd', val: 0.77, op: 'mul' } ]},
+	{ id: 1108, levels: 4, name: 'Seal of Flame', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'dot_attr' },
 	{ id: 1139, levels: 2, name: 'Servitor Magic Shield', target: 'PET', operateType: 'A2', effectType: 'Buff', abnormalType: 'md_up', effects: [
 		{ stat: 'mDef', val: [1.23, 1.3], op: 'mul' } ]},
 	{ id: 1140, levels: 3, name: 'Servitor Physical Shield', target: 'PET', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up', effects: [
@@ -1661,6 +1738,10 @@ l2.data.skills = [
 		{ stat: 'fireRes', val: [10, 15, 20], op: 'add' } ]},
 	{ id: 1204, levels: 2, name: 'Wind Walk', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up', effects: [
 		{ stat: 'runSpd', val: [20, 33], op: 'add' } ]},
+	{ id: 1208, levels: 17, name: 'Seal of Binding', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
+	{ id: 1209, levels: 6, name: 'Seal of Poison', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'poison' },
+	{ id: 1210, levels: 4, name: 'Seal of Gloom', target: 'AURA', operateType: 'A2', effectType: 'ManaDamOverTime', abnormalType: 'dot_mp' },
+	{ id: 1213, levels: 13, name: 'Seal of Mirage', target: 'AURA', operateType: 'A1', effectType: 'Confusion' },
 	{ id: 1217, levels: 33, name: 'Greater Heal', target: 'ONE', operateType: 'A2', effectType: 'HealOverTime', abnormalType: 'life_force_others' },
 	{ id: 1219, levels: 33, name: 'Greater Group Heal', target: 'PARTY', operateType: 'A2', effectType: 'HealOverTime', abnormalType: 'life_force_others' },
 	{ id: 1229, levels: 18, name: 'Chant of Life', target: 'PARTY', operateType: 'A2', effectType: 'HealOverTime', abnormalType: 'life_force_orc' },
@@ -1674,6 +1755,12 @@ l2.data.skills = [
 		{ stat: 'cAtk', val: [1.25, 1.3, 1.35], op: 'mul' } ]},
 	{ id: 1243, levels: 6, name: 'Bless Shield', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'shield_prob_up', effects: [
 		{ stat: 'rShld', val: [1.05, 1.1, 1.15, 1.2, 1.25, 1.3], op: 'mul' } ]},
+	{ id: 1246, levels: 12, name: 'Seal of Silence', target: 'AURA', operateType: 'A2', effectType: 'Mute', abnormalType: 'silence' },
+	{ id: 1247, levels: 14, name: 'Seal of Scourge', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'hp_regen_down', effects: [
+		{ stat: 'regHp', val: 0, op: 'mul' } ]},
+	{ id: 1248, levels: 12, name: 'Seal of Suspension', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'reuse_delay_up', effects: [
+		{ stat: 'mReuse', val: 3, op: 'mul' },
+		{ stat: 'pReuse', val: 3, op: 'mul' } ]},
 	{ id: 1249, levels: 3, name: 'The Vision of Pa\'agrio', target: 'PARTY_CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'hit_up', effects: [
 		{ stat: 'accCombat', val: [2, 3, 4], op: 'add' } ]},
 	{ id: 1250, levels: 3, name: 'Under the Protection of Pa\'agrio', target: 'PARTY_CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'shield_prob_up', effects: [
@@ -1704,6 +1791,7 @@ l2.data.skills = [
 		{ stat: 'transDam', val: [10, 20, 30, 40, 50], op: 'add' } ]},
 	{ id: 1268, levels: 4, name: 'Vampiric Rage', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'vampiric_attack', effects: [
 		{ stat: 'absorbDam', val: [6, 7, 8, 9], op: 'add' } ]},
+	{ id: 1272, levels: 13, name: 'Word of Fear', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'turn_flee' },
 	{ id: 1282, levels: 2, name: 'Pa\'agrian Haste', target: 'PARTY_CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up', effects: [
 		{ stat: 'runSpd', val: [20, 33], op: 'add' } ]},
 	{ id: 1283, levels: 13, name: 'Soul Guard', target: 'SELF', operateType: 'T', effectType: 'ManaDamOverTime', effects: [
@@ -1757,6 +1845,8 @@ l2.data.skills = [
 		{ stat: 'maxCp', val: 0.8, op: 'mul' },
 		{ stat: 'maxRecoverableCp', val: 0.6, op: 'mul' },
 		{ stat: 'maxRecoverableHp', val: 0.7, op: 'mul' } ]},
+	{ id: 1344, levels: 1, name: 'Mass Warrior Bane', target: 'AURA', operateType: 'A1', effectType: 'Cancel' },
+	{ id: 1345, levels: 1, name: 'Mass Mage Bane', target: 'AURA', operateType: 'A1', effectType: 'Cancel' },
 	{ id: 1346, levels: 1, name: 'Warrior Servitor', target: 'PET', operateType: 'A2', effectType: 'Buff', abnormalType: 'multi_buff', effects: [
 		{ stat: 'pDef', val: 1.2, op: 'mul' },
 		{ stat: 'accCombat', val: 4, op: 'add' },
@@ -1834,6 +1924,10 @@ l2.data.skills = [
 		{ stat: 'debuffVuln', val: 10, op: 'sub' },
 		{ stat: 'runSpd', val: 0.8, op: 'mul' },
 		{ stat: 'absorbDam', val: 5, op: 'add' } ]},
+	{ id: 1360, levels: 1, name: 'Mass Block Shield', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'block_shield_up', effects: [
+		{ stat: 'pDef', val: 0.9, op: 'mul' } ]},
+	{ id: 1361, levels: 1, name: 'Mass Block Wind Walk', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'block_speed_up', effects: [
+		{ stat: 'runSpd', val: 0.9, op: 'mul' } ]},
 	{ id: 1362, levels: 1, name: 'Chant of Spirit', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'resist_debuff_dispel', effects: [
 		{ stat: 'cancelVuln', val: 30, op: 'sub' },
 		{ stat: 'debuffVuln', val: 20, op: 'sub' } ]},
@@ -1856,6 +1950,14 @@ l2.data.skills = [
 	{ id: 1365, levels: 1, name: 'Soul of Pa\'agrio', target: 'PARTY_CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'improve_ma_md_up', effects: [
 		{ stat: 'mAtk', val: 1.75, op: 'mul' },
 		{ stat: 'mDef', val: 1.3, op: 'mul' } ]},
+	{ id: 1366, levels: 1, name: 'Seal of Despair', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'ultimate_debuff', effects: [
+		{ stat: 'pAtk', val: 0.9, op: 'mul' },
+		{ stat: 'runSpd', val: 0.8, op: 'mul' },
+		{ stat: 'mDef', val: 0.7, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.7, op: 'mul' },
+		{ stat: 'rCrit', val: -0.3, op: 'basemul' },
+		{ stat: 'cAtk', val: 0.7, op: 'mul' },
+		{ stat: 'accCombat', val: 6, op: 'sub' } ]},
 	{ id: 1368, levels: 8, name: 'Expand Dwarven Craft', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'DwarfRecipeLimit', val: [6, 12, 18, 24, 30, 36, 42, 48], op: 'add' } ]},
 	{ id: 1369, levels: 8, name: 'Expand Common Craft', target: 'SELF', operateType: 'P', effects: [
@@ -1875,6 +1977,14 @@ l2.data.skills = [
 		{ stat: 'cancelVuln', val: 40, op: 'sub' },
 		{ stat: 'pAtk', val: 250, op: 'add' },
 		{ stat: 'pDef', val: 500, op: 'add' } ]},
+	{ id: 1375, levels: 1, name: 'Heroic Grandeur', target: 'AURA', operateType: 'A2', effectType: 'Mute', abnormalType: 'hero_debuff', effects: [
+		{ stat: 'cancel', val: 100, op: 'add' },
+		{ stat: 'mDef', val: 0.5, op: 'mul' },
+		{ stat: 'pDef', val: 0.5, op: 'mul' },
+		{ stat: 'rEvas', val: 16, op: 'sub' },
+		{ stat: 'rShld', val: 0.5, op: 'mul' } ]},
+	{ id: 1376, levels: 1, name: 'Heroic Dread', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'hero_debuff', effects: [
+		{ stat: 'runSpd', val: 66, op: 'add' } ]},
 	{ id: 1388, levels: 3, name: 'Greater Might', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_pd_up', effects: [
 		{ stat: 'pAtk', val: [1.04, 1.07, 1.1], op: 'mul' } ]},
 	{ id: 1389, levels: 3, name: 'Greater Shield', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_pd_up', effects: [
@@ -1928,6 +2038,7 @@ l2.data.skills = [
 		{ stat: 'debuffVuln', val: 20, op: 'sub' } ]},
 	{ id: 1416, levels: 1, name: 'Pa\'agrio\'s Fist', target: 'PARTY_CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'cp_up', effects: [
 		{ stat: 'maxCp', val: 800, op: 'add' } ]},
+	{ id: 1417, levels: 5, name: 'Aura Flash', target: 'AURA', operateType: 'A1', effectType: 'RemoveTarget' },
 	{ id: 1418, levels: 1, name: 'Celestial Shield', target: 'ONE', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
 	{ id: 1427, levels: 1, name: 'Flames of Invincibility', target: 'PARTY_CLAN', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
 	{ id: 1430, levels: 5, name: 'Invocation', target: 'SELF', operateType: 'A2', effectType: 'Paralyze', abnormalType: 'force_meditation', effects: [
@@ -1944,6 +2055,9 @@ l2.data.skills = [
 		{ stat: 'pAtk', val: 1.1, op: 'mul', using: 'Ancient,Crossbow,Rapier' },
 		{ stat: 'mAtk', val: 1.1, op: 'mul' },
 		{ stat: 'blowRate', val: 1.1, op: 'mul' } ]},
+	{ id: 1448, levels: 1, name: 'Blink', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 1454, levels: 1, name: 'Diamond Dust', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'speed_down', effects: [
+		{ stat: 'runSpd', val: 0.6, op: 'mul' } ]},
 	{ id: 1457, levels: 1, name: 'Empowering Echo', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'ma_up_special', effects: [
 		{ stat: 'mAtk', val: 1.25, op: 'mul' },
 		{ stat: 'MagicalMpConsumeRate', val: 1.35, op: 'mul' } ]},
@@ -1953,6 +2067,7 @@ l2.data.skills = [
 		{ stat: 'manaCharge', val: 85, op: 'add' } ]},
 	{ id: 1461, levels: 1, name: 'Chant of Protection', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 't_crt_dmg_down', effects: [
 		{ stat: 'critVuln', val: 0.7, op: 'mul' } ]},
+	{ id: 1462, levels: 1, name: 'Seal of Blockade', target: 'AURA', operateType: 'A2', effectType: 'PhysicalAttackMute', abnormalType: 'normal_attack_block' },
 	{ id: 1463, levels: 1, name: 'Fire Weapon', target: 'PARTY_MEMBER', operateType: 'A2', effectType: 'Buff', abnormalType: 'holy_attack', effects: [
 		{ stat: 'firePower', val: 20, op: 'add' } ]},
 	{ id: 1464, levels: 1, name: 'Ice Weapon', target: 'PARTY_MEMBER', operateType: 'A2', effectType: 'Buff', abnormalType: 'holy_attack', effects: [
@@ -1993,6 +2108,11 @@ l2.data.skills = [
 		{ stat: 'waterRes', val: 60, op: 'add' } ]},
 	{ id: 1494, levels: 1, name: 'Hurricane Armor', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'elemental_armor', effects: [
 		{ stat: 'windRes', val: 60, op: 'add' } ]},
+	{ id: 1495, levels: 1, name: 'Vampiric Mist', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'ultimate_debuff', effects: [
+		{ stat: 'pAtk', val: 0.5, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.5, op: 'mul' },
+		{ stat: 'runSpd', val: 0.5, op: 'mul' },
+		{ stat: 'accCombat', val: 12, op: 'sub' } ]},
 	{ id: 1496, levels: 1, name: 'Servitor Barrier', target: 'PET', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
 	{ id: 1497, levels: 1, name: 'Excessive Loyalty', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
 	{ id: 1498, levels: 1, name: 'Mutual Response', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
@@ -2017,6 +2137,12 @@ l2.data.skills = [
 	{ id: 1505, levels: 1, name: 'Sublime Self-Sacrifice', target: 'PARTY_NOTME', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
 	{ id: 1507, levels: 1, name: 'Lord of Vampire', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'vampiric_attack_special', effects: [
 		{ stat: 'absorbDam', val: 80, op: 'add' } ]},
+	{ id: 1508, levels: 1, name: 'Throne Root', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically', effects: [
+		{ stat: 'rootVuln', val: 100, op: 'sub' } ]},
+	{ id: 1509, levels: 1, name: 'Seal of Limit', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'limit', effects: [
+		{ stat: 'maxRecoverableHp', val: 0.3, op: 'mul' },
+		{ stat: 'maxRecoverableMp', val: 0.3, op: 'mul' },
+		{ stat: 'maxRecoverableCp', val: 0.3, op: 'mul' } ]},
 	{ id: 1514, levels: 1, name: 'Soul Barrier', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up_bow', effects: [
 		{ stat: 'bowWpnVuln', val: 0.9, op: 'mul' },
 		{ stat: 'crossbowWpnVuln', val: 0.94, op: 'mul' },
@@ -4901,6 +5027,7 @@ l2.data.skills = [
 	{ id: 4071, levels: 5, name: 'Resist Archery', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'bowWpnVuln', val: [0.9, 0.8, 0.7, 0.6, 0.5], op: 'mul' },
 		{ stat: 'crossbowWpnVuln', val: [0.9, 0.8, 0.7, 0.6, 0.5], op: 'mul' } ]},
+	{ id: 4072, levels: 12, name: 'Shock', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 4074, levels: 2, name: 'NPC Haste', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'attack_time_down', effects: [
 		{ stat: 'pAtkSpd', val: [1.15, 1.33], op: 'mul' } ]},
 	{ id: 4084, levels: 11, name: 'Resist Physical Attack', target: 'SELF', operateType: 'P', effects: [
@@ -4944,6 +5071,17 @@ l2.data.skills = [
 		{ stat: 'rEvas', val: [5, 8], op: 'sub' } ]},
 	{ id: 4103, levels: 2, name: 'NPC Ultimate Evasion', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'avoid_up_special', effects: [
 		{ stat: 'rEvas', val: [20, 25], op: 'add' } ]},
+	{ id: 4109, levels: 1, name: 'Curse of Antharas', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'antaras_debuff', effects: [
+		{ stat: 'pAtk', val: 0.85, op: 'mul' },
+		{ stat: 'mAtk', val: 0.85, op: 'mul' },
+		{ stat: 'pDef', val: 0.6, op: 'mul' },
+		{ stat: 'mDef', val: 0.6, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.75, op: 'mul' },
+		{ stat: 'mAtkSpd', val: 0.75, op: 'mul' },
+		{ stat: 'runSpd', val: 0.5, op: 'mul' },
+		{ stat: 'accCombat', val: 19, op: 'sub' },
+		{ stat: 'rEvas', val: 19, op: 'sub' },
+		{ stat: 'rCrit', val: 0.1, op: 'mul' } ]},
 	{ id: 4116, levels: 10, name: 'Resist M.Atk', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'mDef', val: [1.05, 1.11, 1.17, 1.25, 1.33, 1.43, 1.67, 2, 3.33, 10], op: 'mul' } ]},
 	{ id: 4121, levels: 12, name: 'Summoned Monster Magic Protection', target: 'SELF', operateType: 'P', effects: [
@@ -4957,6 +5095,7 @@ l2.data.skills = [
 		{ stat: 'pReuse', val: 0.01, op: 'mul' } ]},
 	{ id: 4163, levels: 12, name: 'NPC Self Damage Shield', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'dmg_shield', effects: [
 		{ stat: 'reflectDam', val: 20, op: 'add' } ]},
+	{ id: 4172, levels: 12, name: 'Stun', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 4173, levels: 12, name: 'BOSS Might', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: 1.5, op: 'mul' } ]},
 	{ id: 4174, levels: 12, name: 'BOSS Shield', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up', effects: [
@@ -4965,8 +5104,19 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: 1.5, op: 'mul' } ]},
 	{ id: 4176, levels: 12, name: 'BOSS Reflect Damage', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'dmg_shield', effects: [
 		{ stat: 'reflectDam', val: 20, op: 'add' } ]},
+	{ id: 4177, levels: 12, name: 'BOSS Cancel Magic', target: 'AURA', operateType: 'A1', effectType: 'CancelAll' },
+	{ id: 4182, levels: 12, name: 'Poison', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'poison' },
 	{ id: 4183, levels: 12, name: 'Decrease P. Atk.', target: 'AURA', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_down', effects: [
 		{ stat: 'pAtk', val: [0.83, 0.8, 0.8, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77], op: 'mul' } ]},
+	{ id: 4184, levels: 12, name: 'Decrease Atk. Spd.', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'attack_time_up', effects: [
+		{ stat: 'pAtkSpd', val: [0.83, 0.8, 0.8, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77], op: 'mul' } ]},
+	{ id: 4185, levels: 12, name: 'Sleep', target: 'AURA', operateType: 'A2', effectType: 'Sleep', abnormalType: 'sleep' },
+	{ id: 4186, levels: 12, name: 'Hold', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
+	{ id: 4187, levels: 12, name: 'Decrease Speed', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'speed_down', effects: [
+		{ stat: 'runSpd', val: [0.9, 0.8, 0.8, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7], op: 'mul' } ]},
+	{ id: 4188, levels: 12, name: 'Bleed', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'bleeding' },
+	{ id: 4189, levels: 12, name: 'Paralysis', target: 'AURA', operateType: 'A2', effectType: 'Paralyze', abnormalType: 'paralyze' },
+	{ id: 4190, levels: 12, name: 'Decrease MP', target: 'AURA', operateType: 'A2', effectType: 'ManaDamOverTime', abnormalType: 'dot_mp' },
 	{ id: 4210, levels: 12, name: 'Life Chant', target: 'ONE', operateType: 'A2', effectType: 'HealOverTime', abnormalType: 'life_force_others' },
 	{ id: 4211, levels: 12, name: 'BOSS Might', target: 'CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: 1.5, op: 'mul' } ]},
@@ -4986,6 +5136,9 @@ l2.data.skills = [
 		{ stat: 'regHp', val: 20, op: 'mul' } ]},
 	{ id: 4233, levels: 1, name: 'Vampiric Attack', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'absorbDam', val: 15, op: 'add' } ]},
+	{ id: 4238, levels: 1, name: 'Increase Re-use Time', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'reuse_delay_up', effects: [
+		{ stat: 'pReuse', val: 3.0, op: 'mul' },
+		{ stat: 'mReuse', val: 3.0, op: 'mul' } ]},
 	{ id: 4239, levels: 1, name: 'Antharas Regeneration', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'hp_regen_down', effects: [
 		{ stat: 'regHp', val: 0.4, op: 'mul' } ]},
 	{ id: 4240, levels: 1, name: 'Antharas Regeneration', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'hp_regen_down', effects: [
@@ -5180,6 +5333,7 @@ l2.data.skills = [
 		{ stat: 'reflectDam', val: 20, op: 'add' } ]},
 	{ id: 4379, levels: 5, name: 'Resist Pole Arm', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'poleWpnVuln', val: [0.9, 0.8, 0.7, 0.6, 0.5], op: 'mul' } ]},
+	{ id: 4383, levels: 1, name: 'NPC Hate Stone', target: 'AURA', operateType: 'A3', effectType: 'Petrification', abnormalType: 'turn_stone' },
 	{ id: 4384, levels: 1, name: 'Scapegoat\'s Grace', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_down' },
 	{ id: 4385, levels: 1, name: 'Scapegoat\'s Grace', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'attack_time_up' },
 	{ id: 4386, levels: 1, name: 'Scapegoat\'s Grace', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'poison' },
@@ -5384,6 +5538,8 @@ l2.data.skills = [
 	{ id: 4476, levels: 5, name: 'Silent Move', target: 'ONE', operateType: 'A2', effectType: 'SilentMove', abnormalType: 'stealth' },
 	{ id: 4479, levels: 1, name: 'Ice Fairy Resist Cold', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'armor_water', effects: [
 		{ stat: 'waterRes', val: 50, op: 'add' } ]},
+	{ id: 4483, levels: 12, name: 'Hold', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
+	{ id: 4488, levels: 12, name: 'Hold', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
 	{ id: 4493, levels: 12, name: 'NPC Debuff Shield Slow', target: 'ONE', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'debuff_shield' },
 	{ id: 4517, levels: 1, name: 'Quest - BOSS Defend', target: 'SELF', operateType: 'T', effectType: 'ManaDamOverTime', effects: [
 		{ stat: 'runSpd', val: 0.5, op: 'mul' },
@@ -5420,6 +5576,8 @@ l2.data.skills = [
 		{ stat: 'maxHp', val: 1.3, op: 'mul' } ]},
 	{ id: 4528, levels: 1, name: 'Quest - BOSS Movement to Summoned', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'public_slot', effects: [
 		{ stat: 'runSpd', val: 33, op: 'add' } ]},
+	{ id: 4530, levels: 1, name: 'Quest - Summoned HP Heal', target: 'AURA', operateType: 'A1', effectType: 'HealPercent' },
+	{ id: 4531, levels: 1, name: 'Quest - Summoned MP Heal', target: 'AURA', operateType: 'A1', effectType: 'ManaHealPercent' },
 	{ id: 4532, levels: 1, name: 'Quest - BOSS Reflect', target: 'SELF', operateType: 'T', effectType: 'ManaDamOverTime', effects: [
 		{ stat: 'reflectDam', val: 100, op: 'add' },
 		{ stat: 'mDef', val: 10, op: 'mul' } ]},
@@ -5466,6 +5624,8 @@ l2.data.skills = [
 	{ id: 4595, levels: 3, name: 'NPC Clan Buff - Acumen Shield', target: 'CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'multi_buff', effects: [
 		{ stat: 'mAtkSpd', val: [1.15, 1.23, 1.3], op: 'mul' },
 		{ stat: 'pDef', val: [1.08, 1.12, 1.15], op: 'mul' } ]},
+	{ id: 4600, levels: 12, name: 'Reducing P. Def Stun', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun', effects: [
+		{ stat: 'pDef', val: [0.83, 0.8, 0.8, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77], op: 'mul' } ]},
 	{ id: 4601, levels: 3, name: 'NPC Clan Buff - Acumen Focus', target: 'CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'multi_buff', effects: [
 		{ stat: 'rCrit', val: [0.2, 0.25, 0.3], op: 'basemul' },
 		{ stat: 'mAtkSpd', val: [1.15, 1.23, 1.3], op: 'mul' } ]},
@@ -5554,6 +5714,10 @@ l2.data.skills = [
 		{ stat: 'pAtk', val: [1.08, 1.12, 1.15], op: 'mul' } ]},
 	{ id: 4648, levels: 3, name: 'Area Buff - Shield', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up', effects: [
 		{ stat: 'pDef', val: [1.08, 1.12, 1.15], op: 'mul' } ]},
+	{ id: 4649, levels: 12, name: 'Poison', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'poison' },
+	{ id: 4650, levels: 1, name: 'NPC AE - Dispel Hold', target: 'AURA', operateType: 'A1', effectType: 'Negate' },
+	{ id: 4651, levels: 3, name: 'NPC AE - Dispel Slow', target: 'AURA', operateType: 'A1', effectType: 'Negate' },
+	{ id: 4652, levels: 1, name: 'NPC AE - Dispel Silence', target: 'AURA', operateType: 'A1', effectType: 'Negate' },
 	{ id: 4679, levels: 1, name: 'Valakas', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'valakasVuln', val: 8, op: 'add' },
 		{ stat: 'debuffImmunity', val: 1, op: 'set' } ]},
@@ -5575,6 +5739,9 @@ l2.data.skills = [
 		{ stat: 'regMp', val: [1.3, 1.32, 1.35, 1.35, 1.35, 1.35, 1.35, 1.35, 1.35, 1.35, 1.35, 1.35, 1.35], op: 'mul' } ]},
 	{ id: 4703, levels: 13, name: 'Gift of Seraphim', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'buff_unicorn_seraphim', effects: [
 		{ stat: 'mReuse', val: [0.7, 0.68, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65], op: 'mul' } ]},
+	{ id: 4706, levels: 13, name: 'Mass Curse of Shade', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'debuff_nightshade', effects: [
+		{ stat: 'mDef', val: [0.94, 0.92, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9], op: 'mul' },
+		{ stat: 'pDef', val: [0.94, 0.92, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9], op: 'mul' } ]},
 	{ id: 4711, levels: 12, name: 'Wild Defense', target: 'SELF', operateType: 'A2', effectType: 'ImmobileBuff', abnormalType: 'ultimate_buff', effects: [
 		{ stat: 'mDef', val: 5, op: 'mul' },
 		{ stat: 'pDef', val: 5, op: 'mul' },
@@ -5590,6 +5757,7 @@ l2.data.skills = [
 		{ stat: 'mDef', val: [1.03, 1.06, 1.09, 1.12, 1.15, 1.18, 1.21, 1.24, 1.27, 1.3], op: 'mul' } ]},
 	{ id: 5002, levels: 1, name: 'Giselle - Vampiric Rage', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'vampiric_attack', effects: [
 		{ stat: 'absorbDam', val: 9, op: 'add' } ]},
+	{ id: 5004, levels: 1, name: 'Dimensional Stun', target: 'AURA', operateType: 'A2', effectType: 'ThrowUp', abnormalType: 'fly_away' },
 	{ id: 5017, levels: 1, name: 'Frintezza\'s Daemon Morph', target: 'SELF', operateType: 'A2', effectType: 'Grow', abnormalType: 'big_body', effects: [
 		{ stat: 'runSpd', val: 1.22, op: 'mul' } ]},
 	{ id: 5038, levels: 16, name: 'Summon PVP Penalty', target: 'SELF', operateType: 'P', effects: [
@@ -5598,6 +5766,7 @@ l2.data.skills = [
 		{ stat: 'pvpPhysSkillsDmg', val: [0.98, 0.96, 0.94, 0.92, 0.9, 0.88, 0.86, 0.84, 0.82, 0.8, 0.78, 0.76, 0.74, 0.72, 0.7, 0.5], op: 'mul' } ]},
 	{ id: 5040, levels: 12, name: 'NPC - Healing Potion', target: 'ONE', operateType: 'A2', effectType: 'HealOverTime', abnormalType: 'life_force_others' },
 	{ id: 5041, levels: 1, name: 'Charm of Courage', target: 'SELF', operateType: 'P', effectType: 'CharmOfCourage' },
+	{ id: 5042, levels: 12, name: 'NPC Dispel Bomb', target: 'AURA', operateType: 'A1', effectType: 'Cancel' },
 	{ id: 5044, levels: 3, name: 'NPC Ultimate Defense', target: 'SELF', operateType: 'A2', effectType: 'ImmobileBuff', abnormalType: 'pd_up_special', effects: [
 		{ stat: 'pDef', val: [1800, 3600, 9000], op: 'add' },
 		{ stat: 'mDef', val: [1350, 2700, 9000], op: 'add' },
@@ -5628,8 +5797,18 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: [1.15, 1.33], op: 'mul' },
 		{ stat: 'pAtk', val: [1.9, 2.8], op: 'mul' },
 		{ stat: 'pDef', val: [1, 2.8], op: 'mul' } ]},
+	{ id: 5112, levels: 12, name: 'Stun', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 5113, levels: 12, name: 'Castle Self AE Dispell Buff', target: 'AURA', operateType: 'A1', effectType: 'Cancel' },
+	{ id: 5114, levels: 12, name: 'Hold', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
+	{ id: 5117, levels: 1, name: 'Stun', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 5118, levels: 1, name: 'Cancel Sailren Use', target: 'AURA', operateType: 'A1', effectType: 'Cancel' },
 	{ id: 5122, levels: 1, name: 'Sailren Use Might', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: 1.5, op: 'mul' } ]},
+	{ id: 5127, levels: 1, name: 'Recover Force', target: 'AURA', operateType: 'A2', effectType: 'Buff', abnormalType: 'combination', effects: [
+		{ stat: 'pAtk', val: 1.2, op: 'mul' } ]},
+	{ id: 5137, levels: 1, name: 'Hold of King', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
+	{ id: 5140, levels: 1, name: 'Dark Curse', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'attack_time_up', effects: [
+		{ stat: 'pAtkSpd', val: 0.77, op: 'mul' } ]},
 	{ id: 5147, levels: 10, name: 'Blessed Body', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'abnormal_item', effects: [
 		{ stat: 'maxHp', val: [24, 48, 72, 96, 120, 144, 168, 192, 216, 240], op: 'add' } ]},
 	{ id: 5148, levels: 10, name: 'Prayer', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'abnormal_item', effects: [
@@ -5660,6 +5839,7 @@ l2.data.skills = [
 	{ id: 5164, levels: 10, name: 'Wild Magic', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'abnormal_item', effects: [
 		{ stat: 'mCritRate', val: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4], op: 'add' } ]},
 	{ id: 5182, levels: 1, name: 'Blessing of Protection', target: 'ONE', operateType: 'A2', effectType: 'ProtectionBlessing', abnormalType: 'pk_protect' },
+	{ id: 5183, levels: 1, name: 'Production: Dimensional Stun', target: 'AURA', operateType: 'A1', effectType: 'ThrowUp' },
 	{ id: 5186, levels: 2, name: 'Pet Haste', target: 'OWNER_PET', operateType: 'A2', effectType: 'Buff', abnormalType: 'attack_time_down', effects: [
 		{ stat: 'pAtkSpd', val: [1.15, 1.33], op: 'mul' } ]},
 	{ id: 5187, levels: 4, name: 'Pet Vampiric Rage', target: 'OWNER_PET', operateType: 'A2', effectType: 'Buff', abnormalType: 'vampiric_attack', effects: [
@@ -5680,6 +5860,8 @@ l2.data.skills = [
 		{ stat: 'mAtk', val: [1.55, 1.65, 1.75], op: 'mul' } ]},
 	{ id: 5201, levels: 6, name: 'Pet Concentration', target: 'OWNER_PET', operateType: 'A2', effectType: 'Buff', abnormalType: 'cancel_prob_down', effects: [
 		{ stat: 'cancel', val: [18, 25, 36, 42, 48, 53], op: 'sub' } ]},
+	{ id: 5202, levels: 12, name: 'Stun', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 5203, levels: 12, name: 'Fear', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'turn_flee' },
 	{ id: 5208, levels: 1, name: 'Event Wind walk', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up', effects: [
 		{ stat: 'runSpd', val: 33, op: 'add' } ]},
 	{ id: 5209, levels: 1, name: 'Event Shield', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up', effects: [
@@ -5718,6 +5900,9 @@ l2.data.skills = [
 		{ stat: 'pAtk', val: 1.5, op: 'mul' },
 		{ stat: 'pDef', val: 1.5, op: 'mul' } ]},
 	{ id: 5225, levels: 1, name: 'Invincible', target: 'SELF', operateType: 'A2', effectType: 'Invincible', abnormalType: 'pd_up_special' },
+	{ id: 5230, levels: 1, name: 'Stun', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 5231, levels: 1, name: 'Stun', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 5232, levels: 1, name: 'Stun', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 5236, levels: 1, name: 'Speed Up', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up', effects: [
 		{ stat: 'runSpd', val: 33, op: 'add' } ]},
 	{ id: 5237, levels: 1, name: 'Speed Down', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_down', effects: [
@@ -5727,6 +5912,7 @@ l2.data.skills = [
 		{ stat: 'pAtk', val: 1.15, op: 'mul' } ]},
 	{ id: 5245, levels: 1, name: 'Magical Up', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'ma_up', effects: [
 		{ stat: 'mAtk', val: 1.15, op: 'mul' } ]},
+	{ id: 5259, levels: 12, name: 'Fear', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'turn_flee' },
 	{ id: 5261, levels: 1, name: 'Zombie', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform', effects: [
 		{ stat: 'STR', val: 43, op: 'set' },
 		{ stat: 'DEX', val: 33, op: 'set' },
@@ -5734,9 +5920,27 @@ l2.data.skills = [
 		{ stat: 'INT', val: 29, op: 'set' },
 		{ stat: 'WIT', val: 11, op: 'set' },
 		{ stat: 'MEN', val: 25, op: 'set' } ]},
+	{ id: 5268, levels: 17, name: 'Poison', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'poison' },
+	{ id: 5269, levels: 17, name: 'Slow Trap', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'all_speed_down', effects: [
+		{ stat: 'runSpd', val: 0.7, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.77, op: 'mul' },
+		{ stat: 'mAtkSpd', val: 0.7, op: 'mul' } ]},
+	{ id: 5270, levels: 16, name: 'Flash Trap', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 5272, levels: 17, name: 'Decoy Provocation', target: 'AURA', operateType: 'A1', effectType: 'TargetMe' },
+	{ id: 5306, levels: 9, name: 'Paralysis', target: 'AURA', operateType: 'A2', effectType: 'Paralyze', abnormalType: 'paralyze' },
+	{ id: 5366, levels: 9, name: 'Poison', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'poison' },
+	{ id: 5367, levels: 9, name: 'Paralysis', target: 'AURA', operateType: 'A2', effectType: 'Paralyze', abnormalType: 'paralyze' },
 	{ id: 5395, levels: 3, name: 'NPC Clan Buff - Super Might Haste', target: 'CLAN', operateType: 'A2', effectType: 'Grow', abnormalType: 'multi_buff', effects: [
 		{ stat: 'pAtk', val: [1.5, 2.0, 3.0], op: 'mul' },
 		{ stat: 'pAtkSpd', val: [1.33, 1.33, 1.5], op: 'mul' } ]},
+	{ id: 5401, levels: 1, name: 'Stun', target: 'AURA', operateType: 'A2', effectType: 'ThrowUp', abnormalType: 'fly_away' },
+	{ id: 5422, levels: 12, name: 'Flame', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'fire_dot', effects: [
+		{ stat: 'mAtk', val: [9.16, 15.36, 27.82, 41.49, 61.66, 84.61, 111.26, 126.31, 142.73, 160.7, 180.46, 201.65], op: 'add' },
+		{ stat: 'runSpd', val: 0.7, op: 'mul' } ]},
+	{ id: 5423, levels: 12, name: 'Poison', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'speed_down', effects: [
+		{ stat: 'runSpd', val: 0.7, op: 'mul' } ]},
+	{ id: 5424, levels: 12, name: 'Bleed', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'bleeding', effects: [
+		{ stat: 'runSpd', val: 0.7, op: 'mul' } ]},
 	{ id: 5425, levels: 1, name: 'Iron Shield', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'iron_shield_i', effects: [
 		{ stat: 'sDef', val: 1.3, op: 'mul' } ]},
 	{ id: 5426, levels: 1, name: 'Counter Chance', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'archer_special', effects: [
@@ -5746,6 +5950,7 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: 1.15, op: 'mul', using: 'Bow,Crossbow' } ]},
 	{ id: 5428, levels: 1, name: 'Counter Dash', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'archer_special_i', effects: [
 		{ stat: 'runSpd', val: 40, op: 'add' } ]},
+	{ id: 5434, levels: 1, name: 'Gust', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 5437, levels: 2, name: 'Dissonance', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtk', val: 0.95, op: 'mul' },
 		{ stat: 'mAtk', val: 0.95, op: 'mul' },
@@ -5754,6 +5959,8 @@ l2.data.skills = [
 		{ stat: 'pDef', val: [0.6, 1], op: 'mul' },
 		{ stat: 'mDef', val: [0.6, 1], op: 'mul' },
 		{ stat: 'rEvas', val: [50, 0], op: 'sub' } ]},
+	{ id: 5443, levels: 4, name: 'Cry of the Wolf', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'pa_down', effects: [
+		{ stat: 'pAtkSpd', val: 0.77, op: 'mul' } ]},
 	{ id: 5445, levels: 1, name: 'Awakening', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pinch', effects: [
 		{ stat: 'pAtk', val: 1.08, op: 'mul' },
 		{ stat: 'pAtkSpd', val: 1.08, op: 'mul' },
@@ -5771,6 +5978,9 @@ l2.data.skills = [
 		{ stat: 'critVuln', val: [1.4, 1.5, 1.6], op: 'mul' } ]},
 	{ id: 5491, levels: 1, name: 'Decrease Bow/Crossbow Atk. Spd.', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtkSpd', val: 0.5, op: 'mul', using: 'Bow,Crossbow' } ]},
+	{ id: 5495, levels: 1, name: 'Bleed', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'bleeding' },
+	{ id: 5498, levels: 1, name: 'Self-Destruct', target: 'AURA', operateType: 'A1', effectType: 'TargetMe' },
+	{ id: 5502, levels: 1, name: 'Stuns', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 5503, levels: 1, name: 'Ultimate Guard', target: 'SELF', operateType: 'A2', effectType: 'ImmobileBuff', abnormalType: 'pd_up_special', effects: [
 		{ stat: 'pDef', val: 1800, op: 'add' },
 		{ stat: 'mDef', val: 1350, op: 'add' },
@@ -5778,6 +5988,14 @@ l2.data.skills = [
 		{ stat: 'regHp', val: 1.8, op: 'mul' } ]},
 	{ id: 5504, levels: 1, name: 'Shield Defense', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'rShld', val: 1.9, op: 'mul' } ]},
+	{ id: 5509, levels: 1, name: 'Fire Power', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'armor_fire', effects: [
+		{ stat: 'fireRes', val: 50, op: 'sub' } ]},
+	{ id: 5510, levels: 1, name: 'Water Power', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'armor_water', effects: [
+		{ stat: 'waterRes', val: 50, op: 'sub' } ]},
+	{ id: 5511, levels: 1, name: 'Wind Power', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'armor_wind', effects: [
+		{ stat: 'windRes', val: 50, op: 'sub' } ]},
+	{ id: 5512, levels: 1, name: 'Earth Power', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'armor_earth', effects: [
+		{ stat: 'earthRes', val: 50, op: 'sub' } ]},
 	{ id: 5517, levels: 1, name: 'Nurture', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'hp_regen_up', effects: [
 		{ stat: 'regHp', val: 10, op: 'mul' } ]},
 	{ id: 5519, levels: 1, name: 'Chain Buff - Power Up', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
@@ -5874,6 +6092,8 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: 1.08, op: 'mul' },
 		{ stat: 'mAtk', val: 1.08, op: 'mul' },
 		{ stat: 'mAtkSpd', val: 1.08, op: 'mul' } ]},
+	{ id: 5583, levels: 1, name: 'Divine Beast Roar', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'pa_down', effects: [
+		{ stat: 'pAtk', val: 0.77, op: 'mul' } ]},
 	{ id: 5586, levels: 3, name: 'Pet Might', target: 'OWNER_PET', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: [1.08, 1.12, 1.15], op: 'mul' } ]},
 	{ id: 5587, levels: 3, name: 'Pet Shield', target: 'OWNER_PET', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up', effects: [
@@ -5994,6 +6214,7 @@ l2.data.skills = [
 		{ stat: 'blowRate', val: 1.1, op: 'mul' } ]},
 	{ id: 5675, levels: 1, name: 'Evasion Haste', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'evasion_buff', effects: [
 		{ stat: 'pAtkSpd', val: 1.15, op: 'mul' } ]},
+	{ id: 5679, levels: 3, name: 'Oblivion Trap', target: 'AURA', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'mirage_trap' },
 	{ id: 5685, levels: 1, name: 'PvP Weapon - Casting', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pvp_weapon_buff', effects: [
 		{ stat: 'mAtkSpd', val: 1.15, op: 'mul' } ]},
 	{ id: 5686, levels: 1, name: 'PvP Weapon - Rapid Fire', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pvp_weapon_buff', effects: [
@@ -6017,9 +6238,13 @@ l2.data.skills = [
 	{ id: 5701, levels: 7, name: 'Decrease P. Atk', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_down', effects: [
 		{ stat: 'pAtk', val: 0.34, op: 'mul' } ]},
 	{ id: 5711, levels: 1, name: 'Power of Rage', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up' },
+	{ id: 5715, levels: 1, name: 'Electric Flame', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'fire_dot', effects: [
+		{ stat: 'runSpd', val: 0.77, op: 'mul' } ]},
 	{ id: 5739, levels: 1, name: 'Invincible', target: 'CLAN', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
 	{ id: 5753, levels: 1, name: 'Awakening', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'public_slot' },
 	{ id: 5771, levels: 1, name: 'Buff Control', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'magical_stance' },
+	{ id: 5831, levels: 1, name: 'Polearm Swing', target: 'AURA', operateType: 'A1', effectType: 'DamOverTime', abnormalType: 'bleeding' },
+	{ id: 5832, levels: 1, name: 'Hate Aura', target: 'AURA', operateType: 'A2', effectType: 'TargetMe', abnormalType: 'lock' },
 	{ id: 5833, levels: 1, name: 'Shield', target: 'CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up', effects: [
 		{ stat: 'pDef', val: 1.15, op: 'mul' } ]},
 	{ id: 5834, levels: 1, name: 'Magic Barrier', target: 'CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'md_up', effects: [
@@ -6028,6 +6253,7 @@ l2.data.skills = [
 	{ id: 5841, levels: 1, name: 'Multi Defense', target: 'CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'instinct', effects: [
 		{ stat: 'pDef', val: 1.15, op: 'mul' },
 		{ stat: 'mDef', val: 1.33, op: 'mul' } ]},
+	{ id: 5843, levels: 1, name: 'Terror', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'turn_flee' },
 	{ id: 5902, levels: 1, name: 'NPC Trigger Target Cancel', target: 'SELF', operateType: 'A1', effectType: 'RemoveTarget' },
 	{ id: 5931, levels: 1, name: 'Ultimate Shield', target: 'SELF', operateType: 'T', effectType: 'Invincible' },
 	{ id: 5950, levels: 1, name: 'Birthday Cake', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'vp_up', effects: [
@@ -6043,6 +6269,7 @@ l2.data.skills = [
 		{ stat: 'rEvas', val: 2, op: 'add', using: 'Light' },
 		{ stat: 'pDef', val: 1.05, op: 'mul', using: 'Magic' },
 		{ stat: 'regMp', val: 2.0, op: 'add', using: 'Magic' } ]},
+	{ id: 5993, levels: 1, name: 'Command of Anger', target: 'AURA', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'oblivion' },
 	{ id: 6034, levels: 1, name: 'Freeze', target: 'ONE', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
 	{ id: 6035, levels: 1, name: 'Red Team Transformation', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform' },
 	{ id: 6036, levels: 1, name: 'Blue Team Transformation', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform' },
@@ -6104,6 +6331,7 @@ l2.data.skills = [
 		{ stat: 'weightLimit', val: 11, op: 'mul' },
 		{ stat: 'weightPenalty', val: 9000, op: 'add' },
 		{ stat: 'inventoryLimit', val: 8, op: 'add' } ]},
+	{ id: 6206, levels: 19, name: 'Strider Fear', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'turn_flee' },
 	{ id: 6207, levels: 1, name: 'Strider Dash', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up_special', effects: [
 		{ stat: 'runSpd', val: 66, op: 'add' } ]},
 	{ id: 6209, levels: 4, name: 'Weapon Grade Penalty', target: 'SELF', operateType: 'P', effects: [
@@ -6118,6 +6346,14 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: [0.8333, 0.6944, 0.5787, 0.4823], op: 'mul' },
 		{ stat: 'mAtkSpd', val: [0.8333, 0.6944, 0.5787, 0.4823], op: 'mul' },
 		{ stat: 'runSpd', val: [0.8333, 0.6944, 0.5787, 0.4823], op: 'mul' } ]},
+	{ id: 6237, levels: 1, name: 'Moving Speed Decrease', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'speed_down', effects: [
+		{ stat: 'runSpd', val: 0.2, op: 'mul' } ]},
+	{ id: 6238, levels: 1, name: 'Moving Speed Decrease', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'speed_down', effects: [
+		{ stat: 'runSpd', val: 0.5, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.5, op: 'mul' },
+		{ stat: 'mAtkSpd', val: 0.5, op: 'mul' } ]},
+	{ id: 6274, levels: 1, name: 'Eternal Blizzard', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
+	{ id: 6275, levels: 1, name: 'Eternal Blizzard', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
 	{ id: 6282, levels: 1, name: 'Reflect Magic', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'reflect_magic_dd', effects: [
 		{ stat: 'vengeanceMdam', val: 20, op: 'add' } ]},
 	{ id: 6284, levels: 1, name: 'Freya\'s Bless', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
@@ -6129,6 +6365,7 @@ l2.data.skills = [
 	{ id: 6286, levels: 1, name: 'Bless of Sword', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up', effects: [
 		{ stat: 'pDef', val: 1.1, op: 'mul' },
 		{ stat: 'regHp', val: 1.15, op: 'mul' } ]},
+	{ id: 6287, levels: 1, name: 'Bless of Sword', target: 'AURA', operateType: 'A1', effectType: 'CpHealPercent' },
 	{ id: 6288, levels: 1, name: 'Jinia\'s Prayer', target: 'AURA', operateType: 'A2', effectType: 'Buff', abnormalType: 'signal_a', effects: [
 		{ stat: 'pDef', val: 4, op: 'mul' },
 		{ stat: 'mDef', val: 4, op: 'mul' } ]},
@@ -6139,6 +6376,9 @@ l2.data.skills = [
 		{ stat: 'mAtkSpd', val: 1.25, op: 'mul' } ]},
 	{ id: 6294, levels: 1, name: 'Leader\'s Roar', target: 'CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: 1.15, op: 'mul' } ]},
+	{ id: 6299, levels: 1, name: 'Breath of Ice Palace - Ice Storm', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
+	{ id: 6300, levels: 1, name: 'Self-Destruction', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
+	{ id: 6301, levels: 2, name: 'Cold Mana\'s Fragment', target: 'AURA', operateType: 'A2', effectType: 'ManaDamOverTime', abnormalType: 'force_meditation' },
 	{ id: 6302, levels: 1, name: 'Cold Air', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up', effects: [
 		{ stat: 'pDef', val: 1.15, op: 'mul' },
 		{ stat: 'mDef', val: 1.15, op: 'mul' } ]},
@@ -6148,6 +6388,9 @@ l2.data.skills = [
 		{ stat: 'pDef', val: 1.1, op: 'mul' } ]},
 	{ id: 6319, levels: 1, name: 'Sacred Magic Protection', target: 'CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'md_up', effects: [
 		{ stat: 'mDef', val: 1.1, op: 'mul' } ]},
+	{ id: 6320, levels: 1, name: 'Summon Sacred Magic Force', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'pd_down', effects: [
+		{ stat: 'pDef', val: 0.77, op: 'mul' },
+		{ stat: 'mDef', val: 0.77, op: 'mul' } ]},
 	{ id: 6343, levels: 2, name: 'Maguen Plasma - Power', target: 'AREA', operateType: 'A2', effectType: 'Buff', abnormalType: 'signal_b', effects: [
 		{ stat: 'mAtk', val: [1.08, 1.15], op: 'mul' },
 		{ stat: 'pAtk', val: [1.02, 1.03], op: 'mul' } ]},
@@ -6159,6 +6402,18 @@ l2.data.skills = [
 		{ stat: 'rCrit', val: [0.04, 0.08], op: 'basemul' },
 		{ stat: 'mCritRate', val: [0.02, 0.04], op: 'basemul' },
 		{ stat: 'cAtk', val: [1.05, 1.1], op: 'mul' } ]},
+	{ id: 6380, levels: 1, name: 'Bistakon Roar', target: 'AURA', operateType: 'A2', effectType: 'Mute', abnormalType: 'silence_all' },
+	{ id: 6382, levels: 1, name: 'Bistakon Rolling Claw', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'bleeding' },
+	{ id: 6387, levels: 1, name: 'Bistakon Earthquake', target: 'AURA', operateType: 'A1', effectType: 'RemoveTarget' },
+	{ id: 6390, levels: 1, name: 'Cokrakon Sonic Explosion', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'casting_time_up', effects: [
+		{ stat: 'mAtkSpd', val: 0.5, op: 'mul' } ]},
+	{ id: 6392, levels: 1, name: 'Cokrakon Sonic Shot', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'attack_time_up', effects: [
+		{ stat: 'pAtkSpd', val: 0.5, op: 'mul' } ]},
+	{ id: 6398, levels: 1, name: 'Cokrakon Sonic Shout', target: 'AURA', operateType: 'A2', effectType: 'Fear', abnormalType: 'turn_flee' },
+	{ id: 6404, levels: 1, name: 'Torumba Poison Swing', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'speed_down', effects: [
+		{ stat: 'runSpd', val: 0.3, op: 'mul' } ]},
+	{ id: 6417, levels: 1, name: 'Reptilikon Poison Shot', target: 'AURA', operateType: 'A2', effectType: 'ManaDamOverTime', abnormalType: 'dot_mp' },
+	{ id: 6418, levels: 1, name: 'Reptilikon Fury Poison Bomb', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'dot_mp' },
 	{ id: 6425, levels: 1, name: 'Demotivation Hex', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_down', effects: [
 		{ stat: 'pDef', val: 0.1, op: 'mul' } ]},
 	{ id: 6429, levels: 1, name: 'Cozy Mucus', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'signal_a', effects: [
@@ -6238,6 +6493,8 @@ l2.data.skills = [
 		{ stat: 'runSpd', val: 45, op: 'add' } ]},
 	{ id: 6687, levels: 1, name: 'Patience', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'patience', effects: [
 		{ stat: 'physicalSkillPower', val: 1.2, op: 'mul' } ]},
+	{ id: 6697, levels: 1, name: 'Eternal Blizzard', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
+	{ id: 6698, levels: 1, name: 'Pillar of Frozen - Eternal Ice', target: 'AURA', operateType: 'A2', effectType: 'Paralyze', abnormalType: 'freezing' },
 	{ id: 6714, levels: 1, name: 'Wind Walk of Elcadia', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up', effects: [
 		{ stat: 'runSpd', val: 33, op: 'add' } ]},
 	{ id: 6715, levels: 1, name: 'Haste of Elcadia', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'attack_time_down', effects: [
@@ -6271,6 +6528,8 @@ l2.data.skills = [
 		{ stat: 'absorbDam', val: 9, op: 'add' } ]},
 	{ id: 6729, levels: 1, name: 'Resist Holy of Elcadia', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'armor_unholy', effects: [
 		{ stat: 'darkRes', val: 30, op: 'add' } ]},
+	{ id: 6732, levels: 1, name: 'Mirage', target: 'AURA', operateType: 'A1', effectType: 'RemoveTarget' },
+	{ id: 6754, levels: 1, name: 'Bleed', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'bleeding' },
 	{ id: 6758, levels: 1, name: 'Rage', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: 1.1, op: 'mul' },
 		{ stat: 'pAtkSpd', val: 1.3, op: 'mul' },
@@ -6286,6 +6545,8 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: 1.3, op: 'mul' },
 		{ stat: 'rCrit', val: 0.3, op: 'basemul' },
 		{ stat: 'cAtk', val: 1.35, op: 'mul' } ]},
+	{ id: 6777, levels: 1, name: 'Bleeding Gash', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'bleeding', effects: [
+		{ stat: 'runSpd', val: 0.8, op: 'mul' } ]},
 	{ id: 6803, levels: 1, name: 'Arena Haste', target: 'ONE', operateType: 'A1', effectType: 'Buff', abnormalType: 'attack_time_down', effects: [
 		{ stat: 'pAtkSpd', val: 1.33, op: 'mul' } ]},
 	{ id: 6804, levels: 1, name: 'Arena Wind Walk', target: 'ONE', operateType: 'A1', effectType: 'Buff', abnormalType: 'speed_up', effects: [
@@ -7055,6 +7316,7 @@ l2.data.skills = [
 		{ stat: 'PhysicalMpConsumeRate', val: [0.96, 0.92], op: 'mul' } ]},
 	{ id: 8324, levels: 1, name: 'Warrior\'s Shirt', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'maxCp', val: 672, op: 'add' } ]},
+	{ id: 8331, levels: 1, name: 'Blue Talisman - Buff Cancel', target: 'AURA', operateType: 'A1', effectType: 'Cancel' },
 	{ id: 8333, levels: 1, name: 'Red Talisman - Territory Guard', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'talisman', effects: [
 		{ stat: 'maxCp', val: 1500, op: 'add' } ]},
 	{ id: 8334, levels: 1, name: 'Blue Talisman - Lord\'s Divine Protection', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'talisman', effects: [

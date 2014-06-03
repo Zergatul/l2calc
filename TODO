@@ -1,7 +1,12 @@
-tyrant - self buffs - only 1 totem
-self buff spirit barrier - with general mdef buff
 ??? add steal buff
-sort dances
+add enchanting for skill, weapons, armor
 clan skills
 CP calc - buffs add
 pdef for first prof without armor - maybe wrong
+storage extend
+
+//pledgeSkillTree
+//subClassSkillTree
+//subPledgeSkillTree
+
+bind self, toggles, passives - similar code

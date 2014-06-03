@@ -2,8 +2,11 @@ window.l2 = window.l2 || {};
 window.l2.ui = window.l2.ui || {};
 window.l2.ui.tools = window.l2.ui.tools || {};
 
-l2.ui.tools.addOption = function (element, value, text) {
-	$(element).append($('<option>').val(value).text(text));
+l2.ui.tools.addOption = function (element, value, text, callback) {
+	var option = $('<option>').val(value).text(text);
+	$(element).append(option);
+	if ($.isFunction(callback))
+		callback(option);
 };
 
 l2.ui.tools.storageChange = function (key) {

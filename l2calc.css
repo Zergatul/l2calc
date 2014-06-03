@@ -113,6 +113,9 @@ select:disabled {
 	margin: 6px 6px 0px 4px;
 	width: 90px;
 }
+.passive-skill > span, .self-skill > span, .toggle-skill > span {
+	padding-left: 4px;
+}
 
 #profession {
 	width: 210px;

@@ -26,27 +26,6 @@ l2.data.tools.getClass = function (id) {
 			return l2.data.classes[i];
 	return null;
 };
-l2.data.tools.getSkillLevels = function (id, classesId) {
-	var skillLevels = [];
-	for (var i = 0; i < l2.data.skillTree.length; i++) {
-		var st = l2.data.skillTree[i];
-		if (classesId.indexOf(st.classId) >= 0 && st.skillId == id)
-			skillLevels.push(st);
-	}
-	skillLevels.sort(function (st1, st2) {
-		return st1.skillLvl - st2.skillLvl;
-	});
-	return skillLevels;
-};
-l2.data.tools.getSkillCurrentLvl = function (id, classesId, lvl) {
-	var currLvl = 0;
-	for (var i = 0; i < l2.data.skillTree.length; i++) {
-		var st = l2.data.skillTree[i];
-		if (classesId.indexOf(st.classId) >= 0 && st.skillId == id && st.minLvl <= lvl)
-			currLvl = st.skillLvl;
-	}
-	return currLvl;
-};
 l2.data.tools.getBaseClasses = function (classId) {
 	var classesId = [];
 	var currClassId = parseInt(classId);
@@ -56,6 +35,12 @@ l2.data.tools.getBaseClasses = function (classId) {
 		currClassId = _class.parent;
 	}
 	return classesId;
+};
+l2.data.tools.getSkillTree = function (classId) {
+	for (var i = 0; i < l2.data.skillTree.length; i++)
+		if (l2.data.skillTree[i].classId == classId)
+			return l2.data.skillTree[i].skills;
+	return null;
 };
 l2.data.tools.isMystic = function (classId) {
 	var base = l2.data.tools.getBaseClasses(classId);

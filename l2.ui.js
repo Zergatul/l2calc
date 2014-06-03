@@ -182,24 +182,31 @@ l2.ui.bindBoots = function () {
 l2.ui.bindPassives = function () {
 	var classId = $('#l2class').val();
 	var lvl = $('#lvl').val();
-	var skills = [];
-	var classesId = l2.data.tools.getBaseClasses(classId);	
-	for (var i = 0; i < l2.data.skillTree.length; i++) {
-		var st = l2.data.skillTree[i];
-		if (classesId.indexOf(st.classId) >= 0)
-			if (skills.indexOf(st.skillId) == -1)
-				skills.push(st.skillId);
-	}
+	var skills = {};
+	var classesId = l2.data.tools.getBaseClasses(classId);
+	classesId.forEach(function (classId) {
+		l2.data.tools.getSkillTree(classId).forEach(function (skill) {
+			if (skills[skill.id])
+				skills[skill.id].push(skill);
+			else
+				skills[skill.id] = [skill];
+		});
+	});
 	$('#passives > div > div.passive-skill').remove();
-	for (var i = 0; i < skills.length; i++) {
-		var skill = l2.data.tools.getSkill(skills[i]);
+	for (var id in skills) {
+		var skill = l2.data.tools.getSkill(id);
+		skills[id].sort(function (s1, s2) {
+			return s1.lvl - s2.lvl;
+		});
 		if (skill && skill.operateType == 'P') {
 			var div = $('<div>').addClass('left passive-skill');
-			var skillLevels = l2.data.tools.getSkillLevels(skill.id, classesId);
-			var select = $('<select>').data('skill-id', skill.id);
+			var select = $('<select>').attr('data-skill-id', skill.id);
+			select.change(l2.ui.recalc);
 			l2.ui.tools.addOption(select, '', '---');
-			for (var j = 0; j < skillLevels.length; j++)
-				l2.ui.tools.addOption(select, skillLevels[j].skillLvl, skillLevels[j].skillLvl + ' [' + skillLevels[j].minLvl + ']');
+			for (var j = 0; j < skills[id].length; j++)
+				l2.ui.tools.addOption(select, skills[id][j].lvl, skills[id][j].lvl + ' [' + skills[id][j].minLvl + ']', function (option) {
+					option.attr('data-min-lvl', skills[id][j].minLvl);
+				});
 			if ($('#auto-select-passives').is(':checked'))
 				select.attr('disabled', 'disabled');
 			div.append(select);
@@ -218,42 +225,62 @@ l2.ui.autoSelectPassives = function () {
 	var lvl = $('#lvl').val();
 	var classesId = l2.data.tools.getBaseClasses(classId);
 	$('#passives select').each(function () {
-		var skillId = $(this).data('skill-id');
-		var skillLevels = l2.data.tools.getSkillLevels(skillId, classesId);
-		var skillLvl = 0;
-		for (var i = 0; i < skillLevels.length; i++)
-			if (skillLevels[i].minLvl <= lvl)
-				skillLvl = skillLevels[i].skillLvl;
-			else
-				break;
-		if (skillLvl == 0)
+		var skillId = parseInt($(this).attr('data-skill-id'));
+		var skillLevel = 0;
+		$(this).children('option').each(function () {
+			var minLvl = $(this).attr('data-min-lvl');
+			if (!minLvl)
+				return;
+			minLvl = parseInt(minLvl);
+			if (minLvl <= lvl)
+				skillLevel = $(this).val();
+		});
+		if (skillLevel == 0)
 			$(this).val('');
 		else
-			$(this).val(skillLvl);
+			$(this).val(skillLevel);
 	})
+};
+
+l2.ui.checkAbnormalType = function () {
+	var select = $(this);
+	var abnormal = select.attr('data-abnormal');
+	$('#selfbuffs > div > div.self-skill > select, #commonbuffs > div > div > div.common-skill > select').each(function () {
+		if (this == select[0])
+			return;
+		if ($(this).attr('data-abnormal') == abnormal && $(this).val() != '')
+			$(this).val('');
+	});
 };
 
 l2.ui.bindSelfBuffs = function () {
 	var classId = $('#l2class').val();
+	var skills = {};
 	var classesId = l2.data.tools.getBaseClasses(classId);
-	var skills = [];
-	for (var i = 0; i < l2.data.skillTree.length; i++) {
-		var st = l2.data.skillTree[i];
-		if (classesId.indexOf(st.classId) >= 0)
-			if (skills.indexOf(st.skillId) == -1)
-				skills.push(st.skillId);
-	}
+	classesId.forEach(function (classId) {
+		l2.data.tools.getSkillTree(classId).forEach(function (skill) {
+			if (skills[skill.id])
+				skills[skill.id].push(skill);
+			else
+				skills[skill.id] = [skill];
+		});
+	});
 	$('#selfbuffs > div > div.self-skill').remove();
-	for (var i = 0; i < skills.length; i++) {
-		var skill = l2.data.tools.getSkill(skills[i]);
-		if (skill && skill.operateType.charAt(0) == 'A' && skill.target == 'SELF') {
+	for (var id in skills) {
+		var skill = l2.data.tools.getSkill(id);
+		skills[id].sort(function (s1, s2) {
+			return s1.lvl - s2.lvl;
+		});
+		if (skill && skill.operateType.charAt(0) == 'A' && (skill.target == 'SELF' || skill.target == 'AURA') && skill.effects && skill.effectType != 'Debuff') {
 			var div = $('<div>').addClass('left self-skill');
-			var skillLevels = l2.data.tools.getSkillLevels(skill.id, classesId);
-			var select = $('<select>').data('skill-id', skill.id);
+			var select = $('<select>');
+			select.attr('data-skill-id', skill.id);
+			select.attr('data-abnormal', skill.abnormalType);
+			select.change(l2.ui.checkAbnormalType);
 			select.change(l2.ui.recalc);
 			l2.ui.tools.addOption(select, '', '---');
-			for (var j = 0; j < skillLevels.length; j++)
-				l2.ui.tools.addOption(select, skillLevels[j].skillLvl, skillLevels[j].skillLvl + ' [' + skillLevels[j].minLvl + ']');
+			for (var j = 0; j < skills[id].length; j++)
+				l2.ui.tools.addOption(select, skills[id][j].lvl, skills[id][j].lvl + ' [' + skills[id][j].minLvl + ']');
 			div.append(select);
 			div.append($('<span>').text(skill.name));
 			$('#selfbuffs > div').append(div);
@@ -263,25 +290,29 @@ l2.ui.bindSelfBuffs = function () {
 
 l2.ui.bindToggles = function () {
 	var classId = $('#l2class').val();
+	var skills = {};
 	var classesId = l2.data.tools.getBaseClasses(classId);
-	var skills = [];
-	for (var i = 0; i < l2.data.skillTree.length; i++) {
-		var st = l2.data.skillTree[i];
-		if (classesId.indexOf(st.classId) >= 0)
-			if (skills.indexOf(st.skillId) == -1)
-				skills.push(st.skillId);
-	}
+	classesId.forEach(function (classId) {
+		l2.data.tools.getSkillTree(classId).forEach(function (skill) {
+			if (skills[skill.id])
+				skills[skill.id].push(skill);
+			else
+				skills[skill.id] = [skill];
+		});
+	});
 	$('#toggles > div > div.toggle-skill').remove();
-	for (var i = 0; i < skills.length; i++) {
-		var skill = l2.data.tools.getSkill(skills[i]);
+	for (var id in skills) {
+		var skill = l2.data.tools.getSkill(id);
+		skills[id].sort(function (s1, s2) {
+			return s1.lvl - s2.lvl;
+		});
 		if (skill && skill.operateType == 'T') {
 			var div = $('<div>').addClass('left toggle-skill');
-			var skillLevels = l2.data.tools.getSkillLevels(skill.id, classesId);
-			var select = $('<select>').data('skill-id', skill.id);
+			var select = $('<select>').attr('data-skill-id', skill.id);
 			select.change(l2.ui.recalc);
 			l2.ui.tools.addOption(select, '', '---');
-			for (var j = 0; j < skillLevels.length; j++)
-				l2.ui.tools.addOption(select, skillLevels[j].skillLvl, skillLevels[j].skillLvl + ' [' + skillLevels[j].minLvl + ']');
+			for (var j = 0; j < skills[id].length; j++)
+				l2.ui.tools.addOption(select, skills[id][j].lvl, skills[id][j].lvl + ' [' + skills[id][j].minLvl + ']');
 			div.append(select);
 			div.append($('<span>').text(skill.name));
 			$('#toggles > div').append(div);
@@ -311,8 +342,10 @@ l2.ui.bindCommonBuffs = function () {
 
 			if (stacks[skill.abnormalType] == undefined) {
 				var div = $('<div>').addClass('left common-skill');
-				var select = $('<select>').data('skill-id', skill.id);
-				select.attr('data-stack', skill.abnormalType);
+				var select = $('<select>');
+				select.attr('data-skill-id', skill.id);
+				select.attr('data-abnormal', skill.abnormalType);
+				select.change(l2.ui.checkAbnormalType);
 				select.change(l2.ui.recalc);
 				l2.ui.tools.addOption(select, '', '---');
 				if (skill.levels > 1)
@@ -340,7 +373,7 @@ l2.ui.bindSongs = function () {
 		var skill = l2.data.tools.getSkill(l2.data.songs[i]);
 		var div = $('<div>').addClass('left song-skill');
 		var label = $('<label>');
-		var input = $('<input>').attr('type', 'checkbox').data('skill-id', skill.id);
+		var input = $('<input>').attr('type', 'checkbox').attr('data-skill-id', skill.id);
 		input.change(l2.ui.recalc);
 		label.append(input);
 		label.append(skill.name);
@@ -354,7 +387,7 @@ l2.ui.bindDances = function () {
 		var skill = l2.data.tools.getSkill(l2.data.dances[i]);
 		var div = $('<div>').addClass('left dance-skill');
 		var label = $('<label>');
-		var input = $('<input>').attr('type', 'checkbox').data('skill-id', skill.id);
+		var input = $('<input>').attr('type', 'checkbox').attr('data-skill-id', skill.id);
 		input.change(l2.ui.recalc);
 		label.append(input);
 		label.append(skill.name);
@@ -439,7 +472,6 @@ l2.ui.restoreFromStorage = function () {
 	l2.ui.canChangeStorage = true;
 };
 
-
 l2.ui.toggleFieldSet = function () {
 	var div = $(this).closest('fieldset').children('div');
 	if ($(this).is(':checked'))
@@ -520,26 +552,26 @@ l2.ui.recalc = function () {
 
 	if (char.bodyUpper)
 		if (char.bodyUpper.bodyPart == 'onepiece')
-			char.armorType = char.bodyUpper.bodyPart;
+			char.armorType = char.bodyUpper.armorType;
 		else
-			if (char.bodyUpper.bodyPart == char.bodyLower.bodyPart)
-				char.armorType = char.bodyUpper.bodyPart;
+			if (char.bodyUpper.armorType == char.bodyLower.armorType)
+				char.armorType = char.bodyUpper.armorType;
 
 	$('#passives > div > div.passive-skill').each(function () {
 		var select = $(this).find('select');
 		if (select.val() != '')
-			char.passives.push({ id: select.data('skill-id'), lvl: parseInt(select.val()) })
+			char.passives.push({ id: parseInt(select.attr('data-skill-id')), lvl: parseInt(select.val()) })
 	});
 
 	$('#selfbuffs > div > div.self-skill').each(function () {
 		var select = $(this).find('select');
 		if (select.val() != '')
-			char.passives.push({ id: select.data('skill-id'), lvl: parseInt(select.val()) })
+			char.passives.push({ id: parseInt(select.attr('data-skill-id')), lvl: parseInt(select.val()) })
 	});
 	$('#toggles > div > div.toggle-skill').each(function () {
 		var select = $(this).find('select');
 		if (select.val() != '')
-			char.passives.push({ id: select.data('skill-id'), lvl: parseInt(select.val()) })
+			char.passives.push({ id: parseInt(select.attr('data-skill-id')), lvl: parseInt(select.val()) })
 	});
 
 	$('#commonbuffs > div > div > div.common-skill').each(function () {
@@ -552,12 +584,12 @@ l2.ui.recalc = function () {
 	$('#songbuffs > div > div.song-skill').each(function () {
 		var input = $(this).find('input');
 		if (input.is(':checked'))
-			char.buffs.push({ id : input.data('skill-id'), lvl: 1 });
+			char.buffs.push({ id : parseInt(input.attr('data-skill-id')), lvl: 1 });
 	});
 	$('#dancebuffs > div > div.dance-skill').each(function () {
 		var input = $(this).find('input');
 		if (input.is(':checked'))
-			char.buffs.push({ id : input.data('skill-id'), lvl: 1 });
+			char.buffs.push({ id : parseInt(input.attr('data-skill-id')), lvl: 1 });
 	});
 
 	l2.ui.checkSet(char);
@@ -610,6 +642,8 @@ l2.ui.recalc = function () {
 		l2.ui.highlightStat(prevStats, char, 'pAtk', $('#patk').next());
 		l2.ui.highlightStat(prevStats, char, 'atkSpeed', $('#atkspd').next());
 		l2.ui.highlightStat(prevStats, char, 'pDPS', $('#pdps').next());
+		l2.ui.highlightStat(prevStats, char, 'mAtk', $('#matk').next());
+		l2.ui.highlightStat(prevStats, char, 'castSpeed', $('#castspd').next());
 	}
 };
 
@@ -697,6 +731,15 @@ $(function () {
 	$('#songbuffs-chb').click(l2.ui.toggleFieldSet);
 	$('#dancebuffs-chb').click(l2.ui.toggleFieldSet);
 	$('#passives-chb').click(l2.ui.toggleFieldSet);
+
+	$('#auto-select-passives').click(function () {
+		if ($(this).is(':checked')) {
+			$('#passives > div > div.passive-skill > select').attr('disabled', true);
+			l2.ui.autoSelectPassives();
+		} else
+			$('#passives > div > div.passive-skill > select').removeAttr('disabled');
+		l2.ui.recalc();
+	});
 
 	$('select[data-storage]').change(l2.ui.onChangeSaveToStorage);
 	$('input[type=checkbox][data-storage]').click(l2.ui.onChangeSaveToStorage);
