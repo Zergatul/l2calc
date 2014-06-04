@@ -419,16 +419,16 @@ l2.data.skills = [
 	{ id: 355, levels: 1, name: 'Focus Death', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'focus_dagger', effects: [
 		{ stat: 'rCrit', val: -0.3, op: 'basemul' },
 		{ stat: 'blowRate', val: 1.6, op: 'mul' },
-		{ stat: 'cAtk', val: 0.7, op: 'mul' },
-		{ stat: 'cAtk', val: 1.9, op: 'mul' } ]},
+		{ stat: 'cAtk', val: 0.7, op: 'mul', atkFrom: 'front' },
+		{ stat: 'cAtk', val: 1.9, op: 'mul', atkFrom: 'behind' } ]},
 	{ id: 356, levels: 1, name: 'Focus Chance', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'focus_dagger', effects: [
-		{ stat: 'rCrit', val: -0.3, op: 'basemul' },
-		{ stat: 'rCrit', val: 0.3, op: 'basemul' },
-		{ stat: 'rCrit', val: 0.6, op: 'basemul' } ]},
+		{ stat: 'rCrit', val: -0.3, op: 'basemul', atkFrom: 'front' },
+		{ stat: 'rCrit', val: 0.3, op: 'basemul', atkFrom: 'side' },
+		{ stat: 'rCrit', val: 0.6, op: 'basemul', atkFrom: 'behind' } ]},
 	{ id: 357, levels: 1, name: 'Focus Power', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'focus_dagger', effects: [
-		{ stat: 'cAtk', val: 0.7, op: 'mul' },
-		{ stat: 'cAtk', val: 1.3, op: 'mul' },
-		{ stat: 'cAtk', val: 1.6, op: 'mul' } ]},
+		{ stat: 'cAtk', val: 0.7, op: 'mul', atkFrom: 'front' },
+		{ stat: 'cAtk', val: 1.3, op: 'mul', atkFrom: 'side' },
+		{ stat: 'cAtk', val: 1.6, op: 'mul', atkFrom: 'behind' } ]},
 	{ id: 359, levels: 1, name: 'Eye of Hunter', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'detect_weakness', effects: [
 		{ stat: 'pAtk-insects', val: 1.3, op: 'mul' },
 		{ stat: 'pAtk-plants', val: 1.3, op: 'mul' },
@@ -1869,8 +1869,8 @@ l2.data.skills = [
 		{ stat: 'rEvas', val: 4, op: 'add' },
 		{ stat: 'pAtkSpd', val: 1.2, op: 'mul' },
 		{ stat: 'absorbDam', val: 5, op: 'add' },
-		{ stat: 'cAtk', val: 1.2, op: 'mul' },
-		{ stat: 'rCrit', val: 0.2, op: 'basemul' },
+		{ stat: 'cAtk', val: 1.2, op: 'mul', atkFrom: 'behind' },
+		{ stat: 'rCrit', val: 0.2, op: 'basemul', atkFrom: 'behind' },
 		{ stat: 'debuffVuln', val: 10, op: 'sub' } ]},
 	{ id: 1352, levels: 1, name: 'Elemental Protection', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'md_up_attr', effects: [
 		{ stat: 'waterRes', val: 20, op: 'add' },
@@ -2690,9 +2690,9 @@ l2.data.skills = [
 		{ stat: 'pvpPhysSkillsDmg', val: [1, 1.05, 1.05], op: 'mul' },
 		{ stat: 'pvpMagicalDmg', val: [1, 1.05, 1.05], op: 'mul' } ]},
 	{ id: 3018, levels: 6, name: 'Special Ability: Back Blow', target: 'SELF', operateType: 'P', effects: [
-		{ stat: 'rCrit', val: [0.71, 0.67, 0.63, 0.6, 0.56, 0.53], op: 'basemul' } ]},
+		{ stat: 'rCrit', val: [0.71, 0.67, 0.63, 0.6, 0.56, 0.53], op: 'basemul', atkFrom: 'behind' } ]},
 	{ id: 3019, levels: 6, name: 'Special Ability: Back Blow', target: 'SELF', operateType: 'P', effects: [
-		{ stat: 'rCrit', val: [0.5, 0.47, 0.45, 0.42, 0.4, 0.37], op: 'basemul' } ]},
+		{ stat: 'rCrit', val: [0.5, 0.47, 0.45, 0.42, 0.4, 0.37], op: 'basemul', atkFrom: 'behind' } ]},
 	{ id: 3023, levels: 6, name: 'Special Ability: Critical Damage', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'cAtkAdd', val: [174.78, 194.1, 213.12, 231.29, 247.98, 262.57], op: 'add' } ]},
 	{ id: 3026, levels: 6, name: 'Special Ability: Critical Anger', target: 'SELF', operateType: 'P', effects: [
@@ -2788,7 +2788,7 @@ l2.data.skills = [
 		{ stat: 'pvpPhysSkillsDmg', val: 1.05, op: 'mul' },
 		{ stat: 'pvpMagicalDmg', val: 1.05, op: 'mul' } ]},
 	{ id: 3063, levels: 2, name: 'Special Ability: Back Blow', target: 'SELF', operateType: 'P', effects: [
-		{ stat: 'rCrit', val: 0.37, op: 'basemul' },
+		{ stat: 'rCrit', val: 0.37, op: 'basemul', atkFrom: 'behind' },
 		{ stat: 'pvpPhysDmg', val: 1.05, op: 'mul' },
 		{ stat: 'pvpPhysSkillsDmg', val: 1.05, op: 'mul' },
 		{ stat: 'pvpMagicalDmg', val: 1.05, op: 'mul' } ]},
@@ -3759,7 +3759,7 @@ l2.data.skills = [
 		{ stat: 'maxCp', val: 1.5, op: 'mul' },
 		{ stat: 'pAtkSpd', val: 1.03, op: 'mul' },
 		{ stat: 'regMp', val: 0.51, op: 'add' },
-		{ stat: 'rCrit', val: 0.22, op: 'basemul' },
+		{ stat: 'rCrit', val: 0.22, op: 'basemul', atkFrom: 'behind' },
 		{ stat: 'pvpPhysDmg', val: 1.1, op: 'mul' },
 		{ stat: 'pvpMagicalDmg', val: 1.1, op: 'mul' },
 		{ stat: 'pvpPhysSkillsDmg', val: 1.1, op: 'mul' },
@@ -5565,7 +5565,7 @@ l2.data.skills = [
 		{ stat: 'dualFistWpnVuln', val: 0, op: 'mul' },
 		{ stat: 'dualWpnVuln', val: 0, op: 'mul' } ]},
 	{ id: 4522, levels: 1, name: 'Eye of Assassin', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'public_slot', effects: [
-		{ stat: 'rCrit', val: 1, op: 'basemul' } ]},
+		{ stat: 'rCrit', val: 1, op: 'basemul', atkFrom: 'behind' } ]},
 	{ id: 4523, levels: 1, name: 'Quest - BOSS Evasion', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'public_slot', effects: [
 		{ stat: 'accCombat', val: 30, op: 'add' } ]},
 	{ id: 4525, levels: 1, name: 'Quest - BOSS Defend', target: 'SELF', operateType: 'T', effectType: 'ManaDamOverTime', effects: [

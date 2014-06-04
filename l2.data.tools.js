@@ -42,6 +42,12 @@ l2.data.tools.getSkillTree = function (classId) {
 			return l2.data.skillTree[i].skills;
 	return null;
 };
+l2.data.tools.getBaseHPCoefs = function (classId) {
+	for (var i = 0; i < l2.data.baseHPCoef.length; i++)
+		if (l2.data.baseHPCoef[i].id == classId)
+			return l2.data.baseHPCoef[i];
+	return null;
+};
 l2.data.tools.isMystic = function (classId) {
 	var base = l2.data.tools.getBaseClasses(classId);
 	var baseClassId = base[base.length - 1];

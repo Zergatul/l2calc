@@ -99,7 +99,7 @@ select:disabled {
 	padding-top: 7px;
 	padding-right: 32px;
 }
-.passive-skill, .song-skill, .dance-skill, .self-skill, .toggle-skill {
+.passive-skill, .song-skill, .dance-skill, .self-skill, .toggle-skill, .trigger-skill {
 	margin: 2px;
 	border: 1px solid #aaaaaa;
 	padding: 1px 4px;
@@ -115,6 +115,9 @@ select:disabled {
 }
 .passive-skill > span, .self-skill > span, .toggle-skill > span {
 	padding-left: 4px;
+}
+.trigger-skill > label {
+	padding-right: 4px;
 }
 
 #profession {
@@ -134,7 +137,7 @@ select:disabled {
 #selfbuffs, #toggles {
 	width: 600px;
 }
-#commonbuffs, #songbuffs, #dancebuffs {
+#commonbuffs, #commontriggers, #songbuffs, #dancebuffs {
 	width: 600px;
 }
 #passives {

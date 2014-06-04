@@ -99,6 +99,16 @@ l2.data.classes = [
 	{ id: 56, parent:  53, subRace: 8, prof: 1, name: 'Artisan' },
 	{ id: 57, parent:  56, subRace: 8, prof: 2, name: 'Warsmith' },
 
+	{ id: 123, parent: null, subRace: 9, prof: 0, name: 'Male Soldier' },
+	{ id: 125, parent: 123, subRace: 9, prof: 1, name: 'Trooper' },
+	{ id: 127, parent: 125, subRace: 9, prof: 2, name: 'Berserker' },
+	{ id: 128, parent: 125, subRace: 9, prof: 2, name: 'Male Soul Breaker' },
+	{ id: 124, parent: null, subRace: 10, prof: 0, name: 'Female Soldier' },
+	{ id: 126, parent: 124, subRace: 10, prof: 1, name: 'Warder' },
+	{ id: 129, parent: 126, subRace: 10, prof: 2, name: 'Female Soul Breaker' },
+	{ id: 130, parent: 126, subRace: 10, prof: 2, name: 'Arbalester' },
+	{ id: 135, parent: 126, subRace: 10, prof: 2, name: 'Inspector' },
+
 	{ id: 88, parent:  2, subRace: 0, prof: 3, name: 'Duelist' },
 	{ id: 89, parent:  3, subRace: 0, prof: 3, name: 'Dreadnought' },
 	{ id: 90, parent:  5, subRace: 0, prof: 3, name: 'PhoenixKnight' },
@@ -129,7 +139,12 @@ l2.data.classes = [
 	{ id: 115, parent:  51, subRace: 7, prof: 3, name: 'Dominator' },
 	{ id: 116, parent:  52, subRace: 7, prof: 3, name: 'Doomcryer' },
 	{ id: 117, parent:  55, subRace: 8, prof: 3, name: 'FortuneSeeker' },
-	{ id: 118, parent:  57, subRace: 8, prof: 3, name: 'Maestro' }
+	{ id: 118, parent:  57, subRace: 8, prof: 3, name: 'Maestro' },
+	{ id: 131, parent: 127, subRace: 9, prof: 3, name: 'Doombringer' },
+	{ id: 132, parent: 128, subRace: 9, prof: 3, name: 'Male Soul Hound' },
+	{ id: 133, parent: 129, subRace: 10, prof: 3, name: 'Female Soul Hound' },
+	{ id: 134, parent: 130, subRace: 10, prof: 3, name: 'Trickster' },
+	{ id: 136, parent: 135, subRace: 10, prof: 3, name: 'Judicator' },
 ];
 
 l2.data.statBonus = {
@@ -169,7 +184,7 @@ l2.data.weaponTypes = [
 	{ name: '2H Blunt', code: 'bigblunt' },
 	{ name: 'Bow', code: 'bow' },
 	{ name: 'Crossbow', code: 'crossbow' },
-	{ name: 'Ancient', code: 'ancient' }
+	{ name: 'Ancient', code: 'ancient' },
 ];
 
 l2.data.weaponBaseData = [
@@ -182,7 +197,9 @@ l2.data.weaponBaseData = [
 	{ name: 'fist', baseCritical: 40, baseAtkSpeed: 325 },
 	{ name: 'dualfist', baseCritical: 40, baseAtkSpeed: 325 },
 	{ name: 'dagger', baseCritical: 120, baseAtkSpeed: 433 },
-	{ name: 'bow', baseCritical: 120, baseAtkSpeed: 293 }	
+	{ name: 'bow', baseCritical: 120, baseAtkSpeed: 293 },
+	{ name: 'crossbow', baseCritical: 100, baseAtkSpeed: 1 },
+	{ name: 'etc', baseCritical: 40, baseAtkSpeed: 379 },
 ];
 
 l2.data.baseHPCoef = [
@@ -248,6 +265,16 @@ l2.data.baseHPCoef = [
 	{ id: 55, a: -816.4, b: 39.38, c: 0.22, cpMod: 0.7, name: 'Bounty Hunter' },
 	{ id: 56, a: -251, b: 26.85, c: 0.15, cpMod: 0.8, name: 'Artisan' },
 	{ id: 57, a: -776.6, b: 37.59, c: 0.21, cpMod: 0.8, name: 'Warsmith' },
+
+	{ id: 123, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Male Soldier' },
+	{ id: 125, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Trooper' },
+	{ id: 127, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Berserker' },
+	{ id: 128, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Male Soul Breaker' },
+	{ id: 124, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Female Soldier' },
+	{ id: 126, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Warder' },
+	{ id: 129, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Female Soul Breaker' },
+	{ id: 130, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Arbalester' },
+	{ id: 135, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Inspector' },
 ];
 
 l2.data.accuracyFix = Array.apply(null, new Array(70)).map(Number.prototype.valueOf, 0).concat(
@@ -255,6 +282,7 @@ l2.data.accuracyFix = Array.apply(null, new Array(70)).map(Number.prototype.valu
 
 l2.data.songs = [269, 267, 268, 270, 265, 264, 266, 306, 304, 308, 305, 764, 349, 363, 364, 529, 914];
 l2.data.dances = [274, 277, 272, 273, 276, 271, 275, 309, 311, 307, 310, 765, 366, 365, 530, 915];
+
 l2.data.commonBuffs = [
 	{ group: 'P. Atk/Def', ids: [
 		1068, // Might
@@ -343,3 +371,5 @@ l2.data.commonBuffs = [
 		714, // summoner
 	]},
 ];
+
+l2.data.commonTriggers = [6059, 6060];
