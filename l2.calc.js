@@ -110,10 +110,12 @@ l2.calc.pDef = function (char) {
 		armorPdef += char.bodyUpper.pDef;
 	else
 		armorPdef += (l2.data.tools.isMystic(char.$class.id) ? 15 : 31);
-	if (char.bodyLower)
-		armorPdef += char.bodyLower.pDef;
-	else
-		armorPdef += (l2.data.tools.isMystic(char.$class.id) ? 8 : 18);
+	if (char.bodyUpper == null || char.bodyUpper.bodyPart != 'onepiece') {
+		if (char.bodyLower)
+			armorPdef += char.bodyLower.pDef;
+		else
+			armorPdef += (l2.data.tools.isMystic(char.$class.id) ? 8 : 18);
+	}
 	if (char.gloves)
 		armorPdef += char.gloves.pDef;
 	else
@@ -157,7 +159,7 @@ l2.calc.pCritical = function (char) {
 		if (op == 'add') { addCritial += val; return; }
 		throw 'not implemented';
 	});
-	return Math.min(Math.floor(baseCritial + addCritial), 500);
+	return Math.min(Math.round(baseCritial + addCritial), 500);
 };
 
 l2.calc.pCritMultiplier = function (char) {
