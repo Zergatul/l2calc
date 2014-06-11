@@ -135,7 +135,10 @@ l2.ui.bindHelmets = function () {
 	l2.ui.tools.addOption('#helmet', '', 'Unequipped');
 	var helmets = l2.data.tools.findHelmets(grade);
 	$.each(helmets, function () {
-		l2.ui.tools.addOption('#helmet', this.id, this.name);
+		if (this.skill)
+			l2.ui.tools.addOption('#helmet', this.id, '[Rare] ' + this.name);
+		else
+			l2.ui.tools.addOption('#helmet', this.id, this.name);
 	});
 };
 
@@ -345,6 +348,7 @@ l2.ui.bindCommonBuffs = function () {
 				var select = $('<select>');
 				select.attr('data-skill-id', skill.id);
 				select.attr('data-abnormal', skill.abnormalType);
+				select.attr('data-storage', 'selfbuff-' + skill.id);
 				select.change(l2.ui.checkAbnormalType);
 				select.change(l2.ui.recalc);
 				l2.ui.tools.addOption(select, '', '---');
@@ -435,7 +439,7 @@ l2.ui.restoreSingleItem = function (element) {
 		if (localStorage[$(element).attr('data-storage')] == '1')
 			$(element).prop('checked', true);
 		else
-			$(element).removeProp('checked');
+			$(element).prop('checked', false);
 };
 
 l2.ui.onChangeSaveToStorage = function () {
@@ -471,6 +475,7 @@ l2.ui.restoreFromStorage = function () {
 	l2.ui.restoreSingleItem('#shield');
 
 	l2.ui.restoreSingleItem('#set-grade');
+	l2.ui.bindSets();
 
 	l2.ui.restoreSingleItem('#helmet-grade');
 	l2.ui.bindHelmets();
@@ -492,18 +497,75 @@ l2.ui.restoreFromStorage = function () {
 	l2.ui.bindBoots();
 	l2.ui.restoreSingleItem('#boots');
 
+	$('#commonbuffs > div > div > div.common-skill > select').each(function () {
+		l2.ui.restoreSingleItem(this);
+	});
+
 	l2.ui.recalc();
 
 	l2.ui.canChangeStorage = true;
 };
 
+l2.ui.saveAllToStorage = function () {
+	$('select[data-storage], input[type=checkbox][data-storage]').each(l2.ui.onChangeSaveToStorage);
+};
+
 l2.ui.toggleFieldSet = function () {
 	var div = $(this).closest('fieldset').children('div');
+	var btn = $(this).closest('label').next('span');
 	if ($(this).is(':checked'))
-		div.show();
+		div.add(btn).show();
 	else
-		div.hide();
+		div.add(btn).hide();
 };
+
+l2.ui.clearEquipment = function () {
+	$('#weapon').val('');
+	$('#shield').val('');
+	$('#set').val('');
+	$('#helmet').val('');
+	$('#body-upper').val('');
+	$('#body-lower').val('');
+	$('#gloves').val('');
+	$('#boots').val('');
+	l2.ui.recalc();
+};
+
+l2.ui.clearSelfBuffs = function () {
+	$('#selfbuffs > div > div.self-skill > select').val('');
+	l2.ui.saveAllToStorage();
+	l2.ui.recalc();
+};
+
+l2.ui.clearToggles = function () {
+	$('#toggles > div > div.toggle-skill > select').val('');
+	l2.ui.saveAllToStorage();
+	l2.ui.recalc();
+};
+
+l2.ui.clearCommonBuffs = function () {
+	$('#commonbuffs > div > div > div.common-skill > select').val('');
+	l2.ui.saveAllToStorage();
+	l2.ui.recalc();
+};
+
+l2.ui.clearCommonTriggers = function () {
+	$('#commontriggers > div > div.trigger-skill > label > input').prop('checked', false);
+	l2.ui.saveAllToStorage();
+	l2.ui.recalc();
+};
+
+l2.ui.clearSongs = function () {
+	$('#songbuffs > div > div.song-skill > label > input').prop('checked', false);
+	l2.ui.saveAllToStorage();
+	l2.ui.recalc();
+};
+
+l2.ui.clearDances = function () {
+	$('#dancebuffs > div > div.dance-skill > label > input').prop('checked', false);
+	l2.ui.saveAllToStorage();
+	l2.ui.recalc();
+}
 
 l2.ui.formatPercent = function (val) {
 	if (val >= 10)
@@ -532,6 +594,15 @@ l2.ui.highlightStat = function (oldStats, newStats, key, div) {
 	div.css({ opacity: 1 }).stop().animate({ opacity: 0 }, 3000);
 };
 
+l2.ui.parseSkills = function (array, str) {
+	if (!str)
+		return;
+	str.split(';').forEach(function (s) {
+		var ss = s.split('-');
+		array.push({ id: parseInt(ss[0]), lvl: parseInt(ss[1]) });
+	})
+};
+
 l2.ui.recalc = function () {
 	var classId = parseInt($('#l2class').val());
 	if (isNaN(classId))
@@ -553,28 +624,32 @@ l2.ui.recalc = function () {
 	};
 	char.lm = (char.lvl + 89) / 100;
 
-	if ($('#weapon').val() != '')
+	if ($('#weapon').val()) {
 		char.weapon = l2.data.tools.getItem($('#weapon').val());
-	else
+		l2.ui.parseSkills(char.passives, char.weapon.skill);
+	} else
 		char.weapon = null;
-	if (char.weapon && char.weapon.skill != null) {
-		var skills = char.weapon.skill.split(';');
-		skills.forEach(function (str) {
-			var ss = str.split('-');
-			char.passives.push({ id: parseInt(ss[0]), lvl: parseInt(ss[1]) });
-		});
-	}
 
-	if ($('#helmet').val() != '')
+	if ($('#helmet').val()) {
 		char.helmet = l2.data.tools.getItem($('#helmet').val());
-	if ($('#body-upper').val() != '')
+		l2.ui.parseSkills(char.passives, char.helmet.skill);
+	}
+	if ($('#body-upper').val()) {
 		char.bodyUpper = l2.data.tools.getItem($('#body-upper').val());
-	if ($('#body-lower').val() != '')
+		l2.ui.parseSkills(char.passives, char.bodyUpper.skill);
+	}
+	if ($('#body-lower').val()) {
 		char.bodyLower = l2.data.tools.getItem($('#body-lower').val());
-	if ($('#gloves').val() != '')
+		l2.ui.parseSkills(char.passives, char.bodyLower.skill);
+	}
+	if ($('#gloves').val()) {
 		char.gloves = l2.data.tools.getItem($('#gloves').val());
-	if ($('#boots').val() != '')
+		l2.ui.parseSkills(char.passives, char.gloves.skill);
+	}
+	if ($('#boots').val()) {
 		char.boots = l2.data.tools.getItem($('#boots').val());
+		l2.ui.parseSkills(char.passives, char.boots.skill);
+	}
 
 	if (char.bodyUpper)
 		if (char.bodyUpper.bodyPart == 'onepiece')
@@ -774,6 +849,14 @@ $(function () {
 	$('#passives-chb').click(l2.ui.toggleFieldSet);
 	$('#commontriggers-chb').click(l2.ui.toggleFieldSet);
 
+	$('#equipment span.clear-btn').click(l2.ui.clearEquipment);
+	$('#selfbuffs span.clear-btn').click(l2.ui.clearSelfBuffs);
+	$('#toggles span.clear-btn').click(l2.ui.clearToggles);
+	$('#commonbuffs span.clear-btn').click(l2.ui.clearCommonBuffs);
+	$('#commontriggers span.clear-btn').click(l2.ui.clearCommonTriggers);
+	$('#songbuffs span.clear-btn').click(l2.ui.clearSongs);
+	$('#dancebuffs span.clear-btn').click(l2.ui.clearDances);
+
 	$('#auto-select-passives').click(function () {
 		if ($(this).is(':checked')) {
 			$('#passives > div > div.passive-skill > select').attr('disabled', true);
@@ -786,9 +869,9 @@ $(function () {
 	$('select[data-storage]').change(l2.ui.onChangeSaveToStorage);
 	$('input[type=checkbox][data-storage]').click(l2.ui.onChangeSaveToStorage);
 
-	if (localStorage.length == 0) {
-		$('select[data-storage], input[type=checkbox][data-storage]').each(l2.ui.onChangeSaveToStorage);
-	} else
+	if (localStorage.length == 0)
+		l2.ui.saveAllToStorage();
+	else
 		l2.ui.restoreFromStorage();
 
 	l2.ui.canShowDelta = true;

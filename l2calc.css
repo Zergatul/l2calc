@@ -1,10 +1,19 @@
 fieldset {
 	font-family: Tahoma;
 	font-size: 12px;
+	border: 2px #666666 solid;
+	border-radius: 8px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+	margin: 3px;
+	background-color: #E5FFE9;
 }
 legend {
 	font-family: Tahoma;
 	font-size: 12px;
+	font-weight: bold;
+	border: 2px #666666 solid;
+	padding: 3px;
+	background-color: #eeddcc;
 }
 select {
 	border: 1px #555555 solid;
@@ -18,6 +27,53 @@ select:disabled {
 }
 .left {
 	float: left;
+}
+
+.clear-btn {
+	-moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
+	box-shadow:inset 0px 1px 0px 0px #dcecfb;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #bddbfa), color-stop(1, #80b5ea) );
+	background:-moz-linear-gradient( center top, #bddbfa 5%, #80b5ea 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bddbfa', endColorstr='#80b5ea');
+	background-color:#bddbfa;
+	-webkit-border-top-left-radius:0px;
+	-moz-border-radius-topleft:0px;
+	border-top-left-radius:0px;
+	-webkit-border-top-right-radius:0px;
+	-moz-border-radius-topright:0px;
+	border-top-right-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-moz-border-radius-bottomright:0px;
+	border-bottom-right-radius:0px;
+	-webkit-border-bottom-left-radius:0px;
+	-moz-border-radius-bottomleft:0px;
+	border-bottom-left-radius:0px;
+	text-indent:0px;
+	border:1px solid #84bbf3;
+	display:inline-block;
+	color:#ffffff;
+	font-family:Verdana;
+	font-size:12px;
+	font-weight:normal;
+	font-style:normal;
+	height:16px;
+	line-height:16px;
+	width:60px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #528ecc;
+	cursor: pointer;
+}
+.clear-btn:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #80b5ea), color-stop(1, #bddbfa) );
+	background:-moz-linear-gradient( center top, #80b5ea 5%, #bddbfa 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#80b5ea', endColorstr='#bddbfa');
+	background-color:#80b5ea;
+}
+.clear-btn:active {
+	position:relative;
+	top:1px;
 }
 
 .prof-header {
@@ -103,11 +159,13 @@ select:disabled {
 	margin: 2px;
 	border: 1px solid #aaaaaa;
 	padding: 1px 4px;
+	background-color: #D1F0FF;
 }
 .common-skill-group {
 	border: 1px solid #aaaaaa;
 	padding: 2px;
 	margin-bottom: 2px;
+	background-color: #D1F0FF;
 }
 .common-skill-group-header {
 	margin: 6px 6px 0px 4px;
@@ -130,6 +188,7 @@ select:disabled {
 }
 #stats {
 	width: 400px;
+	float: left;
 }
 #equipment {
 	width: 800px;
