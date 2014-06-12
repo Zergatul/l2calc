@@ -68,7 +68,7 @@ l2.data.skills = [
 	{ id: 116, levels: 14, name: 'Howl', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'pa_down', effects: [
 		{ stat: 'pAtk', val: 0.77, op: 'mul' } ]},
 	{ id: 118, levels: 1, name: 'Magician\'s Movement', target: 'SELF', operateType: 'P', effects: [
-		{ stat: 'pAtkSpd', val: 0.8, op: 'mul' } ]},
+		{ stat: 'pAtkSpd', val: 0.8, op: 'mul', using: 'not(Magic)' } ]},
 	{ id: 121, levels: 6, name: 'Battle Roar', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'max_hp_up', effects: [
 		{ stat: 'maxHp', val: [1.1, 1.15, 1.2, 1.25, 1.3, 1.35], op: 'mul' } ]},
 	{ id: 123, levels: 3, name: 'Spirit Barrier', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'md_up', effects: [
@@ -111,7 +111,7 @@ l2.data.skills = [
 		{ stat: 'sDef', val: [1.3, 1.4, 1.5, 1.6], op: 'mul' },
 		{ stat: 'pDef', val: [1, 1, 1.1, 1.1], op: 'mul', using: 'Heavy' } ]},
 	{ id: 163, levels: 1, name: 'Spellcraft', target: 'SELF', operateType: 'P', effects: [
-		{ stat: 'mAtkSpd', val: 0.5, op: 'mul' } ]},
+		{ stat: 'mAtkSpd', val: 0.5, op: 'mul', using: 'not(Magic)' } ]},
 	{ id: 164, levels: 3, name: 'Quick Recycle', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'mReuse', val: [0.9, 0.85, 0.8], op: 'mul' } ]},
 	{ id: 168, levels: 3, name: 'Boost Attack Speed', target: 'SELF', operateType: 'P', effects: [

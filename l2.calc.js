@@ -37,6 +37,7 @@ l2.calc.checkUsing = function (char, using) {
 		case 'Light': return char.armorType == 'light';
 		case 'Heavy': return char.armorType == 'heavy';
 		case 'Magic': return char.armorType == 'magic';
+		case 'not(Magic)': return char.armorType != 'magic';
 		case 'Sigil': return false;
 		default: throw 'Using [' + using + '] not implemented';
 	}

@@ -6,9 +6,6 @@ l2.data.tools.getSkill(4700).levels = 3; // Gift of Queen
 l2.data.tools.getSkill(4702).levels = 3; // Blessing of Seraphim
 l2.data.tools.getSkill(4703).levels = 3; // Gift of Seraphim
 
-l2.data.tools.getSkill(118).effects[0].val = 1; // Magican's Movement
-l2.data.tools.getSkill(163).effects[0].val = 1; // Spellcraft
-
 // Sword/Blunt Weapon Mastery
 l2.data.tools.getSkill(205).effects.push({
 	op: 'add',
