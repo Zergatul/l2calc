@@ -247,12 +247,17 @@ l2.ui.autoSelectPassives = function () {
 
 l2.ui.checkAbnormalType = function () {
 	var select = $(this);
+	if (select.val() == '')
+		return;
 	var abnormal = select.attr('data-abnormal');
 	$('#selfbuffs > div > div.self-skill > select, #commonbuffs > div > div > div.common-skill > select').each(function () {
 		if (this == select[0])
 			return;
-		if ($(this).attr('data-abnormal') == abnormal && $(this).val() != '')
+		if ($(this).attr('data-abnormal') == abnormal && $(this).val() != '') {
 			$(this).val('');
+			if ($(this).attr('data-storage'))
+				l2.ui.onChangeSaveToStorage.call(this);
+		}
 	});
 };
 
@@ -279,7 +284,9 @@ l2.ui.bindSelfBuffs = function () {
 			var select = $('<select>');
 			select.attr('data-skill-id', skill.id);
 			select.attr('data-abnormal', skill.abnormalType);
+			select.attr('data-storage', 'self-' + skill.id);
 			select.change(l2.ui.checkAbnormalType);
+			select.change(l2.ui.onChangeSaveToStorage);
 			select.change(l2.ui.recalc);
 			l2.ui.tools.addOption(select, '', '---');
 			for (var j = 0; j < skills[id].length; j++)
@@ -312,6 +319,8 @@ l2.ui.bindToggles = function () {
 		if (skill && skill.operateType == 'T') {
 			var div = $('<div>').addClass('left toggle-skill');
 			var select = $('<select>').attr('data-skill-id', skill.id);
+			select.attr('data-storage', 'toggle-' + skill.id);
+			select.change(l2.ui.onChangeSaveToStorage);
 			select.change(l2.ui.recalc);
 			l2.ui.tools.addOption(select, '', '---');
 			for (var j = 0; j < skills[id].length; j++)
@@ -398,7 +407,9 @@ l2.ui.bindSongs = function () {
 		var skill = l2.data.tools.getSkill(l2.data.songs[i]);
 		var div = $('<div>').addClass('left song-skill');
 		var label = $('<label>');
-		var input = $('<input>').attr('type', 'checkbox').attr('data-skill-id', skill.id);
+		var input = $('<input>').attr('type', 'checkbox')
+			.attr('data-skill-id', skill.id)
+			.attr('data-storage', 'song-' + skill.id);
 		input.change(l2.ui.recalc);
 		label.append(input);
 		label.append(skill.name);
@@ -412,7 +423,9 @@ l2.ui.bindDances = function () {
 		var skill = l2.data.tools.getSkill(l2.data.dances[i]);
 		var div = $('<div>').addClass('left dance-skill');
 		var label = $('<label>');
-		var input = $('<input>').attr('type', 'checkbox').attr('data-skill-id', skill.id);
+		var input = $('<input>').attr('type', 'checkbox')
+			.attr('data-skill-id', skill.id)
+			.attr('data-storage', 'dance-' + skill.id);
 		input.change(l2.ui.recalc);
 		label.append(input);
 		label.append(skill.name);
@@ -500,6 +513,19 @@ l2.ui.restoreFromStorage = function () {
 	$('#commonbuffs > div > div > div.common-skill > select').each(function () {
 		l2.ui.restoreSingleItem(this);
 	});
+	$('#songbuffs > div > div.song-skill > label > input').each(function () {
+		l2.ui.restoreSingleItem(this);
+	});
+	$('#dancebuffs > div > div.dance-skill > label > input').each(function () {
+		l2.ui.restoreSingleItem(this);
+	});
+
+	$('#selfbuffs > div > div.self-skill > select').each(function () {
+		l2.ui.restoreSingleItem(this);
+	});
+	$('#toggles > div > div.toggle-skill > select').each(function () {
+		l2.ui.restoreSingleItem(this);
+	});
 
 	l2.ui.recalc();
 
@@ -528,6 +554,7 @@ l2.ui.clearEquipment = function () {
 	$('#body-lower').val('');
 	$('#gloves').val('');
 	$('#boots').val('');
+	l2.ui.saveAllToStorage();
 	l2.ui.recalc();
 };
 
