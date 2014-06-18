@@ -17,7 +17,7 @@ legend {
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 }
-select {
+select, input {
 	border: 1px #555555 solid;
 }
 select:disabled {
@@ -144,18 +144,16 @@ select:disabled {
 	text-align: left;
 	padding-top: 7px;
 }
-.eq-grade {
-	padding-top: 7px;
-	padding-right: 4px;
-}
-.eq-type {
-	padding-top: 7px;
-	padding-right: 4px;
-	padding-left: 8px;
-}
 .eq-set-header {
 	padding-top: 7px;
 	padding-right: 32px;
+}
+.eq-enchant {
+	margin-left: 4px;
+}
+.eq-enchant > input {
+	width: 36px;
+	padding-left: 2px;
 }
 .passive-skill, .song-skill, .dance-skill, .self-skill, .toggle-skill, .trigger-skill {
 	margin: 2px;

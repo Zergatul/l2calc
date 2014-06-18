@@ -9,12 +9,6 @@ l2.ui.tools.addOption = function (element, value, text, callback) {
 		callback(option);
 };
 
-l2.ui.tools.storageChange = function (key) {
-	return function () {
-		localStorage[key] = $(this).val();
-	};
-};
-
 l2.ui.tools.formatNumber = function (number) {
 	var str = number.toString();
 	while (true) {

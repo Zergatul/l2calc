@@ -167,11 +167,12 @@
 		</legend>
 		<div>
 			<div class="left eq-header">Weapon</div>
-			<div class="left eq-grade">Grade</div>
 			<div class="left">
 				<select id="weapon-grade" class="grade" data-storage="weaponGrade"></select>
 			</div>
-			<div class="left eq-type">Type</div>
+			<div class="left eq-enchant">
+				+ <input type="number" min="0" id="weapon-ench" data-storage="weaponEnch" />
+			</div>
 			<div class="left">
 				<select id="weapon-type" data-storage="weaponType"></select>
 			</div>
@@ -180,9 +181,11 @@
 			</div>
 			<div class="clear"></div>
 			<div class="left eq-header">Shield</div>
-			<div class="left eq-grade">Grade</div>
 			<div class="left">
 				<select id="shield-grade" class="grade" data-storage="shieldGrade"></select>
+			</div>
+			<div class="left eq-enchant">
+				+ <input type="number" min="0" id="shield-ench" data-storage="shieldEnch" />
 			</div>
 			<div class="left">
 				<select id="shield" data-storage="shieldId"></select>
@@ -190,7 +193,6 @@
 			<div class="clear"></div>
 			<hr />
 			<div class="left eq-set-header">Quick select armor set</div>
-			<div class="left eq-grade">Grade</div>
 			<div class="left">
 				<select id="set-grade" class="grade" data-storage="set-grade"></select>
 			</div>
@@ -201,9 +203,11 @@
 			<hr />
 
 			<div class="left eq-header">Helmet</div>
-			<div class="left eq-grade">Grade</div>
 			<div class="left">
 				<select id="helmet-grade" class="grade" data-storage="helmetGrade"></select>
+			</div>
+			<div class="left eq-enchant">
+				+ <input type="number" min="0" id="helmet-ench" data-storage="helmetEnch" />
 			</div>
 			<div class="left">
 				<select id="helmet" data-storage="helmetId"></select>
@@ -211,9 +215,11 @@
 			<div class="clear"></div>
 
 			<div class="left eq-header">Body Upper</div>
-			<div class="left eq-grade">Grade</div>
 			<div class="left">
 				<select id="body-upper-grade" class="grade" data-storage="bodyUpperGrade"></select>
+			</div>
+			<div class="left eq-enchant">
+				+ <input type="number" min="0" id="body-upper-ench" data-storage="bodyUpperEnch" />
 			</div>
 			<div class="left">
 				<select id="body-upper" data-storage="bodyUpperId"></select>
@@ -221,9 +227,11 @@
 			<div class="clear"></div>
 
 			<div class="left eq-header">Body Lower</div>
-			<div class="left eq-grade">Grade</div>
 			<div class="left">
 				<select id="body-lower-grade" class="grade" data-storage="bodyLowerGrade"></select>
+			</div>
+			<div class="left eq-enchant">
+				+ <input type="number" min="0" id="body-lower-ench" data-storage="bodyLowerEnch" />
 			</div>
 			<div class="left">
 				<select id="body-lower" data-storage="bodyLowerId"></select>
@@ -231,9 +239,11 @@
 			<div class="clear"></div>
 
 			<div class="left eq-header">Gloves</div>
-			<div class="left eq-grade">Grade</div>
 			<div class="left">
 				<select id="gloves-grade" class="grade" data-storage="glovesGrade">></select>
+			</div>
+			<div class="left eq-enchant">
+				+ <input type="number" min="0" id="gloves-ench" data-storage="glovesEnch" />
 			</div>
 			<div class="left">
 				<select id="gloves" data-storage="glovesId"></select>
@@ -241,9 +251,11 @@
 			<div class="clear"></div>
 
 			<div class="left eq-header">Boots</div>
-			<div class="left eq-grade">Grade</div>
 			<div class="left">
 				<select id="boots-grade" class="grade" data-storage="bootsGrade">></select>
+			</div>
+			<div class="left eq-enchant">
+				+ <input type="number" min="0" id="boots-ench" data-storage="bootsEnch" />
 			</div>
 			<div class="left">
 				<select id="boots" data-storage="bootsId"></select>

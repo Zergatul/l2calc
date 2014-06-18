@@ -11,27 +11,27 @@ l2.data.races = [
 ];
 
 l2.data.subRace = [
-	{ id:  0, race: 0, name: 'Human Fighter', stats: {
+	{ id:  0, race: 0, name: 'Human Fighter', fighter: 1, stats: {
 		int: 21, str: 40, con: 43, men: 25, dex: 30, wit: 11 }},
-	{ id:  1, race: 0, name: 'Human Mystic', stats: {
+	{ id:  1, race: 0, name: 'Human Mystic', mystic: 1, stats: {
 		int: 41, str: 22, con: 27, men: 39, dex: 21, wit: 20 }},
-	{ id:  2, race: 1, name: 'Elven Fighter', stats: {
+	{ id:  2, race: 1, name: 'Elven Fighter', fighter: 1, stats: {
 		int: 23, str: 36, con: 36, men: 26, dex: 35, wit: 14 }},
-	{ id:  3, race: 1, name: 'Elven Mystic', stats: {
+	{ id:  3, race: 1, name: 'Elven Mystic', mystic: 1, stats: {
 		int: 37, str: 21, con: 25, men: 40, dex: 24, wit: 23 }},
-	{ id:  4, race: 2, name: 'Dark Elven Fighter', stats: {
+	{ id:  4, race: 2, name: 'Dark Elven Fighter', fighter: 1, stats: {
 		int: 25, str: 41, con: 32, men: 26, dex: 34, wit: 12 }},
-	{ id:  5, race: 2, name: 'Dark Elven Mystic', stats: {
+	{ id:  5, race: 2, name: 'Dark Elven Mystic', mystic: 1, stats: {
 		int: 44, str: 23, con: 24, men: 37, dex: 23, wit: 19 }},
-	{ id:  6, race: 3, name: 'Orc Fighter', stats: {
+	{ id:  6, race: 3, name: 'Orc Fighter', fighter: 1, stats: {
 		int: 18, str: 40, con: 47, men: 27, dex: 26, wit: 12 }},
-	{ id:  7, race: 3, name: 'Orc Mystic', stats: {
+	{ id:  7, race: 3, name: 'Orc Mystic', mystic: 1, stats: {
 		int: 31, str: 27, con: 31, men: 42, dex: 24, wit: 15 }},
-	{ id:  8, race: 4, name: 'Dwarven Fighter', stats: {
+	{ id:  8, race: 4, name: 'Dwarven Fighter', fighter: 1, stats: {
 		int: 20, str: 39, con: 45, men: 27, dex: 29, wit: 10 }},
-	{ id:  9, race: 5, name: 'Kamael Male Fighter', stats: {
+	{ id:  9, race: 5, name: 'Kamael Male Fighter', fighter: 1, stats: {
 		int: 29, str: 41, con: 31, men: 25, dex: 33, wit: 11 }},
-	{ id: 10, race: 5, name: 'Kamael Female Fighter', stats: {
+	{ id: 10, race: 5, name: 'Kamael Female Fighter', fighter: 1, stats: {
 		int: 28, str: 39, con: 30, men: 27, dex: 35, wit: 11 }}
 ];
 
@@ -201,6 +201,16 @@ l2.data.weaponBaseData = [
 	{ name: 'crossbow', baseCritical: 100, baseAtkSpeed: 1 },
 	{ name: 'etc', baseCritical: 40, baseAtkSpeed: 379 },
 ];
+
+l2.data.weaponEnchant = {
+	'd': { bow: 4, twoHand: 2, oneHand: 2, mAtk: 2 },
+	'c': { bow: 6, twoHand: 4, oneHand: 3, mAtk: 3 },
+	'b': { bow: 6, twoHand: 4, oneHand: 3, mAtk: 3 },
+	'a': { bow: 8, twoHand: 5, oneHand: 4, mAtk: 3 },
+	's': { bow: 10, twoHand: 6, oneHand: 5, mAtk: 4 }
+};
+l2.data.weaponEnchant.s80 = l2.data.weaponEnchant.s;
+l2.data.weaponEnchant.s84 = l2.data.weaponEnchant.s;
 
 l2.data.baseHPCoef = [
 	{ id:  0, a: 100, b: 100, c: 100, cpMod: 0.9, name: 'Human Fighter' },

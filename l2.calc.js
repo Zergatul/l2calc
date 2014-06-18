@@ -135,9 +135,30 @@ l2.calc.pDef = function (char) {
 	return Math.floor((4 + armorPdef) * char.lm * multPdef + addPdef);
 };
 
+l2.calc.weaponPAtk = function (char) {
+	if (char.weapon) {
+		var enchant = char.enchants.weapon;
+		var delta = 0;
+		if (char.weapon.grade) {
+			var d = 0;
+			if (['bow', 'crossbow'].indexOf(char.weapon.weaponType) >= 0)
+				d = l2.data.weaponEnchant[char.weapon.grade].bow;
+			if (['bigsword', 'bigblunt', 'dualsword', 'dualfist'].indexOf(char.weapon.weaponType) >= 0)
+				d = l2.data.weaponEnchant[char.weapon.grade].twoHand;
+			if (d == 0)
+				d = l2.data.weaponEnchant[char.weapon.grade].oneHand;
+			delta += Math.min(3, enchant) * d;
+			delta += Math.max(0, enchant - 3) * 2 * d;
+		};
+		return char.weapon.pAtk + delta;
+	} else
+		if (l2.data.subRace[char.$class.subRace].fighter)
+			return 4;
+		else
+			return 3;
+};
+
 l2.calc.pAtk = function (char) {
-	if (char.weapon == null)
-		return 0;	
 	var addPAtk = 0;
 	var multPAtk = 1;
 	l2.calc.forEachBuff(char, 'pAtk', function (op, val) {
@@ -146,7 +167,7 @@ l2.calc.pAtk = function (char) {
 		throw 'not implemented';
 	});
 	var strBonus = l2.data.statBonus['str'][char.stats.str];
-	return Math.floor(char.weapon.pAtk * char.lm * strBonus * multPAtk + addPAtk);
+	return Math.floor(l2.calc.weaponPAtk(char) * char.lm * strBonus * multPAtk + addPAtk);
 };
 
 l2.calc.pCritical = function (char) {

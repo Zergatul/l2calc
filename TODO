@@ -3,15 +3,12 @@ add enchanting for skill, weapons, armor
 clan skills
 CP calc - buffs add
 pdef for first prof without armor - maybe wrong
-storage extend
 
 //pledgeSkillTree
 //subClassSkillTree
 //subPledgeSkillTree
 
 bind self, toggles, passives - similar code
-
-save/load
 
 tatto for profs
 
@@ -24,3 +21,13 @@ check with real data naked characters - mages and fighters
 implement NOT parsing and using in calculator
 
 when change prof - clear saved self togles/buffs
+
+transforms - ? tank
+
+penalty when grade > lvl
+
+full upper body -disable lower body
+
+after select grade - unequppied - not save to storage
+
+when adding new storage - bug after first load - maybe need cool fix with default values???
