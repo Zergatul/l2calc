@@ -33,3 +33,5 @@ after select grade - unequppied - not save to storage
 when adding new storage - bug after first load - maybe need cool fix with default values???
 
 add symbols buffs to common
+
+add self triggers

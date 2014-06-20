@@ -68,7 +68,7 @@ l2.data.skills = [
 	{ id: 116, levels: 14, name: 'Howl', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'pa_down', effects: [
 		{ stat: 'pAtk', val: 0.77, op: 'mul' } ]},
 	{ id: 118, levels: 1, name: 'Magician\'s Movement', target: 'SELF', operateType: 'P', effects: [
-		{ stat: 'pAtkSpd', val: 0.8, op: 'mul', using: 'not(Magic)' } ]},
+		{ stat: 'pAtkSpd', val: 0.8, op: 'mul' } ]},
 	{ id: 121, levels: 6, name: 'Battle Roar', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'max_hp_up', effects: [
 		{ stat: 'maxHp', val: [1.1, 1.15, 1.2, 1.25, 1.3, 1.35], op: 'mul' } ]},
 	{ id: 123, levels: 3, name: 'Spirit Barrier', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'md_up', effects: [
@@ -111,7 +111,7 @@ l2.data.skills = [
 		{ stat: 'sDef', val: [1.3, 1.4, 1.5, 1.6], op: 'mul' },
 		{ stat: 'pDef', val: [1, 1, 1.1, 1.1], op: 'mul', using: 'Heavy' } ]},
 	{ id: 163, levels: 1, name: 'Spellcraft', target: 'SELF', operateType: 'P', effects: [
-		{ stat: 'mAtkSpd', val: 0.5, op: 'mul', using: 'not(Magic)' } ]},
+		{ stat: 'mAtkSpd', val: 0.5, op: 'mul' } ]},
 	{ id: 164, levels: 3, name: 'Quick Recycle', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'mReuse', val: [0.9, 0.85, 0.8], op: 'mul' } ]},
 	{ id: 168, levels: 3, name: 'Boost Attack Speed', target: 'SELF', operateType: 'P', effects: [
@@ -1405,6 +1405,33 @@ l2.data.skills = [
 		{ stat: 'maxHp', val: 1.1, op: 'mul' },
 		{ stat: 'regHp', val: 10, op: 'add' } ]},
 	{ id: 837, levels: 1, name: 'Painkiller', target: 'SELF', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
+	{ id: 840, levels: 1, name: 'Final Flying Form', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform', effects: [
+		{ stat: 'STR', val: 41, op: 'set' },
+		{ stat: 'INT', val: 29, op: 'set' },
+		{ stat: 'CON', val: 31, op: 'set' },
+		{ stat: 'DEX', val: 33, op: 'set' },
+		{ stat: 'WIT', val: 11, op: 'set' },
+		{ stat: 'MEN', val: 25, op: 'set' },
+		{ stat: 'pDef', val: 0.7, op: 'mul' },
+		{ stat: 'mDef', val: 0.7, op: 'mul' } ]},
+	{ id: 841, levels: 1, name: 'Aura Bird - Falcon', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform', effects: [
+		{ stat: 'STR', val: 41, op: 'set' },
+		{ stat: 'INT', val: 29, op: 'set' },
+		{ stat: 'CON', val: 31, op: 'set' },
+		{ stat: 'DEX', val: 33, op: 'set' },
+		{ stat: 'WIT', val: 11, op: 'set' },
+		{ stat: 'MEN', val: 25, op: 'set' },
+		{ stat: 'pDef', val: 0.7, op: 'mul' },
+		{ stat: 'mDef', val: 0.7, op: 'mul' } ]},
+	{ id: 842, levels: 1, name: 'Aura Bird - Owl', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform', effects: [
+		{ stat: 'STR', val: 41, op: 'set' },
+		{ stat: 'INT', val: 29, op: 'set' },
+		{ stat: 'CON', val: 31, op: 'set' },
+		{ stat: 'DEX', val: 33, op: 'set' },
+		{ stat: 'WIT', val: 11, op: 'set' },
+		{ stat: 'MEN', val: 25, op: 'set' },
+		{ stat: 'pDef', val: 0.7, op: 'mul' },
+		{ stat: 'mDef', val: 0.7, op: 'mul' } ]},
 	{ id: 846, levels: 1, name: 'Possess Ward', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtk', val: 0.2, op: 'mul' },
 		{ stat: 'mAtk', val: 0.2, op: 'mul' },
@@ -5797,6 +5824,15 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: [1.15, 1.33], op: 'mul' },
 		{ stat: 'pAtk', val: [1.9, 2.8], op: 'mul' },
 		{ stat: 'pDef', val: [1, 2.8], op: 'mul' } ]},
+	{ id: 5106, levels: 4, name: 'Capture A State', target: 'ONE', operateType: 'A2', effectType: 'Fusion', abnormalType: 'seizure_a', effects: [
+		{ stat: 'runSpd', val: 0.7, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.7, op: 'mul' } ]},
+	{ id: 5107, levels: 4, name: 'Capture B State', target: 'ONE', operateType: 'A2', effectType: 'Fusion', abnormalType: 'seizure_b', effects: [
+		{ stat: 'runSpd', val: 0.7, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.7, op: 'mul' } ]},
+	{ id: 5108, levels: 4, name: 'Capture C State', target: 'ONE', operateType: 'A2', effectType: 'Fusion', abnormalType: 'seizure_c', effects: [
+		{ stat: 'runSpd', val: 0.7, op: 'mul' },
+		{ stat: 'pAtkSpd', val: 0.7, op: 'mul' } ]},
 	{ id: 5112, levels: 12, name: 'Stun', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 5113, levels: 12, name: 'Castle Self AE Dispell Buff', target: 'AURA', operateType: 'A1', effectType: 'Cancel' },
 	{ id: 5114, levels: 12, name: 'Hold', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
@@ -5804,8 +5840,23 @@ l2.data.skills = [
 	{ id: 5118, levels: 1, name: 'Cancel Sailren Use', target: 'AURA', operateType: 'A1', effectType: 'Cancel' },
 	{ id: 5122, levels: 1, name: 'Sailren Use Might', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: 1.5, op: 'mul' } ]},
+	{ id: 5123, levels: 1, name: 'Maximum Defense', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'combination', effects: [
+		{ stat: 'pDef', val: 1000, op: 'add' },
+		{ stat: 'mDef', val: 800, op: 'add' },
+		{ stat: 'cancelVuln', val: 80, op: 'sub' } ]},
+	{ id: 5125, levels: 1, name: 'Maximum Resist Status', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'combination', effects: [
+		{ stat: 'debuffVuln', val: 60, op: 'sub' } ]},
+	{ id: 5126, levels: 1, name: 'Maximum Recovery', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'combination', effects: [
+		{ stat: 'regHp', val: 1.4, op: 'mul' },
+		{ stat: 'regCp', val: 1.4, op: 'mul' } ]},
 	{ id: 5127, levels: 1, name: 'Recover Force', target: 'AURA', operateType: 'A2', effectType: 'Buff', abnormalType: 'combination', effects: [
 		{ stat: 'pAtk', val: 1.2, op: 'mul' } ]},
+	{ id: 5128, levels: 1, name: 'Maximize long-range weapon use', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'combination', effects: [
+		{ stat: 'pAtk', val: 1.2, op: 'mul', using: 'Bow,Crossbow' },
+		{ stat: 'accCombat', val: 10, op: 'add', using: 'Bow,Crossbow' } ]},
+	{ id: 5129, levels: 1, name: 'Smokescreen', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'combination', effects: [
+		{ stat: 'rEvas', val: 15, op: 'add' },
+		{ stat: 'blowRate', val: 1.2, op: 'mul' } ]},
 	{ id: 5137, levels: 1, name: 'Hold of King', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
 	{ id: 5140, levels: 1, name: 'Dark Curse', target: 'AURA', operateType: 'A2', effectType: 'DamOverTime', abnormalType: 'attack_time_up', effects: [
 		{ stat: 'pAtkSpd', val: 0.77, op: 'mul' } ]},
@@ -6258,6 +6309,8 @@ l2.data.skills = [
 	{ id: 5931, levels: 1, name: 'Ultimate Shield', target: 'SELF', operateType: 'T', effectType: 'Invincible' },
 	{ id: 5950, levels: 1, name: 'Birthday Cake', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'vp_up', effects: [
 		{ stat: 'vitalityConsumeRate', val: 10, op: 'sub' } ]},
+	{ id: 5982, levels: 1, name: 'Aura Bird - Falcon', target: 'ONE', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform' },
+	{ id: 5983, levels: 1, name: 'Aura Bird - Owl', target: 'ONE', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform' },
 	{ id: 5987, levels: 1, name: 'Weapon Maintenance', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'dwarf_attack_buff', effects: [
 		{ stat: 'pAtk', val: 1.05, op: 'mul', using: 'Sword,Big Sword,Dagger,Dual Dagger,Pole,Rapier,Ancient,Dual Sword,Dual Fist,Blunt,Big Blunt,Bow,Crossbow' },
 		{ stat: 'rCrit', val: 0.2, op: 'basemul', using: 'Sword,Big Sword,Dagger,Dual Dagger,Pole,Rapier,Ancient,Dual Sword,Dual Fist' },

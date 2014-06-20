@@ -365,6 +365,14 @@ l2.data.commonBuffs = [
 		785, // Paladin
 		789, // SK
 	]},
+	{ group: '80 lvl field buff', ids: [
+		5123, // Maximum Defense - Phoenix Knight
+		5125, // Maximum Resist Status - Titan
+		5126, // Maximum Recovery - Dreadnought
+		5127, // Recover Force - Gladiator
+		5128, // Maximize long-range weapon use - Sagittarius
+		5129, // Smokescreen - Adventurer
+	]},
 	{ group: 'Inspector', ids: [
 		1476, // Appetite for Destruction
 		1477, // Vampiric Impulse

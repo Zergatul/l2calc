@@ -12,7 +12,7 @@ namespace l2calc
 {
     static class Program
     {
-        static string _folder = @"c:\Users\Zergatul\Documents\l2calc\";
+        static string _folder = @"c:\Users\Igor_Budzhak\Documents\l2calc\";
 
         [STAThread]
         static void Main(string[] args)
@@ -269,7 +269,7 @@ namespace l2calc
             sb.AppendLine();
             sb.AppendLine("l2.data.skills = [");
 
-            var files = Directory.EnumerateFiles(@"C:\Users\Zergatul\Dropbox\l2\hfdata\skills", "*.xml");
+            var files = Directory.EnumerateFiles(@"C:\Users\Igor_Budzhak\Dropbox\l2\hfdata\skills", "*.xml");
             foreach (string file in files)
             {
                 var doc = XDocument.Load(file);
@@ -283,7 +283,7 @@ namespace l2calc
                     var target = skill.GetInnerFilter("set", "name", "targetType", "val");
                     var operateType = skill.GetInnerFilter("set", "name", "operateType", "val");
 
-                    if (type == "BUFF" || operateType == "P" || operateType == "T" || target == "AURA")
+                    if (type == "BUFF" || type == "CONT" || operateType == "P" || operateType == "T" || target == "AURA")
                     {
                         if (skill.Elements("for").Count() == 0 && id != "3511")
                             continue;
@@ -293,7 +293,7 @@ namespace l2calc
                             name.Replace("'", @"\'"),
                             target,
                             operateType);
-
+                        
                         var @for = skill.Element("for");
 
                         if (@for == null)
@@ -318,33 +318,16 @@ namespace l2calc
 
                         foreach (var eff in effElements)
                         {
-                            var element = eff;
-                            if (eff.Elements("not").Count() > 1)
+                            if (eff.Elements("using").Count() > 1)
                                 throw new Exception();
-                            bool not = false;
-                            if (eff.Elements("not").Count() == 1)
-                            {
-                                if (eff.Elements().Count() > 1)
-                                    throw new Exception();
-                                element = eff.Element("not");
-                                not = true;
-                            }
-                            if (element.Elements("using").Count() > 1)
+                            if (eff.Elements("player").Count() > 1)
                                 throw new Exception();
-                            if (element.Elements("player").Count() > 1)
-                                throw new Exception();
-                            string usingKind = element.GetInner("using", "kind");
-                            if (not && usingKind != null)
-                                usingKind = "not(" + usingKind + ")";
-                            string playerHp = element.GetInner("player", "hp");
-                            if (not && playerHp != null)
-                                throw new NotImplementedException();
-                            bool playerFront = element.GetInner("player", "front") == "true";
-                            var tmp = element.GetInnerCombo("and", "player", "front", "behind");
+                            string usingKind = eff.GetInner("using", "kind");
+                            string playerHp = eff.GetInner("player", "hp");
+                            bool playerFront = eff.GetInner("player", "front") == "true";
+                            var tmp = eff.GetInnerCombo("and", "player", "front", "behind");
                             bool playerSide = tmp == null ? false : (tmp[0] == "false" && tmp[1] == "false");
-                            bool playerBehind = element.GetInner("player", "behind") == "true";
-                            if (not && (playerBehind || playerSide || playerFront))
-                                throw new NotImplementedException();
+                            bool playerBehind = eff.GetInner("player", "behind") == "true";
                             var value = eff.GetAttr("val");
                             if (value.StartsWith("#"))
                             {
@@ -376,7 +359,7 @@ namespace l2calc
             sb.AppendLine();
             sb.Append("];");
 
-            File.WriteAllText(_folder + "l2.data.skills.tmp.js", sb.ToString());
+            File.WriteAllText(_folder + "l2.data.skills.js", sb.ToString());
         }
 
         static void SkillTree()
@@ -454,10 +437,10 @@ namespace l2calc
             if (el.Elements(tag1).Count() > 1)
                 throw new Exception();
             return attrs.Select(attr => new
-            {
-                element = el.Element(tag1).Elements(tag2).SingleOrDefault(e => e.Attribute(attr) != null),
-                attr = attr
-            })
+                {
+                    element = el.Element(tag1).Elements(tag2).SingleOrDefault(e => e.Attribute(attr) != null),
+                    attr = attr
+                })
                 .Select(_ => _.element == null ? null : _.element.GetAttr(_.attr))
                 .ToArray();
         }
