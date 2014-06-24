@@ -293,6 +293,17 @@ namespace l2calc
                             name.Replace("'", @"\'"),
                             target,
                             operateType);
+
+                        var triggeredId = skill.GetInnerFilter("set", "name", "triggeredId", "val");
+                        if (triggeredId != null)
+                        {
+                            if (triggeredId.StartsWith("#"))
+                            {
+                                var table = skill.Elements("table").Single(e => e.Attribute("name").Value == triggeredId);
+                                triggeredId = "[" + Environment.NewLine + "\t\t" + table.Value.Trim().Replace(" ", ", ") + "]";
+                            }
+                            sb.AppendFormat(", trigger: {0}", triggeredId);
+                        }
                         
                         var @for = skill.Element("for");
 

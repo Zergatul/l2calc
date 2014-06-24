@@ -142,11 +142,13 @@ l2.data.skills = [
 		{ stat: 'darkRes', val: [7, 10], op: 'add' } ]},
 	{ id: 198, levels: 3, name: 'Boost Evasion', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'rEvas', val: [2, 3, 4], op: 'add' } ]},
-	{ id: 205, levels: 45, name: 'Sword/Blunt Weapon Mastery', target: 'SELF', operateType: 'P', effects: [
+	{ id: 205, levels: 45, name: 'Sword/Blunt Weapon Mastery', target: 'SELF', operateType: 'P', trigger: [
+		0, 0, 0, 0, 0, 0, 0, 0, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604, 5604], effects: [
 		{ stat: 'pAtk', val: [4.5, 7.3, 8.9, 10.7, 12.8, 15.1, 17.7, 20.5, 23.7, 25.4, 27.1, 29, 30.9, 32.9, 35, 37.1, 39.4, 41.7, 44.1, 46.6, 49.2, 51.9, 54.6, 57.5, 60.4, 63.3, 66.4, 69.5, 72.7, 76, 79.3, 82.7, 86.1, 89.6, 93.1, 96.6, 100.2, 103.8, 107.5, 111.1, 114.8, 118.4, 122.1, 125.7, 129.3], op: 'add', using: 'Sword,Big Sword,Blunt,Big Blunt' } ]},
 	{ id: 208, levels: 52, name: 'Bow Mastery', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtk', val: [10.3, 11.4, 27.6, 32.8, 35.6, 38.6, 45.2, 48.9, 52.7, 61.1, 65.6, 70.4, 80.9, 86.5, 92.4, 105.1, 111.9, 178.8, 189.9, 201.4, 213.5, 226, 239.1, 252.7, 266.7, 281.3, 296.4, 311.9, 328, 344.5, 361.6, 379.1, 397, 415.4, 434.3, 453.5, 473.2, 493.1, 513.5, 534.2, 555.1, 576.3, 597.8, 619.4, 641.2, 663.1, 685, 707.1, 729.1, 751, 772.9, 794.6], op: 'add', using: 'Bow' } ]},
-	{ id: 209, levels: 45, name: 'Dagger Mastery', target: 'SELF', operateType: 'P', effects: [
+	{ id: 209, levels: 45, name: 'Dagger Mastery', target: 'SELF', operateType: 'P', trigger: [
+		0, 0, 0, 0, 0, 0, 0, 0, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603, 5603], effects: [
 		{ stat: 'pAtk', val: [3.6, 6, 7.4, 9, 10.8, 12.8, 15.1, 17.6, 20.3, 21.8, 23.4, 25, 26.6, 28.4, 30.2, 32.1, 34.1, 36.1, 38.2, 40.4, 42.7, 45, 47.4, 49.9, 52.4, 55, 57.7, 60.4, 63.2, 66.1, 69, 71.9, 74.9, 78, 81.1, 84.2, 87.3, 90.5, 93.7, 96.8, 100, 103.2, 106.4, 109.6, 112.8], op: 'add', using: 'Dagger,Dual Dagger' } ]},
 	{ id: 210, levels: 45, name: 'Fist Weapon Mastery', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtk', val: [4.5, 7.3, 8.9, 10.7, 12.8, 15.1, 17.7, 20.5, 23.7, 25.4, 27.1, 29, 30.9, 32.9, 35, 37.1, 39.4, 41.7, 44.1, 46.6, 49.2, 51.9, 54.6, 57.5, 60.4, 63.3, 66.4, 69.5, 72.7, 76, 79.3, 82.7, 86.1, 89.6, 93.1, 96.6, 100.2, 103.8, 107.5, 111.1, 114.8, 118.4, 122.1, 125.7, 129.3], op: 'add', using: 'Dual Fist' } ]},
@@ -1248,10 +1250,10 @@ l2.data.skills = [
 	{ id: 755, levels: 1, name: 'Protection of Rune', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
 	{ id: 756, levels: 1, name: 'Protection of Elemental', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
 	{ id: 757, levels: 1, name: 'Protection of Alignment', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 758, levels: 1, name: 'Fighter\'s Will', target: 'SELF', operateType: 'P', effects: [
+	{ id: 758, levels: 1, name: 'Fighter\'s Will', target: 'SELF', operateType: 'P', trigger: 5559, effects: [
 		{ stat: 'pAtk', val: 100, op: 'add', using: 'Sword,Big Sword,Blunt,Big Blunt,Dual Sword,Dual Fist,Dagger,Dual Dagger,Pole,Ancient,Rapier' },
 		{ stat: 'pAtkSpd', val: 1.1, op: 'mul', using: 'Sword,Big Sword,Blunt,Big Blunt,Dual Sword,Dual Fist,Dagger,Dual Dagger,Pole,Ancient,Rapier' } ]},
-	{ id: 759, levels: 1, name: 'Archer\'s Will', target: 'SELF', operateType: 'P', effects: [
+	{ id: 759, levels: 1, name: 'Archer\'s Will', target: 'SELF', operateType: 'P', trigger: 5559, effects: [
 		{ stat: 'accCombat', val: 8, op: 'add', using: 'Crossbow,Bow' },
 		{ stat: 'pAtkRange', val: 50, op: 'add', using: 'Crossbow,Bow' } ]},
 	{ id: 760, levels: 1, name: 'Anti Magic Armor', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up_special', effects: [
