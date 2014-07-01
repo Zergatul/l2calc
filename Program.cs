@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace l2calc
 {
@@ -17,7 +19,8 @@ namespace l2calc
         [STAThread]
         static void Main(string[] args)
         {
-            Skills();
+            r = new Regex(@"^.+?(\d[0-9.]+).+?(\d[0-9.]+).+?(\d[0-9.]+).+?$");
+            ParseSkillNameDat(205, 45, ParsingCallback);
         }
 
         static void Items()
@@ -415,12 +418,33 @@ namespace l2calc
             File.WriteAllText(_folder + "l2.data.skilltree.js", sb.ToString());
         }
 
-        /*
-            FIST
-            <set order="0x08" stat="rCrit" val="4" />
-            <add order="0x10" stat="accCombat" val="4.75" />
-            <set order="0x08" stat="pAtkSpd" val="325" />
-         */
+        static void ParseSkillNameDat(int skillId, int maxLvl, Func<string, string> callback)
+        {
+            var lines = File.ReadAllLines(@"c:\Users\Igor_Budzhak\Dropbox\l2\hfdata\SkillName-ru.txt");
+            List<string> data = new List<string>();
+            foreach (string line in lines.Skip(1))
+            {
+                var parts = line.Split('\t');
+                if (int.Parse(parts[0]) == skillId && int.Parse(parts[1]) <= maxLvl)
+                    data.Add(callback(parts[3]));
+            }
+            string result = "[" + string.Join(", ", data) + "]";
+            Console.WriteLine(result);
+            Clipboard.SetText(result);
+        }
+
+        static Regex r;
+
+        static string ParsingCallback(string desc)
+        {
+            var match = r.Match(desc);
+            if (!match.Success)
+                throw new Exception("Invalid regex");
+            string result = match.Groups[3].Value;
+            if (result.EndsWith("."))
+                result = result.Substring(0, result.Length - 1);
+            return result;
+        }
 
         #region extensions
 
