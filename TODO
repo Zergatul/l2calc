@@ -1,5 +1,5 @@
 ??? add steal buff
-add enchanting for skill, weapons, armor
+add enchanting for skill
 clan skills
 CP calc - buffs add
 pdef for first prof without armor - maybe wrong
@@ -14,7 +14,7 @@ tatto for profs
 
 Sword/Blunt Weapon Mastery - to fix - to test!
 
-warcryer weapon mastery - bad constants in p.atk add
+warcryer weapon mastery - bad constants in p.atk add, llook like good! need check!
 
 check with real data naked characters - mages and fighters
 
@@ -26,12 +26,14 @@ transforms - ? tank
 
 penalty when grade > lvl
 
-full upper body -disable lower body
-
-after select grade - unequppied - not save to storage
-
-when adding new storage - bug after first load - maybe need cool fix with default values???
-
-add symbols buffs to common
-
 add self triggers
+
+critical, atk speed, matk for no weapon = 0
+
+savings
+
++6 set bonus
+
+first prof 85 lvl  = 1kk HP, why?
+
+base speed for kamael???

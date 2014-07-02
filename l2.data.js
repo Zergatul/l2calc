@@ -11,27 +11,27 @@ l2.data.races = [
 ];
 
 l2.data.subRace = [
-	{ id:  0, race: 0, name: 'Human Fighter', fighter: 1, stats: {
+	{ id:  0, race: 0, name: 'Human Fighter', fighter: 1, baseSpeed: 115, stats: {
 		int: 21, str: 40, con: 43, men: 25, dex: 30, wit: 11 }},
-	{ id:  1, race: 0, name: 'Human Mystic', mystic: 1, stats: {
+	{ id:  1, race: 0, name: 'Human Mystic', mystic: 1, baseSpeed: 120, stats: {
 		int: 41, str: 22, con: 27, men: 39, dex: 21, wit: 20 }},
-	{ id:  2, race: 1, name: 'Elven Fighter', fighter: 1, stats: {
+	{ id:  2, race: 1, name: 'Elven Fighter', fighter: 1, baseSpeed: 125, stats: {
 		int: 23, str: 36, con: 36, men: 26, dex: 35, wit: 14 }},
-	{ id:  3, race: 1, name: 'Elven Mystic', mystic: 1, stats: {
+	{ id:  3, race: 1, name: 'Elven Mystic', mystic: 1, baseSpeed: 122, stats: {
 		int: 37, str: 21, con: 25, men: 40, dex: 24, wit: 23 }},
-	{ id:  4, race: 2, name: 'Dark Elven Fighter', fighter: 1, stats: {
+	{ id:  4, race: 2, name: 'Dark Elven Fighter', fighter: 1, baseSpeed: 122, stats: {
 		int: 25, str: 41, con: 32, men: 26, dex: 34, wit: 12 }},
-	{ id:  5, race: 2, name: 'Dark Elven Mystic', mystic: 1, stats: {
+	{ id:  5, race: 2, name: 'Dark Elven Mystic', mystic: 1, baseSpeed: 122, stats: {
 		int: 44, str: 23, con: 24, men: 37, dex: 23, wit: 19 }},
-	{ id:  6, race: 3, name: 'Orc Fighter', fighter: 1, stats: {
+	{ id:  6, race: 3, name: 'Orc Fighter', fighter: 1, baseSpeed: 117, stats: {
 		int: 18, str: 40, con: 47, men: 27, dex: 26, wit: 12 }},
-	{ id:  7, race: 3, name: 'Orc Mystic', mystic: 1, stats: {
+	{ id:  7, race: 3, name: 'Orc Mystic', mystic: 1, baseSpeed: 121, stats: {
 		int: 31, str: 27, con: 31, men: 42, dex: 24, wit: 15 }},
-	{ id:  8, race: 4, name: 'Dwarven Fighter', fighter: 1, stats: {
+	{ id:  8, race: 4, name: 'Dwarven Fighter', fighter: 1, baseSpeed: 115, stats: {
 		int: 20, str: 39, con: 45, men: 27, dex: 29, wit: 10 }},
-	{ id:  9, race: 5, name: 'Kamael Male Fighter', fighter: 1, stats: {
+	{ id:  9, race: 5, name: 'Kamael Male Fighter', fighter: 1, baseSpeed: 1, stats: {
 		int: 29, str: 41, con: 31, men: 25, dex: 33, wit: 11 }},
-	{ id: 10, race: 5, name: 'Kamael Female Fighter', fighter: 1, stats: {
+	{ id: 10, race: 5, name: 'Kamael Female Fighter', fighter: 1, baseSpeed: 1, stats: {
 		int: 28, str: 39, con: 30, men: 27, dex: 35, wit: 11 }}
 ];
 

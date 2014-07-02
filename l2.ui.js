@@ -68,6 +68,7 @@ l2.ui.applySet = function () {
 		$('#body-upper-grade').val(armor.grade || 'none');
 		l2.ui.onBodyUpperGradeChange();
 		$('#body-upper').val(set.chest[0]);
+		l2.ui.onBodyUpperChange();
 	}
 	if (set.legs != null) {
 		var armor = l2.data.tools.getItem(set.legs[0]);
@@ -288,7 +289,7 @@ l2.ui.bindSelfBuffs = function () {
 		skills[id].sort(function (s1, s2) {
 			return s1.lvl - s2.lvl;
 		});
-		if (skill && skill.operateType.charAt(0) == 'A' && (skill.target == 'SELF' || skill.target == 'AURA') && skill.effects && skill.effectType != 'Debuff') {
+		if (skill && skill.operateType.charAt(0) == 'A' && (skill.target == 'SELF' || skill.target == 'AURA') && skill.effects && skill.effectType != 'Debuff' && skill.effectType != 'Transformation') {
 			var div = $('<div>').addClass('left self-skill');
 			var select = $('<select>');
 			select.attr('data-skill-id', skill.id);
@@ -455,8 +456,20 @@ l2.ui.canShowDelta = false;
 l2.ui.prevStats = null;
 
 l2.ui.restoreSingleItem = function (element) {
-	if ($(element).is('select') || $(element).is('input[type=number]'))
-		$(element).val(localStorage[$(element).attr('data-storage')]);
+	if ($(element).is('select')) {
+		var value = localStorage[$(element).attr('data-storage')];
+		if (value == undefined)
+			$(element).val($(element).children('option:first').val());
+		else
+			$(element).val(value);
+	}
+	if ($(element).is('input[type=number]')) {
+		var value = localStorage[$(element).attr('data-storage')];
+		if (value == undefined)
+			$(element).val(0);
+		else
+			$(element).val(value);
+	}
 	if ($(element).is('input[type=checkbox]'))
 		if (localStorage[$(element).attr('data-storage')] == '1')
 			$(element).prop('checked', true);
@@ -512,6 +525,7 @@ l2.ui.restoreFromStorage = function () {
 	l2.ui.restoreSingleItem('#body-lower-grade');
 	l2.ui.onBodyLowerGradeChange();
 	l2.ui.restoreSingleItem('#body-lower')
+	l2.ui.onBodyUpperChange();
 
 	l2.ui.restoreSingleItem('#gloves-grade');
 	l2.ui.onGlovesGradeChange();
@@ -543,8 +557,6 @@ l2.ui.restoreFromStorage = function () {
 	});
 
 	l2.ui.recalc();
-
-	l2.ui.canChangeStorage = true;
 };
 
 l2.ui.saveAllToStorage = function () {
@@ -569,6 +581,8 @@ l2.ui.clearEquipment = function () {
 	$('#body-lower').val('');
 	$('#gloves').val('');
 	$('#boots').val('');
+	$('#weapon-ench, #shield-ench, #helmet-ench, #body-upper-ench, #body-lower-ench, #gloves-ench, #boots-ench').val(0)
+	l2.ui.onBodyUpperChange();
 	l2.ui.saveAllToStorage();
 	l2.ui.recalc();
 };
@@ -617,11 +631,13 @@ l2.ui.onWeaponGradeChange = function () {
 		$('#weapon-ench').attr('disabled', false);
 	l2.ui.onChangeSaveToStorage.call($('#weapon'));
 	l2.ui.onChangeSaveToStorage.call($('#weapon-ench'));
+	l2.ui.recalc();
 };
 
 l2.ui.onWeaponTypeChange = function () {
 	l2.ui.bindWeapons();
 	l2.ui.onChangeSaveToStorage.call($('#weapon'));
+	l2.ui.recalc();
 };
 
 l2.ui.onShieldGradeChange = function () {
@@ -632,6 +648,7 @@ l2.ui.onShieldGradeChange = function () {
 		$('#shield-ench').attr('disabled', false);
 	l2.ui.onChangeSaveToStorage.call($('#shield'));
 	l2.ui.onChangeSaveToStorage.call($('#shield-ench'));
+	l2.ui.recalc();
 };
 
 l2.ui.onHelmetGradeChange = function () {
@@ -642,6 +659,7 @@ l2.ui.onHelmetGradeChange = function () {
 		$('#helmet-ench').attr('disabled', false);
 	l2.ui.onChangeSaveToStorage.call($('#helmet'));
 	l2.ui.onChangeSaveToStorage.call($('#helmet-ench'));
+	l2.ui.recalc();
 };
 
 l2.ui.onBodyUpperGradeChange = function () {
@@ -652,16 +670,18 @@ l2.ui.onBodyUpperGradeChange = function () {
 		$('#body-upper-ench').attr('disabled', false);
 	l2.ui.onChangeSaveToStorage.call($('#body-upper'));
 	l2.ui.onChangeSaveToStorage.call($('#body-upper-ench'));
+	l2.ui.recalc();
 };
 
 l2.ui.onBodyLowerGradeChange = function () {
 	l2.ui.bindBodyLower();
 	if ($('#body-lower-grade').val() == 'none')
-		$('#body-lower-ench').val(0).attr('disabled', true);	
+		$('#body-lower-ench').val(0).attr('disabled', true);
 	else
 		$('#body-lower-ench').attr('disabled', false);
 	l2.ui.onChangeSaveToStorage.call($('#body-lower'));
 	l2.ui.onChangeSaveToStorage.call($('#body-lower-ench'));
+	l2.ui.recalc();
 };
 
 l2.ui.onGlovesGradeChange = function () {
@@ -672,6 +692,7 @@ l2.ui.onGlovesGradeChange = function () {
 		$('#gloves-ench').attr('disabled', false);
 	l2.ui.onChangeSaveToStorage.call($('#gloves'));
 	l2.ui.onChangeSaveToStorage.call($('#gloves-ench'));
+	l2.ui.recalc();
 };
 
 l2.ui.onBootsGradeChange = function () {
@@ -682,6 +703,25 @@ l2.ui.onBootsGradeChange = function () {
 		$('#boots-ench').attr('disabled', false);
 	l2.ui.onChangeSaveToStorage.call($('#boots'));
 	l2.ui.onChangeSaveToStorage.call($('#boots-ench'));
+	l2.ui.recalc();
+};
+
+l2.ui.onBodyUpperChange = function () {
+	var onePiece;
+	if ($('#body-upper').val() == '')
+		onePiece = false;
+	else {
+		var bodyUpper = l2.data.tools.getItem($('#body-upper').val());
+		onePiece = bodyUpper.bodyPart == 'onepiece';
+	}
+	$('#body-lower-grade, #body-lower-ench, #body-lower').attr('disabled', onePiece);
+	if (!onePiece)
+		if ($('#body-lower-grade').val() == 'none')
+			$('#body-lower-ench').val(0).attr('disabled', true);
+		else
+			$('#body-lower-ench').attr('disabled', false);
+	else
+		$('#body-lower').val('');
 };
 
 l2.ui.formatPercent = function (val) {
@@ -699,7 +739,7 @@ l2.ui.highlightStat = function (oldStats, newStats, key, div) {
 		div.addClass('stat-equal').text('');
 	else
 		if (oldStats[key] == 0)
-			div.addClass('stat-plus').text('+ Inf');
+			div.addClass('stat-plus').text('+Inf');
 		else
 			if (oldStats[key] == newStats[key])
 				div.addClass('stat-equal').text('');
@@ -835,6 +875,10 @@ l2.ui.recalc = function () {
 		}
 	}
 
+	for (var stat in stats)
+		if (stats[stat] < 0)
+			stats[stat] = 0;
+
 	$('#str').text(stats.str);
 	$('#dex').text(stats.dex);
 	$('#con').text(stats.con);
@@ -853,6 +897,7 @@ l2.ui.recalc = function () {
 	char.pCritAtk = l2.calc.pCritAtk(char);
 	char.atkSpeed = l2.calc.atkSpeed(char);
 	char.castSpeed = l2.calc.castSpeed(char);
+	char.speed = l2.calc.speed(char);
 	char.pDPS = l2.calc.pDPS(char);
 	$('#hp').text(char.hp);
 	$('#cp').text(char.cp);
@@ -864,7 +909,9 @@ l2.ui.recalc = function () {
 	$('#pcritmult').text(char.pCritMultiplier.toFixed(5));
 	$('#atkspd').text(char.atkSpeed);
 	$('#castspd').text(char.castSpeed);
+	$('#speed').text(char.speed);
 	$('#pdps').text(l2.ui.tools.formatNumber(Math.round(char.pDPS)));
+	$('#patkcrit').text(char.pCritAtk);
 
 	var prevStats = l2.ui.prevStats;
 	l2.ui.prevStats = char;
@@ -960,6 +1007,7 @@ $(function () {
 	$('#weapon').change(l2.ui.recalc);
 	$('#shield').change(l2.ui.recalc);
 	$('#helmet').change(l2.ui.recalc);
+	$('#body-upper').change(l2.ui.onBodyUpperChange);
 	$('#body-upper').change(l2.ui.recalc);
 	$('#body-lower').change(l2.ui.recalc);
 	$('#boots').change(l2.ui.recalc);
@@ -1006,10 +1054,8 @@ $(function () {
 	$('input[type=number][data-storage]').change(l2.ui.onChangeSaveToStorage);
 	$('input[type=checkbox][data-storage]').click(l2.ui.onChangeSaveToStorage);
 
-	if (localStorage.length == 0)
-		l2.ui.saveAllToStorage();
-	else
-		l2.ui.restoreFromStorage();
+	l2.ui.restoreFromStorage();
 
+	l2.ui.canChangeStorage = true;
 	l2.ui.canShowDelta = true;
 });

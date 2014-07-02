@@ -20,8 +20,10 @@ legend {
 select, input {
 	border: 1px #555555 solid;
 }
-select:disabled {
+select:disabled, input:disabled {
+	color: #545454;
 	border: 1px #bbbbbb solid;	
+	background-color: #EBEBE4;
 }
 
 .clear {
@@ -138,6 +140,10 @@ select:disabled {
 .astat-header {
 	width: 100px;
 	text-align: right;
+}
+.astat-delta {
+	width: 6px;
+	height: 14px;
 }
 .eq-header {
 	width: 100px;

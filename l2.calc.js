@@ -73,6 +73,7 @@ l2.calc.HP = function (char) {
 	var multHP = 1;
 	l2.calc.forEachBuff(char, 'maxHp', function (op, val) {
 		if (op == 'add') { addHP += val; return; }
+		if (op == 'sub') { addHP -= val; return; }
 		if (op == 'mul') { multHP *= val; return; }
 		throw 'not implemented';
 	})
@@ -101,30 +102,62 @@ l2.calc.CP = function (char) {
 	return Math.floor(baseHP * conBonus * coefs.cpMod * multCP + addCP);
 };
 
-l2.calc.pDef = function (char) {
-	var armorPdef = 0;
+l2.calc.applyArmorEnchant = function (pDef, grade, enchant) {
+	if (!grade)
+		return pDef;
+	else {
+		var delta = 0;
+		delta += Math.min(3, enchant) * 1;
+		delta += Math.max(0, enchant - 3) * 3;
+		return pDef + delta;
+	}
+};
+
+l2.calc.helmetPDef = function (char) {
 	if (char.helmet)
-		armorPdef += char.helmet.pDef;
+		return l2.calc.applyArmorEnchant(char.helmet.pDef, char.helmet.grade, char.enchants.helmet);
 	else
-		armorPdef += 12;
+		return 12;
+};
+
+l2.calc.bodyUpperPdef = function (char) {
 	if (char.bodyUpper)
-		armorPdef += char.bodyUpper.pDef;
+		return l2.calc.applyArmorEnchant(char.bodyUpper.pDef, char.bodyUpper.grade, char.enchants.bodyUpper);
 	else
-		armorPdef += (l2.data.tools.isMystic(char.$class.id) ? 15 : 31);
+		return l2.data.tools.isMystic(char.$class.id) ? 15 : 31;
+};
+
+l2.calc.bodyLowerPDef = function (char) {
 	if (char.bodyUpper == null || char.bodyUpper.bodyPart != 'onepiece') {
 		if (char.bodyLower)
-			armorPdef += char.bodyLower.pDef;
+			return l2.calc.applyArmorEnchant(char.bodyLower.pDef, char.bodyLower.grade, char.enchants.bodyLower);
 		else
-			armorPdef += (l2.data.tools.isMystic(char.$class.id) ? 8 : 18);
-	}
+			return l2.data.tools.isMystic(char.$class.id) ? 8 : 18;
+	} else
+		return 0;
+};
+
+l2.calc.glovesPDef = function (char) {
 	if (char.gloves)
-		armorPdef += char.gloves.pDef;
+		return l2.calc.applyArmorEnchant(char.gloves.pDef, char.gloves.grade, char.enchants.gloves);
 	else
-		armorPdef += 8;
+		return 8;
+};
+
+l2.calc.bootsPDef = function (char) {
 	if (char.boots)
-		armorPdef += char.boots.pDef;
+		return l2.calc.applyArmorEnchant(char.boots.pDef, char.boots.grade, char.enchants.boots);
 	else
-		armorPdef += 7;
+		return 7;
+};
+
+l2.calc.pDef = function (char) {
+	var armorPdef = 0;
+	armorPdef += l2.calc.helmetPDef(char);
+	armorPdef += l2.calc.bodyUpperPdef(char);
+	armorPdef += l2.calc.bodyLowerPDef(char);
+	armorPdef += l2.calc.glovesPDef(char);
+	armorPdef += l2.calc.bootsPDef(char);
 	var addPdef = 0;
 	var multPdef = 1;
 	l2.calc.forEachBuff(char, 'pDef', function (op, val) {
@@ -225,6 +258,7 @@ l2.calc.accuracy = function (char) {
 	}
 	l2.calc.forEachBuff(char, 'accCombat', function (op, val) {
 		if (op == 'add') { addAcc += val; return; }
+		if (op == 'sub') { addAcc -= val; return; }
 		throw 'not implemented';
 	});
 	return Math.floor(Math.sqrt(char.stats.dex) * 6 + char.lvl + addAcc) + l2.data.accuracyFix[char.lvl];
@@ -258,4 +292,16 @@ l2.calc.castSpeed = function (char) {
 	});
 	var witBonus = l2.data.statBonus['wit'][char.stats.wit];
 	return Math.floor(333 * witBonus * multCSpeed + addCSpeed);
+};
+
+l2.calc.speed = function (char) {
+	var addSpeed = 0;
+	var multSpeed = 1;
+	l2.calc.forEachBuff(char, 'runSpd', function (op, val) {
+		if (op == 'add') { addSpeed += val; return; }
+		if (op == 'mul') { multSpeed *= val; return; }
+		throw 'not implemented';
+	});
+	var dexBonus = l2.data.statBonus['dex'][char.stats.dex];
+	return Math.floor(l2.data.subRace[char.$class.subRace].baseSpeed * dexBonus * multSpeed + addSpeed);
 };
