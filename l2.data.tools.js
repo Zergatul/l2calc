@@ -135,3 +135,12 @@ l2.data.tools.findBoots = function (grade) {
 	l2.data.tools.sortItems(boots);
 	return boots;
 };
+l2.data.tools.findNecklaces = function (grade) {
+	var necklaces = l2.data.items.filter(function (item) {
+		if (item.bodyPart != 'neck')
+			return false;
+		return (item.grade || 'none') == grade;
+	});
+	l2.data.tools.sortItems(necklaces);
+	return necklaces;
+};

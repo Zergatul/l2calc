@@ -305,3 +305,13 @@ l2.calc.speed = function (char) {
 	var dexBonus = l2.data.statBonus['dex'][char.stats.dex];
 	return Math.floor(l2.data.subRace[char.$class.subRace].baseSpeed * dexBonus * multSpeed + addSpeed);
 };
+
+l2.calc.evasion = function (char) {
+	var addEva = 0;
+	l2.calc.forEachBuff(char, 'rEvas', function (op, val) {
+		if (op == 'add') { addEva += val; return; }
+		if (op == 'sub') { addEva -= val; return; }
+		throw 'not implemented';
+	});
+	return Math.floor(Math.sqrt(char.stats.dex) * 6 + char.lvl + addEva);
+};

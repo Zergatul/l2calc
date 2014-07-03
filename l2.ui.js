@@ -192,6 +192,34 @@ l2.ui.bindBoots = function () {
 	});
 };
 
+l2.ui.bindNecklaces = function () {
+	var grade = $('#necklace-grade').val();
+	$('#necklace').empty();
+	l2.ui.tools.addOption('#necklace', '', 'Unequipped');
+	var necklaces = l2.data.tools.findNecklaces(grade);
+	$.each(necklaces, function () {
+		l2.ui.tools.addOption('#necklace', this.id, this.name);
+	});
+};
+
+l2.ui.bindEarrings = function (index) {
+	var grade = $('#earring' + index + '-grade').val();
+	$('#earring' + index).empty();
+	l2.ui.tools.addOption('#earring' + index, '', 'Unequipped');
+	var earrings = l2.data.tools.earrings(grade);
+	$.each(earrings, function () {
+		l2.ui.tools.addOption('#earring' + index, this.id, this.name);
+	});
+};
+
+l2.ui.bindEarrings1 = function () {
+	l2.ui.bindEarrings(1);
+};
+
+l2.ui.bindEarrings2 = function () {
+	l2.ui.bindEarrings(2);
+};
+
 l2.ui.bindPassives = function () {
 	var classId = $('#l2class').val();
 	var lvl = $('#lvl').val();
@@ -535,6 +563,10 @@ l2.ui.restoreFromStorage = function () {
 	l2.ui.onBootsGradeChange();
 	l2.ui.restoreSingleItem('#boots');
 
+	l2.ui.restoreSingleItem('#necklace-grade');
+	l2.ui.onNecklaceGradeChange();
+	l2.ui.restoreSingleItem('#necklace');
+
 	$('input[type=number]').each(function() {
 		l2.ui.restoreSingleItem(this);
 	});
@@ -724,6 +756,17 @@ l2.ui.onBodyUpperChange = function () {
 		$('#body-lower').val('');
 };
 
+l2.ui.onNecklaceGradeChange = function () {
+	l2.ui.bindNecklaces();
+	if ($('#necklace-grade').val() == 'none')
+		$('#necklace-ench').val(0).attr('disabled', true);	
+	else
+		$('#necklace-ench').attr('disabled', false);
+	l2.ui.onChangeSaveToStorage.call($('#necklace'));
+	l2.ui.onChangeSaveToStorage.call($('#necklace-ench'));
+	l2.ui.recalc();
+};
+
 l2.ui.formatPercent = function (val) {
 	if (val >= 10)
 		return Math.round(val).toString();
@@ -898,6 +941,7 @@ l2.ui.recalc = function () {
 	char.atkSpeed = l2.calc.atkSpeed(char);
 	char.castSpeed = l2.calc.castSpeed(char);
 	char.speed = l2.calc.speed(char);
+	char.evasion = l2.calc.evasion(char);
 	char.pDPS = l2.calc.pDPS(char);
 	$('#hp').text(char.hp);
 	$('#cp').text(char.cp);
@@ -910,6 +954,7 @@ l2.ui.recalc = function () {
 	$('#atkspd').text(char.atkSpeed);
 	$('#castspd').text(char.castSpeed);
 	$('#speed').text(char.speed);
+	$('#evasion').text(char.evasion);
 	$('#pdps').text(l2.ui.tools.formatNumber(Math.round(char.pDPS)));
 	$('#patkcrit').text(char.pCritAtk);
 
@@ -926,6 +971,13 @@ l2.ui.recalc = function () {
 		l2.ui.highlightStat(prevStats, char, 'mAtk', $('#matk').next());
 		l2.ui.highlightStat(prevStats, char, 'castSpeed', $('#castspd').next());
 	}
+};
+
+l2.ui.adjustContainer = function () {
+	var height = $(window).height() - Math.round($('#container').position().top) - 28;
+	$('#container').height(Math.max(200, height));
+	var width = $('#equipment').outerWidth() + 32;
+	$('#container').width(width);
 };
 
 $(function () {
@@ -1003,6 +1055,8 @@ $(function () {
 	l2.ui.bindGloves();
 	$('#boots-grade').change(l2.ui.onBootsGradeChange);
 	l2.ui.bindBoots();
+	$('#necklace-grade').change(l2.ui.onNecklaceGradeChange);
+	l2.ui.onNecklaceGradeChange();
 
 	$('#weapon').change(l2.ui.recalc);
 	$('#shield').change(l2.ui.recalc);
@@ -1049,6 +1103,9 @@ $(function () {
 			$(this).val(val);
 		l2.ui.recalc();
 	});
+
+	$(window).resize(l2.ui.adjustContainer);
+	l2.ui.adjustContainer();
 
 	$('select[data-storage]').change(l2.ui.onChangeSaveToStorage);
 	$('input[type=number][data-storage]').change(l2.ui.onChangeSaveToStorage);
