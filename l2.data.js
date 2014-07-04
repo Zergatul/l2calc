@@ -290,6 +290,14 @@ l2.data.baseHPCoef = [
 l2.data.accuracyFix = Array.apply(null, new Array(70)).map(Number.prototype.valueOf, 0).concat(
 	[1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 18, 20, 22, 24]);
 
+l2.data.oeArmorHPBonus = {
+	'd': { single: [9, 26, 52, 86, 130, 181, 242], fullbody: [13, 39, 78, 129, 195, 271, 363] },
+	'c': { single: [12, 36, 71, 118, 178, 249, 332], fullbody: [18, 54, 106, 177, 267, 373, 498] },
+	'b': { single: [14, 42, 84, 139, 209, 293, 390], fullbody: [21, 63, 126, 208, 313, 439, 585] },
+	'a': { single: [16, 47, 94, 157, 235, 329, 439], fullbody: [24, 70, 141, 235, 352, 493, 658] },
+	's': { single: [17, 52, 104, 173, 259, 363, 484], fullbody: [25, 78, 156, 259, 388, 544, 726] },
+};
+
 l2.data.songs = [269, 267, 268, 270, 265, 264, 266, 306, 304, 308, 305, 764, 349, 363, 364, 529, 914];
 l2.data.dances = [274, 277, 272, 273, 276, 271, 275, 309, 311, 307, 310, 765, 366, 365, 530, 915];
 
@@ -391,3 +399,27 @@ l2.data.commonBuffs = [
 ];
 
 l2.data.commonTriggers = [6059, 6060];
+
+l2.data.clanSkills = [
+	370, // Clan Body
+	371, // Clan Spirituality
+	372, // Clan Soul
+	373, // Clan Regeneration
+	374, // Clan Morale
+	375, // Clan Clarity
+	376, // Clan Might
+	377, // Clan Shield
+	378, // Clan Empower
+	380, // Clan Guidance
+	381, // Clan Agility
+	382, // Clan Shield Defense
+	383, // Clan Shield Block
+	384, // Clan Cyclonic Resistance
+	385, // Clan Magmatic Resistance
+	386, // Clan Resist Shock
+	387, // Clan Resist Hold
+	388, // Clan Resist Sleep
+	389, // Clan Wind Walk
+];
+
+l2.data.territorySkills = [848, 849, 850, 851, 852, 853, 854, 855, 856];

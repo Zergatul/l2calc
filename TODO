@@ -44,4 +44,6 @@ weaponBaseData - add dual daggers
 
 rare items - not always correctly showing (for example some non grade items have skills)
 
-earrings!!!
+use canEnchant field !!!
+
+l2.ui.checkset - move to l2.calc

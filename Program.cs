@@ -19,8 +19,9 @@ namespace l2calc
         [STAThread]
         static void Main(string[] args)
         {
-            r = new Regex(@"^.+?(\d[0-9.]+).+?(\d[0-9.]+).+?(\d[0-9.]+).+?$");
-            ParseSkillNameDat(205, 45, ParsingCallback);
+            /*r = new Regex(@"^.+?(\d[0-9.]+).+?(\d[0-9.]+).+?(\d[0-9.]+).+?$");
+            ParseSkillNameDat(250, 42, ParsingCallback);*/
+            Items();
         }
 
         static void Items()
@@ -126,6 +127,7 @@ namespace l2calc
                         var armorType = readSet("armor_type");
                         var grade = readSet("crystal_type");
                         var skill = readSet("item_skill");
+                        var ench4 = readSet("enchant4_skill");
                         var element = readSet("element_enabled");
                         var enchant = readSet("enchant_enabled");
 
@@ -149,6 +151,8 @@ namespace l2calc
                             sb.AppendFormat(", grade: '{0}'", grade);
                         if (skill != null)
                             sb.AppendFormat(", skill: '{0}'", skill);
+                        if (ench4 != null)
+                            sb.AppendFormat(", ench4: '{0}'", ench4);
                         if (element == "true")
                             sb.AppendFormat(", canElement: 1");
                         if (enchant == "1")
@@ -426,7 +430,7 @@ namespace l2calc
             {
                 var parts = line.Split('\t');
                 if (int.Parse(parts[0]) == skillId && int.Parse(parts[1]) <= maxLvl)
-                    data.Add(callback(parts[3]));
+                    line.Max();//data.Add(callback(parts[3]));
             }
             string result = "[" + string.Join(", ", data) + "]";
             Console.WriteLine(result);

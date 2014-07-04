@@ -72,75 +72,72 @@ l2.data.tools.sortItems = function (items) {
 		return 0;
 	});
 };
-l2.data.tools.findWeapons = function (grade, type) {
-	var weapons = l2.data.items.filter(function (item) {
-		if (item.weaponType != type)
+l2.data.tools.findItems = function (grade, filter) {
+	var items = l2.data.items.filter(function (item) {
+		if (!filter(item))
 			return false;
 		return (item.grade || 'none') == grade;
 	});
-	l2.data.tools.sortItems(weapons);
-	return weapons;
+	l2.data.tools.sortItems(items);
+	return items;
+};
+l2.data.tools.findWeapons = function (grade, type) {
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.weaponType == type;
+	});
 };
 l2.data.tools.findShields = function (grade) {
-	var shields = l2.data.items.filter(function (item) {
-		if (item.bodyPart != 'lhand' || item.sDef == null)
-			return false;
-		return (item.grade || 'none') == grade;
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'lhand' && item.sDef != null;
 	});
-	l2.data.tools.sortItems(shields);
-	return shields;
 };
 l2.data.tools.findBodyUppers = function (grade) {
-	var bu = l2.data.items.filter(function (item) {
-		if (item.bodyPart != 'chest' && item.bodyPart != 'onepiece')
-			return false;
-		return (item.grade || 'none') == grade;
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'chest' || item.bodyPart == 'onepiece';
 	});
-	l2.data.tools.sortItems(bu);
-	return bu;
 };
 l2.data.tools.findBodyLowers = function (grade) {
-	var bl = l2.data.items.filter(function (item) {
-		if (item.bodyPart != 'legs')
-			return false;
-		return (item.grade || 'none') == grade;
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'legs';
 	});
-	l2.data.tools.sortItems(bl);
-	return bl;
 };
 l2.data.tools.findHelmets = function (grade) {
-	var helmets = l2.data.items.filter(function (item) {
-		if (item.bodyPart != 'head')
-			return false;
-		return (item.grade || 'none') == grade;
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'head';
 	});
-	l2.data.tools.sortItems(helmets);
-	return helmets;
 };
 l2.data.tools.findGloves = function (grade) {
-	var gloves = l2.data.items.filter(function (item) {
-		if (item.bodyPart != 'gloves')
-			return false;
-		return (item.grade || 'none') == grade;
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'gloves';
 	});
-	l2.data.tools.sortItems(gloves);
-	return gloves;
 };
 l2.data.tools.findBoots = function (grade) {
-	var boots = l2.data.items.filter(function (item) {
-		if (item.bodyPart != 'feet')
-			return false;
-		return (item.grade || 'none') == grade;
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'feet';
 	});
-	l2.data.tools.sortItems(boots);
-	return boots;
 };
 l2.data.tools.findNecklaces = function (grade) {
-	var necklaces = l2.data.items.filter(function (item) {
-		if (item.bodyPart != 'neck')
-			return false;
-		return (item.grade || 'none') == grade;
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'neck';
 	});
-	l2.data.tools.sortItems(necklaces);
-	return necklaces;
+};
+l2.data.tools.findEarrings = function (grade) {
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'rear;lear';
+	});
+};
+l2.data.tools.findRings = function (grade) {
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'rfinger;lfinger';
+	});
+};
+l2.data.tools.findUnderwears = function (grade) {
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'underwear';
+	});
+};
+l2.data.tools.findBelts = function (grade) {
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'waist';
+	});
 };

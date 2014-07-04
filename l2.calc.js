@@ -59,6 +59,33 @@ l2.calc.checkConditions = function (char, usings, hp, atkFrom) {
 	return true;
 };
 
+l2.calc.stats = function (char) {
+	l2.calc.forEachBuff(char, 'STR', function (op, val) {
+		if (op == 'add') { char.stats.str += val; return; }
+		throw 'not implemented';
+	});
+	l2.calc.forEachBuff(char, 'DEX', function (op, val) {
+		if (op == 'add') { char.stats.dex += val; return; }
+		throw 'not implemented';
+	});
+	l2.calc.forEachBuff(char, 'CON', function (op, val) {
+		if (op == 'add') { char.stats.con += val; return; }
+		throw 'not implemented';
+	});
+	l2.calc.forEachBuff(char, 'INT', function (op, val) {
+		if (op == 'add') { char.stats.int += val; return; }
+		throw 'not implemented';
+	});
+	l2.calc.forEachBuff(char, 'WIT', function (op, val) {
+		if (op == 'add') { char.stats.wit += val; return; }
+		throw 'not implemented';
+	});
+	l2.calc.forEachBuff(char, 'MEN', function (op, val) {
+		if (op == 'add') { char.stats.men += val; return; }
+		throw 'not implemented';
+	});
+};
+
 l2.calc.HP = function (char) {
 	var $class = l2.data.tools.getClass(char.classId);
 	if ($class.prof == 3)
@@ -76,7 +103,16 @@ l2.calc.HP = function (char) {
 		if (op == 'sub') { addHP -= val; return; }
 		if (op == 'mul') { multHP *= val; return; }
 		throw 'not implemented';
-	})
+	});
+	['shield', 'helmet', 'bodyUpper', 'bodyLower', 'gloves', 'boots', 'underwear', 'belt'].forEach(function (part) {
+		if (char[part] && char[part].grade) {
+			if (char.enchants[part] >= 4)
+				if (char[part].bodyPart == 'onepiece')
+					addHP += l2.data.oeArmorHPBonus[char[part].grade.charAt(0)].fullbody[char.enchants[part] - 4];
+				else
+					addHP += l2.data.oeArmorHPBonus[char[part].grade.charAt(0)].single[char.enchants[part] - 4];
+		}
+	});
 	var conBonus = l2.data.statBonus['con'][char.stats.con];
 	return Math.floor(baseHP * conBonus * multHP + addHP);
 };
@@ -314,4 +350,57 @@ l2.calc.evasion = function (char) {
 		throw 'not implemented';
 	});
 	return Math.floor(Math.sqrt(char.stats.dex) * 6 + char.lvl + addEva);
+};
+
+l2.calc.necklaceMDef = function (char) {
+	if (char.necklace)
+		return l2.calc.applyArmorEnchant(char.necklace.mDef, char.necklace.grade, char.enchants.necklace);
+	else
+		return 13;
+};
+
+l2.calc.earring1MDef = function (char) {
+	if (char.earring1)
+		return l2.calc.applyArmorEnchant(char.earring1.mDef, char.earring1.grade, char.enchants.earring1);
+	else
+		return 9;
+};
+
+l2.calc.earring2MDef = function (char) {
+	if (char.earring2)
+		return l2.calc.applyArmorEnchant(char.earring2.mDef, char.earring2.grade, char.enchants.earring2);
+	else
+		return 9;
+};
+
+l2.calc.ring1MDef = function (char) {
+	if (char.ring1)
+		return l2.calc.applyArmorEnchant(char.ring1.mDef, char.ring1.grade, char.enchants.ring1);
+	else
+		return 5;
+};
+
+l2.calc.ring2MDef = function (char) {
+	if (char.ring2)
+		return l2.calc.applyArmorEnchant(char.ring2.mDef, char.ring2.grade, char.enchants.ring2);
+	else
+		return 5;
+};
+
+l2.calc.mDef = function (char) {
+	var jewelryMdef = 0;
+	jewelryMdef += l2.calc.necklaceMDef(char);
+	jewelryMdef += l2.calc.earring1MDef(char);
+	jewelryMdef += l2.calc.earring2MDef(char);
+	jewelryMdef += l2.calc.ring1MDef(char);
+	jewelryMdef += l2.calc.ring2MDef(char);
+	var addMdef = 0;
+	var multMdef = 1;
+	l2.calc.forEachBuff(char, 'mDef', function (op, val) {
+		if (op == 'add') { addMdef += val; return; }
+		if (op == 'mul') { multMdef *= val; return; }
+		throw 'not implemented';
+	});
+	var menBonus = l2.data.statBonus['men'][char.stats.men];
+	return Math.floor(jewelryMdef * char.lm * menBonus * multMdef + addMdef);
 };
