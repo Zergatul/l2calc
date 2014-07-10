@@ -32,17 +32,24 @@ window.l2 = window.l2 || {};
 	window.l2.model = {
 		weapon: {
 			get grade () { return weaponGrade; },
-			set grade (value) { weaponGrade = validateGrade(value); },
+			set grade (value) {
+				weaponGrade = validateGrade(value);
+				$('#weapon-grade').val(weaponGrade);
+			},
 			get type () { return weaponType; },
 			set type (value) {
 				value = value.toLowerCase();
-				if (l2.data.weaponTypes.indexOf(value) >= 0)
+				if (l2.data.weaponTypes.indexOf(value) >= 0) {
 					weaponGrade = value;
-				else
+					$('#weapon-type').val(value);
+				} else
 					throw 'Invalid type';
 			},
 			get id () { return weaponId; },
-			set id (value) { weaponId = validateId(value); },
+			set id (value) {
+				weaponId = validateId(value);
+				$('#weapon').val(weaponId);
+			},
 			get item () {
 				if (weaponId)
 					return l2.data.tools.getItem(weaponId);
