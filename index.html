@@ -172,21 +172,21 @@
 			<div>
 				<div class="left eq-header">Weapon</div>
 				<div class="left">
-					<select id="weapon-grade" class="grade" data-storage="weaponGrade"></select>
+					<select id="weapon-grade" class="grade" data-model="weapon.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="weapon-ench" data-storage="weaponEnch" />
+					+ <input type="number" min="0" id="weapon-ench" data-model="weapon.enchant" />
 				</div>
 				<div class="left">
-					<select id="weapon-type" data-storage="weaponType"></select>
+					<select id="weapon-type" data-model="weapon.type" data-load-order="1"></select>
 				</div>
 				<div class="left">
-					<select id="weapon" data-storage="weaponId"></select>
+					<select id="weapon" data-model="weapon.id"></select>
 				</div>
 				<div class="clear"></div>
 				<div class="left eq-header">Shield</div>
 				<div class="left">
-					<select id="shield-grade" class="grade" data-storage="shieldGrade"></select>
+					<select id="shield-grade" class="grade" data-storage="shieldGrade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="shield-ench" data-storage="shieldEnch" />
@@ -208,7 +208,7 @@
 
 				<div class="left eq-header">Helmet</div>
 				<div class="left">
-					<select id="helmet-grade" class="grade" data-storage="helmetGrade"></select>
+					<select id="helmet-grade" class="grade" data-storage="helmetGrade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="helmet-ench" data-storage="helmetEnch" />
@@ -220,7 +220,7 @@
 
 				<div class="left eq-header">Body Upper</div>
 				<div class="left">
-					<select id="body-upper-grade" class="grade" data-storage="bodyUpperGrade"></select>
+					<select id="body-upper-grade" class="grade" data-storage="bodyUpperGrade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="body-upper-ench" data-storage="bodyUpperEnch" />
@@ -232,7 +232,7 @@
 
 				<div class="left eq-header">Body Lower</div>
 				<div class="left">
-					<select id="body-lower-grade" class="grade" data-storage="bodyLowerGrade"></select>
+					<select id="body-lower-grade" class="grade" data-storage="bodyLowerGrade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="body-lower-ench" data-storage="bodyLowerEnch" />
@@ -244,7 +244,7 @@
 
 				<div class="left eq-header">Gloves</div>
 				<div class="left">
-					<select id="gloves-grade" class="grade" data-storage="glovesGrade">></select>
+					<select id="gloves-grade" class="grade" data-storage="glovesGrade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="gloves-ench" data-storage="glovesEnch" />
@@ -256,7 +256,7 @@
 
 				<div class="left eq-header">Boots</div>
 				<div class="left">
-					<select id="boots-grade" class="grade" data-storage="bootsGrade">></select>
+					<select id="boots-grade" class="grade" data-storage="bootsGrade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="boots-ench" data-storage="bootsEnch" />
@@ -270,7 +270,7 @@
 
 				<div class="left eq-header">Underwear</div>
 				<div class="left">
-					<select id="underwear-grade" class="grade" data-storage="underwearGrade">></select>
+					<select id="underwear-grade" class="grade" data-storage="underwearGrade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="underwear-ench" data-storage="underwearEnch" />
@@ -282,7 +282,7 @@
 
 				<div class="left eq-header">Belt</div>
 				<div class="left">
-					<select id="belt-grade" class="grade" data-storage="beltGrade">></select>
+					<select id="belt-grade" class="grade" data-storage="beltGrade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="belt-ench" data-storage="beltEnch" />
@@ -296,7 +296,7 @@
 
 				<div class="left eq-header">Necklace</div>
 				<div class="left">
-					<select id="necklace-grade" class="grade" data-storage="necklaceGrade">></select>
+					<select id="necklace-grade" class="grade" data-storage="necklaceGrade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="necklace-ench" data-storage="necklaceEnch" />
@@ -308,7 +308,7 @@
 
 				<div class="left eq-header">Earring</div>
 				<div class="left">
-					<select id="earring1-grade" class="grade" data-storage="earring1Grade">></select>
+					<select id="earring1-grade" class="grade" data-storage="earring1Grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="earring1-ench" data-storage="earring1Ench" />
@@ -320,7 +320,7 @@
 
 				<div class="left eq-header">Earring</div>
 				<div class="left">
-					<select id="earring2-grade" class="grade" data-storage="earring2Grade">></select>
+					<select id="earring2-grade" class="grade" data-storage="earring2Grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="earring2-ench" data-storage="earring2Ench" />
@@ -332,7 +332,7 @@
 
 				<div class="left eq-header">Ring</div>
 				<div class="left">
-					<select id="ring1-grade" class="grade" data-storage="ring1Grade">></select>
+					<select id="ring1-grade" class="grade" data-storage="ring1Grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
 					+ <input type="number" min="0" id="ring1-ench" data-storage="ring1Ench" />

@@ -6,6 +6,8 @@ l2.ui.equipmentIds = [
 	'underwear', 'belt',
 	'necklace', 'earring1', 'earring2', 'ring1', 'ring2'];
 
+l2.ui.disableValuesUpdate = false;
+
 l2.ui.bindClasses = function () {
 	$('#l2class').empty();
 	var raceId = $('#race').val();
@@ -605,10 +607,10 @@ l2.ui.restoreFromStorage = function () {
 		l2.ui.restoreSingleItem(this);
 	});
 
-	l2.ui.restoreSingleItem('#weapon-grade');
+	/*l2.ui.restoreSingleItem('#weapon-grade');
 	l2.ui.restoreSingleItem('#weapon-type');
 	l2.ui.onWeaponGradeChange();
-	l2.ui.restoreSingleItem('#weapon');
+	l2.ui.restoreSingleItem('#weapon');*/
 
 	l2.ui.restoreSingleItem('#shield-grade');
 	l2.ui.onShieldGradeChange();
@@ -1159,8 +1161,8 @@ $(function () {
 		l2.ui.tools.addOption('#weapon-type', this.code, this.name);
 	});
 	
-	$('#weapon-grade').change(l2.ui.onWeaponGradeChange);
-	$('#weapon-type').change(l2.ui.onWeaponTypeChange);
+	/*$('#weapon-grade').change(l2.ui.onWeaponGradeChange);
+	$('#weapon-type').change(l2.ui.onWeaponTypeChange);*/
 	l2.ui.bindWeapons();
 
 	$('#shield-grade').change(l2.ui.onShieldGradeChange);
@@ -1245,6 +1247,33 @@ $(function () {
 	$('select[data-storage]').change(l2.ui.onChangeSaveToStorage);
 	$('input[type=number][data-storage]').change(l2.ui.onChangeSaveToStorage);
 	$('input[type=checkbox][data-storage]').click(l2.ui.onChangeSaveToStorage);
+
+	// new !!!
+
+	$('[data-model]').each(function () {
+		var element = $(this);
+		var model = element.attr('data-model');
+		l2.model.addHandler(model, function (value) {
+			if (!l2.ui.disableValuesUpdate)
+				element.val(value);
+		});
+		l2.model.addHandler(model, function (value) {
+			localStorage['c:' + model] = value;
+		});
+	}).change(function () {
+		l2.ui.disableValuesUpdate = true;
+		l2.model.setValue($(this).attr('data-model'), $(this).val());
+		l2.ui.disableValuesUpdate = false;
+	});
+
+	l2.model.addHandler('weapon.type', l2.ui.bindWeapons);
+	l2.model.addHandler('weapon.grade', l2.ui.bindWeapons);
+
+	for (var property in localStorage)
+		if (property.indexOf('c:') == 0)
+			l2.model.setValue(property.substring(2), localStorage[property]);
+
+	// end new !!!
 
 	l2.ui.restoreFromStorage();
 
