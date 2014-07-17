@@ -30,7 +30,7 @@ namespace l2calc
             sb.AppendLine("window.l2 = window.l2 || {};");
             sb.AppendLine("window.l2.data = window.l2.data || {};");
             sb.AppendLine();
-            sb.AppendLine("l2.data.items = [");
+            sb.AppendLine("l2.data.items = {");
 
             var files = Directory.EnumerateFiles(@"C:\Users\Igor_Budzhak\Dropbox\l2\hfdata\items\", "*.xml");
             foreach (string file in files)
@@ -101,7 +101,7 @@ namespace l2calc
                         if (pAtk == null)
                             continue;
 
-                        sb.AppendFormat("\t{{ id: {0}, name: '{1}', weaponType: '{2}', pAtk: {3}, mAtk: {4}", id, name, weaponType, pAtk, mAtk);
+                        sb.AppendFormat("\t{0}: {{ id: {0}, name: '{1}', weaponType: '{2}', pAtk: {3}, mAtk: {4}", id, name, weaponType, pAtk, mAtk);
                         if (weaponType == "bow" && pAtkSpd == "293")
                             sb.Append(", bowFast: 1");
                         if (grade != null)
@@ -136,7 +136,7 @@ namespace l2calc
                         var mDef = readForAdd("mDef");
                         var maxMp = readForAdd("maxMp");
 
-                        sb.AppendFormat("\t{{ id: {0}, name: '{1}', bodyPart: '{2}'", id, name, bodypart);
+                        sb.AppendFormat("\t{0}: {{ id: {0}, name: '{1}', bodyPart: '{2}'", id, name, bodypart);
                         if (armorType != null)
                             sb.AppendFormat(", armorType: '{0}'", armorType);
                         if (sDef != null)
@@ -164,7 +164,7 @@ namespace l2calc
 
             sb.Remove(sb.Length - 3, 3);
             sb.AppendLine();
-            sb.Append("];");
+            sb.Append("};");
 
             File.WriteAllText(_folder + "l2.data.items.js", sb.ToString());
         }

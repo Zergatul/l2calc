@@ -1,23 +1,22 @@
 window.l2 = window.l2 || {};
 window.l2.ui = window.l2.ui || {};
 
-l2.ui.equipmentIds = [
-	'weapon', 'shield', 'helmet', 'body-upper', 'body-lower', 'boots', 'gloves',
+l2.ui.disableValuesUpdate = false;
+l2.ui.disableStorageUpdate = false;
+l2.ui.disableRecalc = false;
+
+l2.ui.modelEquipments = [
+	'weapon', 'shield', 'helmet', 'bodyUpper', 'bodyLower', 'boots', 'gloves',
 	'underwear', 'belt',
 	'necklace', 'earring1', 'earring2', 'ring1', 'ring2'];
 
-l2.ui.disableValuesUpdate = false;
-
 l2.ui.bindClasses = function () {
 	$('#l2class').empty();
-	var raceId = $('#race').val();
-	var prof = $('#prof').val();
 	$.each(l2.data.classes, function () {
-		if (l2.data.subRace[this.subRace].race == raceId && this.prof == prof)
+		if (l2.data.subRace[this.subRace].race == l2.model.raceId && this.prof == l2.model.prof)
 			l2.ui.tools.addOption('#l2class', this.id, this.name);
 	});
-	if (l2.ui.canChangeStorage)
-		localStorage.classId = $('#l2class').val();
+	l2.model.classId = $('#l2class').val();
 };
 
 l2.ui.bindWeapons = function () {
@@ -29,6 +28,7 @@ l2.ui.bindWeapons = function () {
 	$.each(weapons, function () {
 		l2.ui.tools.addOption('#weapon', this.id, this.name);
 	});
+	l2.model.weapon.id = null;
 };
 
 l2.ui.bindShields = function () {
@@ -43,6 +43,7 @@ l2.ui.bindShields = function () {
 			name = name + ' [Rare]';
 		l2.ui.tools.addOption('#shield', this.id, name);
 	});	
+	l2.model.shield.id = null;
 };
 
 l2.ui.bindSets = function () {
@@ -72,40 +73,29 @@ l2.ui.applySet = function () {
 		return;
 	if (set.chest != null) {
 		var armor = l2.data.tools.getItem(set.chest[0]);
-		$('#body-upper-grade').val(armor.grade || 'none');
-		l2.ui.onBodyUpperGradeChange();
-		$('#body-upper').val(set.chest[0]);
-		l2.ui.onBodyUpperChange();
+		l2.model.bodyUpper.grade = armor.grade || 'none';
+		l2.model.bodyUpper.id = set.chest[0];
 	}
 	if (set.legs != null) {
 		var armor = l2.data.tools.getItem(set.legs[0]);
-		$('#body-lower-grade').val(armor.grade || 'none');
-		l2.ui.onBodyLowerGradeChange();
-		$('#body-lower').val(set.legs[0]);
+		l2.model.bodyLower.grade = armor.grade || 'none';
+		l2.model.bodyLower.id = set.legs[0];
 	}
 	if (set.head != null) {
 		var armor = l2.data.tools.getItem(set.head[0]);
-		$('#helmet-grade').val(armor.grade || 'none');
-		l2.ui.onHelmetGradeChange();
-		$('#helmet').val(set.head[0]);
+		l2.model.helmet.grade = armor.grade || 'none';
+		l2.model.helmet.id = set.head[0];
 	}
 	if (set.gloves != null) {
 		var armor = l2.data.tools.getItem(set.gloves[0]);
-		$('#gloves-grade').val(armor.grade || 'none');
-		l2.ui.onGlovesGradeChange();
-		$('#gloves').val(set.gloves[0]);
+		l2.model.gloves.grade = armor.grade || 'none';
+		l2.model.gloves.id = set.gloves[0];
 	}
 	if (set.feet != null) {
 		var armor = l2.data.tools.getItem(set.feet[0]);
-		$('#boots-grade').val(armor.grade || 'none');
-		l2.ui.onBootsGradeChange();
-		$('#boots').val(set.feet[0]);
+		l2.model.boots.grade = armor.grade || 'none';
+		l2.model.boots.id = set.feet[0];
 	}
-
-	$('#body-upper, #body-lower, #helmet, #gloves, #boots').each(l2.ui.onChangeSaveToStorage);
-	$('#body-upper-grade, #body-lower-grade, #helmet-grade, #gloves-grade, #boots-grade').each(l2.ui.onChangeSaveToStorage);
-
-	l2.ui.recalc();
 };
 
 l2.ui.checkSet = function (char) {
@@ -157,6 +147,7 @@ l2.ui.bindHelmets = function () {
 		else
 			l2.ui.tools.addOption('#helmet', this.id, this.name);
 	});
+	l2.model.helmet.id = null;
 };
 
 l2.ui.bindBodyUpper = function () {
@@ -167,6 +158,7 @@ l2.ui.bindBodyUpper = function () {
 	$.each(bodyUppers, function () {
 		l2.ui.tools.addOption('#body-upper', this.id, this.name);
 	});
+	l2.model.bodyUpper.id = null;
 };
 
 l2.ui.bindBodyLower = function () {
@@ -177,6 +169,7 @@ l2.ui.bindBodyLower = function () {
 	$.each(bodyLowers, function () {
 		l2.ui.tools.addOption('#body-lower', this.id, this.name);
 	});
+	l2.model.bodyLower.id = null;
 };
 
 l2.ui.bindGloves = function () {
@@ -187,6 +180,7 @@ l2.ui.bindGloves = function () {
 	$.each(gloves, function () {
 		l2.ui.tools.addOption('#gloves', this.id, this.name);
 	});
+	l2.model.gloves.id = null;
 };
 
 l2.ui.bindBoots = function () {
@@ -197,6 +191,7 @@ l2.ui.bindBoots = function () {
 	$.each(boots, function () {
 		l2.ui.tools.addOption('#boots', this.id, this.name);
 	});
+	l2.model.boots.id = null;
 };
 
 l2.ui.bindUnderwears = function () {
@@ -207,6 +202,7 @@ l2.ui.bindUnderwears = function () {
 	$.each(underwears, function () {
 		l2.ui.tools.addOption('#underwear', this.id, this.name);
 	});
+	l2.model.underwear.id = null;
 };
 
 l2.ui.bindBelts = function () {
@@ -217,6 +213,7 @@ l2.ui.bindBelts = function () {
 	$.each(belts, function () {
 		l2.ui.tools.addOption('#belt', this.id, this.name);
 	});
+	l2.model.belt.id = null;
 };
 
 l2.ui.bindNecklaces = function () {
@@ -227,6 +224,7 @@ l2.ui.bindNecklaces = function () {
 	$.each(necklaces, function () {
 		l2.ui.tools.addOption('#necklace', this.id, this.name);
 	});
+	l2.model.necklace.id = null;
 };
 
 l2.ui.bindEarrings = function (index) {
@@ -237,15 +235,11 @@ l2.ui.bindEarrings = function (index) {
 	$.each(earrings, function () {
 		l2.ui.tools.addOption('#earring' + index, this.id, this.name);
 	});
+	l2.model['earring' + index].id = null;
 };
 
-l2.ui.bindEarrings1 = function () {
-	l2.ui.bindEarrings(1);
-};
-
-l2.ui.bindEarrings2 = function () {
-	l2.ui.bindEarrings(2);
-};
+l2.ui.bindEarrings1 = l2.ui.bindEarrings.bind(null, 1);
+l2.ui.bindEarrings2 = l2.ui.bindEarrings.bind(null, 2);
 
 l2.ui.bindRings = function (index) {
 	var grade = $('#ring' + index + '-grade').val();
@@ -255,15 +249,11 @@ l2.ui.bindRings = function (index) {
 	$.each(rings, function () {
 		l2.ui.tools.addOption('#ring' + index, this.id, this.name);
 	});
+	l2.model['ring' + index].id = null;
 };
 
-l2.ui.bindRings1 = function () {
-	l2.ui.bindRings(1);
-};
-
-l2.ui.bindRings2 = function () {
-	l2.ui.bindRings(2);
-};
+l2.ui.bindRings1 = l2.ui.bindRings.bind(null, 1);
+l2.ui.bindRings2 = l2.ui.bindRings.bind(null, 2);
 
 l2.ui.bindPassives = function () {
 	var classId = $('#l2class').val();
@@ -415,12 +405,24 @@ l2.ui.bindToggles = function () {
 	}
 };
 
-l2.ui.classChanged = function () {
+l2.ui.bindClassSkills = function () {
 	l2.ui.bindPassives();
 	l2.ui.bindSelfBuffs();
 	l2.ui.bindToggles();
 	l2.ui.autoSelectPassives();
 	l2.ui.recalc();
+};
+
+l2.ui.bindClassTattos = function () {
+	var _class = l2.data.tools.getClass(l2.model.classId);
+	l2.model.tatto1.enabled = _class.prof > 0;
+	l2.model.tatto2.enabled = _class.prof > 0;
+	l2.model.tatto3.enabled = _class.prof > 1;
+	/*if (_class.prof == 3)
+		_class = l2.data.tools.getClass(_class.parent);
+	if (l2.model.tatto1.enabled) {
+		l2.model.tatto1.add.enableInt = true;
+	}*/
 };
 
 l2.ui.bindCommonBuffs = function () {
@@ -556,154 +558,12 @@ l2.ui.bindBuffs = function () {
 	l2.ui.bindClanSkils();
 };
 
-l2.ui.canChangeStorage = false;
 l2.ui.canShowDelta = false;
 l2.ui.prevStats = null;
 
-l2.ui.restoreSingleItem = function (element) {
-	if ($(element).is('select')) {
-		var value = localStorage[$(element).attr('data-storage')];
-		if (value == undefined)
-			$(element).val($(element).children('option:first').val());
-		else
-			$(element).val(value);
-	}
-	if ($(element).is('input[type=number]')) {
-		var value = localStorage[$(element).attr('data-storage')];
-		if (value == undefined)
-			$(element).val(0);
-		else
-			$(element).val(value);
-	}
-	if ($(element).is('input[type=checkbox]'))
-		if (localStorage[$(element).attr('data-storage')] == '1')
-			$(element).prop('checked', true);
-		else
-			$(element).prop('checked', false);
-};
-
-l2.ui.onChangeSaveToStorage = function () {
-	if (!l2.ui.canChangeStorage)
-		return;
-	if ($(this).is('select') || $(this).is('input[type=number]'))
-		localStorage[$(this).attr('data-storage')] = $(this).val();
-	if ($(this).is('input[type=checkbox]'))
-		localStorage[$(this).attr('data-storage')] = $(this).is(':checked') ? 1 : 0;
-};
-
-l2.ui.restoreFromStorage = function () {
-	l2.ui.restoreSingleItem('#race');
-	l2.ui.restoreSingleItem('#prof');
-	l2.ui.bindClasses();
-
-	l2.ui.restoreSingleItem('#l2class');
-	l2.ui.restoreSingleItem('#lvl');
-	l2.ui.classChanged();
-
-	l2.ui.restoreSingleItem('#hpperc');
-	l2.ui.restoreSingleItem('#atkfrom');
-
-	$('.tatoo-chb, .tatoo-stat, .tatoo-plus, .tatoo-minus').each(function () {
-		l2.ui.restoreSingleItem(this);
-	});
-
-	/*l2.ui.restoreSingleItem('#weapon-grade');
-	l2.ui.restoreSingleItem('#weapon-type');
-	l2.ui.onWeaponGradeChange();
-	l2.ui.restoreSingleItem('#weapon');*/
-
-	l2.ui.restoreSingleItem('#shield-grade');
-	l2.ui.onShieldGradeChange();
-	l2.ui.restoreSingleItem('#shield');
-
-	l2.ui.restoreSingleItem('#set-grade');
-	l2.ui.bindSets();
-
-	l2.ui.restoreSingleItem('#helmet-grade');
-	l2.ui.onHelmetGradeChange();
-	l2.ui.restoreSingleItem('#helmet');
-
-	l2.ui.restoreSingleItem('#body-upper-grade');
-	l2.ui.onBodyUpperGradeChange();
-	l2.ui.restoreSingleItem('#body-upper');
-
-	l2.ui.restoreSingleItem('#body-lower-grade');
-	l2.ui.onBodyLowerGradeChange();
-	l2.ui.restoreSingleItem('#body-lower')
-	l2.ui.onBodyUpperChange();
-
-	l2.ui.restoreSingleItem('#gloves-grade');
-	l2.ui.onGlovesGradeChange();
-	l2.ui.restoreSingleItem('#gloves');
-
-	l2.ui.restoreSingleItem('#boots-grade');
-	l2.ui.onBootsGradeChange();
-	l2.ui.restoreSingleItem('#boots');
-
-	l2.ui.restoreSingleItem('#underwear-grade');
-	l2.ui.onUnderwearGradeChange();
-	l2.ui.restoreSingleItem('#underwear');
-
-	l2.ui.restoreSingleItem('#belt-grade');
-	l2.ui.onBeltGradeChange();
-	l2.ui.restoreSingleItem('#belt');
-
-	l2.ui.restoreSingleItem('#necklace-grade');
-	l2.ui.onNecklaceGradeChange();
-	l2.ui.restoreSingleItem('#necklace');
-
-	l2.ui.restoreSingleItem('#earring1-grade');
-	l2.ui.onEarring1GradeChange();
-	l2.ui.restoreSingleItem('#earring1');
-
-	l2.ui.restoreSingleItem('#earring2-grade');
-	l2.ui.onEarring2GradeChange();
-	l2.ui.restoreSingleItem('#earring2');
-
-	l2.ui.restoreSingleItem('#ring1-grade');
-	l2.ui.onRing1GradeChange();
-	l2.ui.restoreSingleItem('#ring1');
-
-	l2.ui.restoreSingleItem('#ring2-grade');
-	l2.ui.onRing2GradeChange();
-	l2.ui.restoreSingleItem('#ring2');
-
-	l2.ui.equipmentIds.forEach(function (id) {
-		l2.ui.setupEnchantInput.call($('#' + id)[0]);
-	});
-
-	$('input[type=number]').each(function() {
-		l2.ui.restoreSingleItem(this);
-	});
-
-	$('#commonbuffs > div > div > div.common-skill > select').each(function () {
-		l2.ui.restoreSingleItem(this);
-	});
-	$('#songbuffs > div > div.song-skill > label > input').each(function () {
-		l2.ui.restoreSingleItem(this);
-	});
-	$('#dancebuffs > div > div.dance-skill > label > input').each(function () {
-		l2.ui.restoreSingleItem(this);
-	});
-	$('#clanskills > div:first > div.clan-skill select').each(function () {
-		l2.ui.restoreSingleItem(this);
-	});
-	$('#clanskills > div:last > div.clan-skill input').each(function () {
-		l2.ui.restoreSingleItem(this);
-	})
-
-	$('#selfbuffs > div > div.self-skill > select').each(function () {
-		l2.ui.restoreSingleItem(this);
-	});
-	$('#toggles > div > div.toggle-skill > select').each(function () {
-		l2.ui.restoreSingleItem(this);
-	});
-
-	l2.ui.recalc();
-};
-
-l2.ui.saveAllToStorage = function () {
-	$('select[data-storage], input[type=checkbox][data-storage], input[type=number][data-storage]').each(l2.ui.onChangeSaveToStorage);
+l2.ui.consoleTime = function () {
+	var date = new Date();
+	console.log(date.getSeconds() + ':' + date.getMilliseconds());
 };
 
 l2.ui.toggleFieldSet = function () {
@@ -716,15 +576,14 @@ l2.ui.toggleFieldSet = function () {
 };
 
 l2.ui.clearEquipment = function () {
-	$('#set').val('');
-	var ids = ['weapon', 'shield', 'helmet', 'body-upper', 'body-lower', 'gloves', 'boots', 'underwear', 'belt', 'necklace', 'earring1', 'earring2', 'ring1', 'ring2'];
-	ids.forEach(function (id) {
-		$('#' + id).val('');
-		$('#' + id + '-ench').val(0);
+	l2.ui.consoleTime();
+	l2.ui.disableRecalc = true;
+	l2.ui.modelEquipments.forEach(function (eq) {
+		l2.model[eq].id = null;
 	});
-	l2.ui.onBodyUpperChange();
-	l2.ui.saveAllToStorage();
+	l2.ui.disableRecalc = false;
 	l2.ui.recalc();
+	l2.ui.consoleTime();
 };
 
 l2.ui.clearSelfBuffs = function () {
@@ -814,19 +673,6 @@ l2.ui.onGlovesGradeChange = function () {
 
 l2.ui.onBootsGradeChange = function () {
 	l2.ui.onGradeChange('boots', l2.ui.bindBoots);
-};
-
-l2.ui.onBodyUpperChange = function () {
-	var onePiece;
-	if ($('#body-upper').val() == '')
-		onePiece = false;
-	else {
-		var bodyUpper = l2.data.tools.getItem($('#body-upper').val());
-		onePiece = bodyUpper.bodyPart == 'onepiece';
-	}
-	$('#body-lower-grade, #body-lower-ench, #body-lower').attr('disabled', onePiece);
-	if (onePiece)
-		$('#body-lower').val('');
 };
 
 l2.ui.onUnderwearGradeChange = function () {
@@ -920,6 +766,9 @@ l2.ui.parseSkills = function (array, str) {
 };
 
 l2.ui.recalc = function () {
+	if (l2.ui.disableRecalc)
+		return;
+
 	var classId = parseInt($('#l2class').val());
 	if (isNaN(classId))
 		return;
@@ -1106,12 +955,7 @@ l2.ui.adjustContainer = function () {
 	$('#container').width(width);
 };
 
-$(function () {
-
-	window.onerror = function (msg) {
-		alert(msg);
-	};
-
+l2.ui.bindProfessionFieldSet = function () {
 	$.each(l2.data.races, function () {
 		l2.ui.tools.addOption('#race', this.id, this.name);
 	});
@@ -1123,24 +967,15 @@ $(function () {
 		l2.ui.tools.addOption('#lvl', i, i);
 
 	[100, 60, 30].forEach(function (hp) {
-		l2.ui.tools.addOption('#hpperc', hp, hp);
+		l2.ui.tools.addOption('#hpperc', hp, hp + ' %');
 	});
 
 	['front', 'side', 'behind'].forEach(function (from) {
 		l2.ui.tools.addOption('#atkfrom', from, from);
 	});
+};
 
-	$('#race').change(l2.ui.bindClasses);
-	$('#race').change(l2.ui.classChanged);
-	$('#prof').change(l2.ui.bindClasses);
-	$('#prof').change(l2.ui.classChanged);
-	l2.ui.bindClasses();
-	$('#l2class').change(l2.ui.classChanged);
-	$('#lvl').change(l2.ui.classChanged);
-	l2.ui.classChanged();
-	$('#hpperc').change(l2.ui.recalc);
-	$('#atkfrom').change(l2.ui.recalc);
-
+l2.ui.bindBaseStatsFieldSet = function () {
 	$.each(['str', 'dex', 'con', 'int', 'wit', 'men'], function () {
 		l2.ui.tools.addOption('.tatoo-stat', this, this.toUpperCase());
 	});
@@ -1148,11 +983,9 @@ $(function () {
 		l2.ui.tools.addOption('.tatoo-plus', i, '+' + i);
 	for (var i = 1; i <= 6; i++)
 		l2.ui.tools.addOption('.tatoo-minus', -i, '-' + i);
-	$('.tatoo-chb').click(l2.ui.recalc);
-	$('.tatoo-stat').change(l2.ui.recalc);
-	$('.tatoo-plus').change(l2.ui.recalc);
-	$('.tatoo-minus').change(l2.ui.recalc);
+};
 
+l2.ui.bindEquipmentFieldSet = function () {
 	$.each(l2.data.grades, function () {
 		l2.ui.tools.addOption('.grade', this.code, this.name);
 	});
@@ -1160,47 +993,141 @@ $(function () {
 	$.each(l2.data.weaponTypes, function () {
 		l2.ui.tools.addOption('#weapon-type', this.code, this.name);
 	});
-	
-	/*$('#weapon-grade').change(l2.ui.onWeaponGradeChange);
-	$('#weapon-type').change(l2.ui.onWeaponTypeChange);*/
-	l2.ui.bindWeapons();
 
-	$('#shield-grade').change(l2.ui.onShieldGradeChange);
-	$('#shield-type').change(l2.ui.bindShields);
-	l2.ui.bindShields();
-	$('#set-grade').change(l2.ui.bindSets);
-	l2.ui.bindSets();
 	$('#set').change(l2.ui.applySet);
-	$('#helmet-grade').change(l2.ui.onHelmetGradeChange);
-	l2.ui.bindHelmets();
-	$('#body-upper-grade').change(l2.ui.onBodyUpperGradeChange);
-	l2.ui.bindBodyUpper();
-	$('#body-lower-grade').change(l2.ui.onBodyLowerGradeChange);
-	l2.ui.bindBodyLower();
-	$('#gloves-grade').change(l2.ui.onGlovesGradeChange);
-	l2.ui.bindGloves();
-	$('#boots-grade').change(l2.ui.onBootsGradeChange);
-	l2.ui.bindBoots();
-	$('#underwear-grade').change(l2.ui.onUnderwearGradeChange);
-	l2.ui.bindUnderwears();
-	$('#belt-grade').change(l2.ui.onBeltGradeChange);
-	l2.ui.bindBelts();
-	$('#necklace-grade').change(l2.ui.onNecklaceGradeChange);
-	l2.ui.onNecklaceGradeChange();
-	$('#earring1-grade').change(l2.ui.onEarring1GradeChange);
-	l2.ui.onEarring1GradeChange();
-	$('#earring2-grade').change(l2.ui.onEarring2GradeChange);
-	l2.ui.onEarring2GradeChange();
-	$('#ring1-grade').change(l2.ui.onRing1GradeChange);
-	l2.ui.onRing1GradeChange();
-	$('#ring2-grade').change(l2.ui.onRing2GradeChange);
-	l2.ui.onRing2GradeChange();
+};
 
-	$('#body-upper').change(l2.ui.onBodyUpperChange);
-	l2.ui.equipmentIds.forEach(function (id) {
-		$('#' + id).change(l2.ui.setupEnchantInput);
-		$('#' + id).change(l2.ui.recalc);
+l2.ui.prepareModel = function () {
+	$('[data-model]').each(function () {
+		var element = $(this);
+		var model = element.attr('data-model');
+		l2.model.addHandler(model, function (value) {
+			if (!l2.ui.disableValuesUpdate)
+				if (model.indexOf('.grade') > 0 || model == 'setGrade')
+					element.val(value || 'none');
+				else
+					if (element.is('input[type=checkbox]'))
+						element.attr('checked', value);
+					else
+						element.val(value);
+			else
+				l2.ui.disableValuesUpdate = false;
+		});
+		l2.model.addHandler(model, function (value) {
+			if (!l2.ui.disableStorageUpdate)
+				localStorage['c:' + model] = value == null ? '' : value;
+		});
+	}).change(function () {
+		l2.ui.disableValuesUpdate = true;
+		if ($(this).is('input[type=checkbox]'))
+			l2.model.setValue($(this).attr('data-model'), $(this).is(':checked'));
+		else
+			l2.model.setValue($(this).attr('data-model'), $(this).val());
+		l2.ui.disableValuesUpdate = false;
 	});
+
+	l2.model.addHandler('raceId', l2.ui.bindClasses);
+	l2.model.addHandler('prof', l2.ui.bindClasses);
+	l2.model.addHandler('classId', l2.ui.bindClassSkills);
+	l2.model.addHandler('classId', l2.ui.bindClassTattos);
+	l2.model.addHandler('level', l2.ui.autoSelectPassives);
+
+	l2.model.addHandler('tatto1.enabled', function (value) {
+		$('#tatoo-slot-1 input, #tatoo-slot-1 select').attr('disabled', !value);
+	});
+	l2.model.addHandler('tatto2.enabled', function (value) {
+		$('#tatoo-slot-2 input, #tatoo-slot-2 select').attr('disabled', !value);
+	});
+	l2.model.addHandler('tatto3.enabled', function (value) {
+		$('#tatoo-slot-3 input, #tatoo-slot-3 select').attr('disabled', !value);
+	});
+
+	l2.model.addHandler('weapon.type', l2.ui.bindWeapons);
+	l2.model.addHandler('weapon.grade', l2.ui.bindWeapons);
+	l2.model.addHandler('shield.grade', l2.ui.bindShields);
+	l2.model.addHandler('helmet.grade', l2.ui.bindHelmets);
+	l2.model.addHandler('bodyUpper.grade', l2.ui.bindBodyUpper);
+	l2.model.addHandler('bodyLower.grade', l2.ui.bindBodyLower);
+	l2.model.addHandler('gloves.grade', l2.ui.bindGloves);
+	l2.model.addHandler('boots.grade', l2.ui.bindBoots);
+	l2.model.addHandler('underwear.grade', l2.ui.bindUnderwears);
+	l2.model.addHandler('belt.grade', l2.ui.bindBelts);
+	l2.model.addHandler('necklace.grade', l2.ui.bindNecklaces);
+	l2.model.addHandler('earring1.grade', l2.ui.bindEarrings1);
+	l2.model.addHandler('earring2.grade', l2.ui.bindEarrings2);
+	l2.model.addHandler('ring1.grade', l2.ui.bindRings1);
+	l2.model.addHandler('ring2.grade', l2.ui.bindRings2);
+
+	l2.model.addHandler('weapon.id', function () {
+		var item = l2.model.weapon.item;
+		l2.model.shield.disabled = item && ['bow', 'pole', 'bigsword', 'bigblunt'].indexOf(item.weaponType) >= 0;
+	});
+
+	l2.model.addHandler('bodyUpper.id', function () {
+		var item = l2.model.bodyUpper.item;
+		l2.model.bodyLower.disabled = item && item.bodyPart == 'onepiece';
+	});
+
+	l2.ui.modelEquipments.forEach(function (eq) {
+		l2.model.addHandler(eq + '.canEnchant', function (value) {
+			$('[data-model="' + eq + '.enchant"]').attr('disabled', !value);
+		});
+		l2.model.addHandler(eq + '.disabled', function (value) {
+			$('[data-model="' + eq + '.grade"]').attr('disabled', value);
+			$('[data-model="' + eq + '.enchant"]').attr('disabled', value || !l2.model[eq].canEnchant);
+			$('[data-model="' + eq + '.id"]').attr('disabled', value);
+		});
+		l2.model.addHandler(eq + '.id', function () {
+			var item = l2.model[eq].item;
+			l2.model[eq].canEnchant = item && item.canEnchant;
+		});
+	});
+
+	l2.model.addHandler('setGrade', l2.ui.bindSets);
+
+	l2.model.addGlobalHandler(l2.ui.recalc);
+};
+
+$(function () {
+
+	window.onerror = function (msg) {
+		alert(msg);
+	};
+
+	l2.ui.disableStorageUpdate = true;
+
+	l2.ui.prepareModel();
+
+	l2.ui.bindProfessionFieldSet();
+	l2.ui.bindBaseStatsFieldSet();
+	l2.ui.bindEquipmentFieldSet();
+
+	l2.model.raceId = 0;
+	l2.model.prof = 0;
+	l2.model.classId = 0;
+	l2.model.level = 1;
+	l2.model.hpPercent = 100;
+	l2.model.position = 'front';
+
+	l2.model.tatto1.add.stat = 'str';
+	l2.model.tatto1.add.val = 1;
+	l2.model.tatto1.sub.stat = 'str';
+	l2.model.tatto1.sub.val = -1;
+	l2.model.tatto2.add.stat = 'str';
+	l2.model.tatto2.add.val = 1;
+	l2.model.tatto2.sub.stat = 'str';
+	l2.model.tatto2.sub.val = -1;
+	l2.model.tatto3.add.stat = 'str';
+	l2.model.tatto3.add.val = 1;
+	l2.model.tatto3.sub.stat = 'str';
+	l2.model.tatto3.sub.val = -1;
+
+	l2.model.weapon.type = 'bigsword';
+	l2.ui.modelEquipments.forEach(function (eq) {
+		l2.model[eq].grade = 'none';
+		l2.model[eq].id = null;
+	});
+	l2.model.setGrade = 'none';
 
 	l2.ui.bindBuffs();
 
@@ -1244,39 +1171,29 @@ $(function () {
 	$(window).resize(l2.ui.adjustContainer);
 	l2.ui.adjustContainer();
 
-	$('select[data-storage]').change(l2.ui.onChangeSaveToStorage);
-	$('input[type=number][data-storage]').change(l2.ui.onChangeSaveToStorage);
-	$('input[type=checkbox][data-storage]').click(l2.ui.onChangeSaveToStorage);
-
 	// new !!!
 
-	$('[data-model]').each(function () {
-		var element = $(this);
-		var model = element.attr('data-model');
-		l2.model.addHandler(model, function (value) {
-			if (!l2.ui.disableValuesUpdate)
-				element.val(value);
-		});
-		l2.model.addHandler(model, function (value) {
-			localStorage['c:' + model] = value;
-		});
-	}).change(function () {
-		l2.ui.disableValuesUpdate = true;
-		l2.model.setValue($(this).attr('data-model'), $(this).val());
-		l2.ui.disableValuesUpdate = false;
-	});
-
-	l2.model.addHandler('weapon.type', l2.ui.bindWeapons);
-	l2.model.addHandler('weapon.grade', l2.ui.bindWeapons);
-
+	var saved = [];
 	for (var property in localStorage)
 		if (property.indexOf('c:') == 0)
-			l2.model.setValue(property.substring(2), localStorage[property]);
+			saved.push({
+				model: property.substring(2)
+			});
+	saved.forEach(function (m) {
+		m.elements = $('[data-model="' + m.model + '"]');
+	});
+	saved.sort(function (m1, m2) {
+		var lo1 = parseInt(m1.elements.attr('data-load-order')) || 0;
+		var lo2 = parseInt(m2.elements.attr('data-load-order')) || 0;
+		return lo2 - lo1;
+	});
+	saved.forEach(function (m) {
+		l2.model.setValue(m.model, localStorage['c:' + m.model]);
+	});
+
+	l2.ui.disableStorageUpdate = false;
 
 	// end new !!!
 
-	l2.ui.restoreFromStorage();
-
-	l2.ui.canChangeStorage = true;
 	l2.ui.canShowDelta = true;
 });

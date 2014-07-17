@@ -20,22 +20,22 @@
 	<fieldset id="profession">
 		<legend>Profession</legend>
 		<div class="left prof-header">Race:</div>
-		<select id="race" data-storage="race"></select>
+		<select id="race" data-model="raceId" data-load-order="3"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Prof:</div>
-		<select id="prof" data-storage="prof"></select>
+		<select id="prof" data-model="prof" data-load-order="2"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Class:</div>
-		<select id="l2class" data-storage="classId"></select>
+		<select id="l2class" data-model="classId" data-load-order="1"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Level:</div>
-		<select id="lvl" data-storage="lvl"></select>
+		<select id="lvl" data-model="level"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">HP:</div>
-		<select id="hpperc" data-storage="hpperc"></select>
+		<select id="hpperc" data-model="hpPercent"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Pos:</div>
-		<select id="atkfrom" data-storage="atkfrom"></select>
+		<select id="atkfrom" data-model="position"></select>
 	</fieldset>
 	<fieldset id="bstats">
 		<legend>Base Stats</legend>
@@ -60,31 +60,31 @@
 		<hr />
 		<div id="tatoo-slot-1">
 			<div class="left tatoo-header">Tatoo Slot 1: </div>
-			<div class="left"><input type="checkbox" class="tatoo-chb" data-storage="tattoSlot1" /></div>
-			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot1Stat1"></select></div>
-			<div class="left"><select class="tatoo-plus" data-storage="tattoSlot1Plus"></select></div>
-			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot1Stat2"></select></div>
-			<div class="left"><select class="tatoo-minus" data-storage="tattoSlot1Minus"></select></div>
+			<div class="left"><input type="checkbox" class="tatoo-chb" data-model="tatto1.checked" /></div>
+			<div class="left"><select class="tatoo-stat" data-model="tatto1.add.stat"></select></div>
+			<div class="left"><select class="tatoo-plus" data-model="tatto1.add.value"></select></div>
+			<div class="left"><select class="tatoo-stat" data-model="tatto1.sub.stat"></select></div>
+			<div class="left"><select class="tatoo-minus" data-model="tatto1.sub.value"></select></div>
 		</div>
 		<div class="clear"></div>
 		<div id="tatoo-slot-2">
 			<div class="left tatoo-header">Tatoo Slot 2: </div>
-			<div class="left"><input type="checkbox" class="tatoo-chb" data-storage="tattoSlot2" /></div>
-			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot2Stat1"></select></div>
-			<div class="left"><select class="tatoo-plus" data-storage="tattoSlot2Plus"></select></div>
+			<div class="left"><input type="checkbox" class="tatoo-chb" data-model="tatto2.checked" /></div>
+			<div class="left"><select class="tatoo-stat" data-model="tatto2.add.stat"></select></div>
+			<div class="left"><select class="tatoo-plus" data-model="tatto2.add.value"></select></div>
 			<div class="left"> </div>
-			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot2Stat2"></select></div>
-			<div class="left"><select class="tatoo-minus" data-storage="tattoSlot2Minus"></select></div>
+			<div class="left"><select class="tatoo-stat" data-model="tatto2.sub.stat"></select></div>
+			<div class="left"><select class="tatoo-minus" data-model="tatto2.sub.value"></select></div>
 		</div>
 		<div class="clear"></div>
 		<div id="tatoo-slot-3">
 			<div class="left tatoo-header">Tatoo Slot 3: </div>
-			<div class="left"><input type="checkbox" class="tatoo-chb" data-storage="tattoSlot3" /></div>
-			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot3Stat1"></select></div>
-			<div class="left"><select class="tatoo-plus" data-storage="tattoSlot3Plus"></select></div>
+			<div class="left"><input type="checkbox" class="tatoo-chb" data-model="tatto3.checked" /></div>
+			<div class="left"><select class="tatoo-stat" data-model="tatto3.add.stat"></select></div>
+			<div class="left"><select class="tatoo-plus" data-model="tatto3.add.value"></select></div>
 			<div class="left"> </div>
-			<div class="left"><select class="tatoo-stat" data-storage="tattoSlot3Stat2"></select></div>
-			<div class="left"><select class="tatoo-minus" data-storage="tattoSlot3Minus"></select></div>
+			<div class="left"><select class="tatoo-stat" data-model="tatto3.sub.stat"></select></div>
+			<div class="left"><select class="tatoo-minus" data-model="tatto3.sub.value"></select></div>
 		</div>
 		<div class="clear"></div>
 	</fieldset>
@@ -186,19 +186,19 @@
 				<div class="clear"></div>
 				<div class="left eq-header">Shield</div>
 				<div class="left">
-					<select id="shield-grade" class="grade" data-storage="shieldGrade" data-load-order="1"></select>
+					<select id="shield-grade" class="grade" data-model="shield.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="shield-ench" data-storage="shieldEnch" />
+					+ <input type="number" min="0" id="shield-ench" data-model="shield.enchant" />
 				</div>
 				<div class="left">
-					<select id="shield" data-storage="shieldId"></select>
+					<select id="shield" data-model="shield.id"></select>
 				</div>
 				<div class="clear"></div>
 				<hr />
 				<div class="left eq-set-header">Quick select armor set</div>
 				<div class="left">
-					<select id="set-grade" class="grade" data-storage="set-grade"></select>
+					<select id="set-grade" class="grade" data-model="setGrade"></select>
 				</div>
 				<div class="left">
 					<select id="set"></select>
@@ -208,61 +208,61 @@
 
 				<div class="left eq-header">Helmet</div>
 				<div class="left">
-					<select id="helmet-grade" class="grade" data-storage="helmetGrade" data-load-order="1"></select>
+					<select id="helmet-grade" class="grade" data-model="helmet.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="helmet-ench" data-storage="helmetEnch" />
+					+ <input type="number" min="0" id="helmet-ench" data-model="helmet.enchant" />
 				</div>
 				<div class="left">
-					<select id="helmet" data-storage="helmetId"></select>
+					<select id="helmet" data-model="helmet.id"></select>
 				</div>
 				<div class="clear"></div>
 
 				<div class="left eq-header">Body Upper</div>
 				<div class="left">
-					<select id="body-upper-grade" class="grade" data-storage="bodyUpperGrade" data-load-order="1"></select>
+					<select id="body-upper-grade" class="grade" data-model="bodyUpper.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="body-upper-ench" data-storage="bodyUpperEnch" />
+					+ <input type="number" min="0" id="body-upper-ench" data-model="bodyUpper.enchant" />
 				</div>
 				<div class="left">
-					<select id="body-upper" data-storage="bodyUpperId"></select>
+					<select id="body-upper" data-model="bodyUpper.id"></select>
 				</div>
 				<div class="clear"></div>
 
 				<div class="left eq-header">Body Lower</div>
 				<div class="left">
-					<select id="body-lower-grade" class="grade" data-storage="bodyLowerGrade" data-load-order="1"></select>
+					<select id="body-lower-grade" class="grade" data-model="bodyLower.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="body-lower-ench" data-storage="bodyLowerEnch" />
+					+ <input type="number" min="0" id="body-lower-ench" data-model="bodyLower.enchant" />
 				</div>
 				<div class="left">
-					<select id="body-lower" data-storage="bodyLowerId"></select>
+					<select id="body-lower" data-model="bodyLower.id"></select>
 				</div>
 				<div class="clear"></div>
 
 				<div class="left eq-header">Gloves</div>
 				<div class="left">
-					<select id="gloves-grade" class="grade" data-storage="glovesGrade" data-load-order="1"></select>
+					<select id="gloves-grade" class="grade" data-model="gloves.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="gloves-ench" data-storage="glovesEnch" />
+					+ <input type="number" min="0" id="gloves-ench" data-model="gloves.enchant" />
 				</div>
 				<div class="left">
-					<select id="gloves" data-storage="glovesId"></select>
+					<select id="gloves" data-model="gloves.id"></select>
 				</div>
 				<div class="clear"></div>
 
 				<div class="left eq-header">Boots</div>
 				<div class="left">
-					<select id="boots-grade" class="grade" data-storage="bootsGrade" data-load-order="1"></select>
+					<select id="boots-grade" class="grade" data-model="boots.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="boots-ench" data-storage="bootsEnch" />
+					+ <input type="number" min="0" id="boots-ench" data-model="boots.enchant" />
 				</div>
 				<div class="left">
-					<select id="boots" data-storage="bootsId"></select>
+					<select id="boots" data-model="boots.id"></select>
 				</div>
 				<div class="clear"></div>
 
@@ -270,25 +270,25 @@
 
 				<div class="left eq-header">Underwear</div>
 				<div class="left">
-					<select id="underwear-grade" class="grade" data-storage="underwearGrade" data-load-order="1"></select>
+					<select id="underwear-grade" class="grade" data-model="underwear.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="underwear-ench" data-storage="underwearEnch" />
+					+ <input type="number" min="0" id="underwear-ench" data-model="underwear.enchant" />
 				</div>
 				<div class="left">
-					<select id="underwear" data-storage="underwearId"></select>
+					<select id="underwear" data-model="underwear.id"></select>
 				</div>
 				<div class="clear"></div>
 
 				<div class="left eq-header">Belt</div>
 				<div class="left">
-					<select id="belt-grade" class="grade" data-storage="beltGrade" data-load-order="1"></select>
+					<select id="belt-grade" class="grade" data-model="belt.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="belt-ench" data-storage="beltEnch" />
+					+ <input type="number" min="0" id="belt-ench" data-model="belt.enchant" />
 				</div>
 				<div class="left">
-					<select id="belt" data-storage="beltId"></select>
+					<select id="belt" data-model="belt.id"></select>
 				</div>
 				<div class="clear"></div>
 
@@ -296,61 +296,61 @@
 
 				<div class="left eq-header">Necklace</div>
 				<div class="left">
-					<select id="necklace-grade" class="grade" data-storage="necklaceGrade" data-load-order="1"></select>
+					<select id="necklace-grade" class="grade" data-model="necklace.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="necklace-ench" data-storage="necklaceEnch" />
+					+ <input type="number" min="0" id="necklace-ench" data-model="necklace.enchant" />
 				</div>
 				<div class="left">
-					<select id="necklace" data-storage="necklaceId"></select>
+					<select id="necklace" data-model="necklace.id"></select>
 				</div>
 				<div class="clear"></div>
 
 				<div class="left eq-header">Earring</div>
 				<div class="left">
-					<select id="earring1-grade" class="grade" data-storage="earring1Grade" data-load-order="1"></select>
+					<select id="earring1-grade" class="grade" data-model="earring1.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="earring1-ench" data-storage="earring1Ench" />
+					+ <input type="number" min="0" id="earring1-ench" data-model="earring1.ench" />
 				</div>
 				<div class="left">
-					<select id="earring1" data-storage="earring1Id"></select>
+					<select id="earring1" data-model="earring1.id"></select>
 				</div>
 				<div class="clear"></div>
 
 				<div class="left eq-header">Earring</div>
 				<div class="left">
-					<select id="earring2-grade" class="grade" data-storage="earring2Grade" data-load-order="1"></select>
+					<select id="earring2-grade" class="grade" data-model="earring2.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="earring2-ench" data-storage="earring2Ench" />
+					+ <input type="number" min="0" id="earring2-ench" data-model="earring2.enchant" />
 				</div>
 				<div class="left">
-					<select id="earring2" data-storage="earring2Id"></select>
+					<select id="earring2" data-model="earring2.id"></select>
 				</div>
 				<div class="clear"></div>
 
 				<div class="left eq-header">Ring</div>
 				<div class="left">
-					<select id="ring1-grade" class="grade" data-storage="ring1Grade" data-load-order="1"></select>
+					<select id="ring1-grade" class="grade" data-model="ring1.grade" data-load-order="1"></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="ring1-ench" data-storage="ring1Ench" />
+					+ <input type="number" min="0" id="ring1-ench" data-model="ring1.enchant" />
 				</div>
 				<div class="left">
-					<select id="ring1" data-storage="ring1Id"></select>
+					<select id="ring1" data-model="ring1.id"></select>
 				</div>
 				<div class="clear"></div>
 
 				<div class="left eq-header">Ring</div>
 				<div class="left">
-					<select id="ring2-grade" class="grade" data-storage="ring2Grade">></select>
+					<select id="ring2-grade" class="grade" data-model="ring2.grade">></select>
 				</div>
 				<div class="left eq-enchant">
-					+ <input type="number" min="0" id="ring2-ench" data-storage="ring2Ench" />
+					+ <input type="number" min="0" id="ring2-ench" data-model="ring2.enchant" />
 				</div>
 				<div class="left">
-					<select id="ring2" data-storage="ring2Id"></select>
+					<select id="ring2" data-model="ring2.id"></select>
 				</div>
 				<div class="clear"></div>
 			<div>

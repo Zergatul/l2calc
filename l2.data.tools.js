@@ -3,10 +3,7 @@ window.l2.data = window.l2.data || {};
 window.l2.data.tools = window.l2.data.tools || {};
 
 l2.data.tools.getItem = function (id) {
-	for (var i = 0; i < l2.data.items.length; i++)
-		if (l2.data.items[i].id == id)
-			return l2.data.items[i];
-	return null;
+	return l2.data.items[id] || null;
 };
 l2.data.tools.getSkill = function (id) {
 	for (var i = 0; i < l2.data.skills.length; i++)
@@ -73,11 +70,12 @@ l2.data.tools.sortItems = function (items) {
 	});
 };
 l2.data.tools.findItems = function (grade, filter) {
-	var items = l2.data.items.filter(function (item) {
-		if (!filter(item))
-			return false;
-		return (item.grade || 'none') == grade;
-	});
+	var items = [];
+	for (var id in l2.data.items) {
+		var item = l2.data.items[id];
+		if (filter(item) && (item.grade || 'none') == grade)
+			items.push(item);
+	}
 	l2.data.tools.sortItems(items);
 	return items;
 };

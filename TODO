@@ -49,3 +49,9 @@ l2.ui.checkset - move to l2.calc
 my gnom mdef = wrong - check!
 
 refactor all!
+
+=== MODEL ===
+
+when change weapon to non enchantable - UI enchant not updating to 0
+
+skill list in model
