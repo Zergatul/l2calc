@@ -239,7 +239,7 @@ window.l2 = window.l2 || {};
 	};
 
 	var L2SkillList = function (type) {
-
+		
 	};
 
 	window.l2.model = {
