@@ -5,10 +5,10 @@ window.l2 = window.l2 || {};
 	var handlers = {};
 	var globalHandlers = [];
 
-	var notifyPropertyChanged = function (property, value) {
+	var notifyPropertyChanged = function (property, value, sender) {
 		if (handlers[property])
 			handlers[property].forEach(function (handler) {
-				handler(value);
+				handler(value, sender);
 			});
 		globalHandlers.forEach(function (handler) {
 			handler(property, value);
@@ -238,8 +238,81 @@ window.l2 = window.l2 || {};
 		});
 	};
 
+	var L2Skill = function (id, data, skillList, _level) {
+		this.id = id;
+		this.data = data;
+		var list = skillList;
+		var checked = false;
+		Object.defineProperty(this, 'checked', {
+			get: function () { return checked; },
+			set: function (value) {
+				checked = value;
+				notifyPropertyChanged(list.type + '[].checked', checked, this);
+			}
+		});
+		var level = _level || 0;
+		Object.defineProperty(this, 'level', {
+			get: function () { return level; },
+			set: function (value) {
+				level = parseInt(value);
+				notifyPropertyChanged(list.type + '[].level', level, this);
+			}
+		});
+		var skill = null;
+		Object.defineProperty(this, 'skill', {
+			get: function () {
+				if (!skill)
+					skill = l2.data.tools.getSkill(this.id);
+				return skill;
+			}
+		})
+	};
+
 	var L2SkillList = function (type) {
-		
+		this.type = type;
+		var list = [];
+		this.add = function (id, data, level) {
+			var skill = new L2Skill(id, data, this, level);
+			list.push(skill);
+			notifyPropertyChanged(type + '.add', skill);
+		};
+		this.clear = function () {
+			list = [];
+		};
+		this.forEach = function (callback) {
+			list.forEach(callback);
+		};
+		this.filter = function (callback) {
+			return list.filter(callback);
+		};
+		this.map = function (callback) {
+			return list.map(callback);
+		};
+		this.findById = function (id) {
+			for (var i = 0; i < list.length; i++)
+				if (list[i].id == id)
+					return list[i];
+			return null;
+		};
+		this.removeById = function (id) {
+			var index = -1;
+			for (var i = 0; i < list.length; i++)
+				if (list[i].id == id) {
+					index = i;
+					break;
+				}
+			if (index >= 0) {
+				var removed = list.splice(index, 1);
+				notifyPropertyChanged(type + '.remove', removed[0]);
+			}
+		};
+		this.toJSON = function () {
+			return JSON.stringify(list.filter(function (s) {
+				return s.level > 0;
+			}).map(function (s) {
+				return { id: s.id, level: s.level };
+			}));
+		};
 	};
 
 	window.l2.model = {
@@ -264,7 +337,9 @@ window.l2 = window.l2 || {};
 		tatto1: new L2Tatoo('tatto1'),
 		tatto2: new L2Tatoo('tatto2'),
 		tatto3: new L2Tatoo('tatto3'),
-		selfBuffs: {}
+		selfBuffs: new L2SkillList('selfBuffs'),
+		toggles: new L2SkillList('toggles'),
+		commonBuffs: new L2SkillList('commonBuffs')
 	};
 
 	var addModel = function (property, getter, setter) {
