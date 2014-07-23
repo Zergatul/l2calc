@@ -338,10 +338,13 @@ l2.ui.checkAbnormalType = function () {
 	});
 };
 
-l2.ui.createSelectChangeSkillListHandler = function (type, id) {
+l2.ui.createChangeSkillListHandler = function (type, id) {
 	return function () {
 		l2.ui.disableValuesUpdate = true;
-		l2.model[type].findById(id).level = $(this).val();
+		if ($(this).is('select'))
+			l2.model[type].findById(id).level = $(this).val();
+		if ($(this).is('input[type=checkbox]'))
+			l2.model[type].findById(id).level = $(this).is(':checked') ? 1 : 0;
 		l2.ui.disableValuesUpdate = false;
 	};
 };
@@ -373,7 +376,7 @@ l2.ui.bindSelfBuffs = function () {
 		var div = $('<div>').addClass('left self-skill');
 		var select = $('<select>');
 		select.attr('data-skill-id', skill.id);
-		select.change(l2.ui.createSelectChangeSkillListHandler('selfBuffs', skill.id));
+		select.change(l2.ui.createChangeSkillListHandler('selfBuffs', skill.id));
 		l2.ui.tools.addOption(select, '', '---');
 		for (var j = 0; j < sb.data.length; j++)
 			l2.ui.tools.addOption(select, sb.data[j].lvl, sb.data[j].lvl + ' [' + sb.data[j].minLvl + ']');
@@ -410,7 +413,7 @@ l2.ui.bindToggles = function () {
 		var div = $('<div>').addClass('left toggle-skill');
 		var select = $('<select>');
 		select.attr('data-skill-id', skill.id);
-		select.change(l2.ui.createSelectChangeSkillListHandler('toggles', skill.id));
+		select.change(l2.ui.createChangeSkillListHandler('toggles', skill.id));
 		l2.ui.tools.addOption(select, '', '---');
 		for (var j = 0; j < t.data.length; j++)
 			l2.ui.tools.addOption(select, t.data[j].lvl, t.data[j].lvl + ' [' + t.data[j].minLvl + ']');
@@ -520,8 +523,8 @@ l2.ui.bindSongs = function () {
 		var label = $('<label>');
 		var input = $('<input>').attr('type', 'checkbox')
 			.attr('data-skill-id', skill.id)
-			.attr('data-storage', 'song-' + skill.id);
-		input.change(l2.ui.recalc);
+		input.change(l2.ui.createChangeSkillListHandler('songs', skill.id));
+		l2.model.songs.add(skill.id);
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
@@ -535,9 +538,9 @@ l2.ui.bindDances = function () {
 		var div = $('<div>').addClass('left dance-skill');
 		var label = $('<label>');
 		var input = $('<input>').attr('type', 'checkbox')
-			.attr('data-skill-id', skill.id)
-			.attr('data-storage', 'dance-' + skill.id);
-		input.change(l2.ui.recalc);
+			.attr('data-skill-id', skill.id);
+		input.change(l2.ui.createChangeSkillListHandler('dances', skill.id));
+		l2.model.dances.add(skill.id);
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
@@ -1064,6 +1067,17 @@ l2.ui.prepareModel = function () {
 			localStorage[l2.ui.storagePrefix + 'commonBuffs'] = l2.model.commonBuffs.toJSON();
 	});
 
+	['songs', 'dances'].forEach(function (type) {
+		l2.model.addHandler(type + '[].level', function (value, skill) {
+			if (!l2.ui.disableValuesUpdate)
+				$('input[data-skill-id=' + skill.id + ']').attr('checked', !!value);
+			else
+				l2.ui.disableValuesUpdate = false;
+			if (!l2.ui.disableStorageUpdate)
+				localStorage[l2.ui.storagePrefix + type] = l2.model[type].toJSON();
+		});
+	});
+
 	l2.model.addGlobalHandler(function (property) {
 		if (property == 'setGrade')
 			return;
@@ -1177,7 +1191,7 @@ $(function () {
 		l2.model.setValue(m.model, localStorage[l2.ui.storagePrefix + m.model]);
 	});
 
-	['selfBuffs', 'toggles'].forEach(function (type) {
+	['selfBuffs', 'toggles', 'dances', 'songs'].forEach(function (type) {
 		if (localStorage[l2.ui.storagePrefix + type])
 			JSON.parse(localStorage[l2.ui.storagePrefix + type]).forEach(function (s) {
 				l2.model[type].findById(s.id).level = s.level;

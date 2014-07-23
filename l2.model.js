@@ -339,7 +339,10 @@ window.l2 = window.l2 || {};
 		tatto3: new L2Tatoo('tatto3'),
 		selfBuffs: new L2SkillList('selfBuffs'),
 		toggles: new L2SkillList('toggles'),
-		commonBuffs: new L2SkillList('commonBuffs')
+		commonBuffs: new L2SkillList('commonBuffs'),
+		songs: new L2SkillList('songs'),
+		dances: new L2SkillList('dances'),
+		clanSkills: new L2SkillList('clanSkills')
 	};
 
 	var addModel = function (property, getter, setter) {
