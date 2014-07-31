@@ -44,11 +44,12 @@ window.l2 = window.l2 || {};
 		Object.defineProperty(this, 'grade', {
 			get: function () { return grade; },
 			set: function (value) {
-				value = value.toLowerCase();
+				if (value)
+					value = value.toLowerCase();
 				if (['d', 'c', 'b', 'a', 's', 's80', 's84'].indexOf(value) >= 0)
 					grade = value;
 				else
-					if (value == 'none')
+					if (value == 'none' || value == null)
 						grade = null;
 					else
 						throw 'Invalid grade';
@@ -145,23 +146,23 @@ window.l2 = window.l2 || {};
 		Object.defineProperty(this, 'value', {
 			get: function () { return val; },
 			set: function (value) {
-				val = value;
+				val = parseInt(value);
 				notifyPropertyChanged(part + '.value', val);
 			}
 		});
-		var min = null;
+		var min = 1;
 		Object.defineProperty(this, 'minValue', {
 			get: function () { return min; },
 			set: function (value) {
-				min = value;
+				min = parseInt(value);
 				notifyPropertyChanged(part + '.minValue', min);
 			}
 		});
-		var max = null;
+		var max = 1;
 		Object.defineProperty(this, 'maxValue', {
 			get: function () { return max; },
 			set: function (value) {
-				max = value;
+				max = parseInt(value);
 				notifyPropertyChanged(part + '.maxValue', max);
 			}
 		});
@@ -213,6 +214,14 @@ window.l2 = window.l2 || {};
 				notifyPropertyChanged(part + '.enableMen', enableMen);
 			}
 		});
+		this.enableAll = function () {
+			this.enableStr = true;
+			this.enableDex = true;
+			this.enableCon = true;
+			this.enableInt = true;
+			this.enableWit = true;
+			this.enableMen = true;
+		};
 	};
 
 	var L2Tatoo = function (slot) {
@@ -277,6 +286,9 @@ window.l2 = window.l2 || {};
 			notifyPropertyChanged(type + '.add', skill);
 		};
 		this.clear = function () {
+			list.forEach(function (s) {
+				notifyPropertyChanged(type + '.remove', s);
+			});
 			list = [];
 		};
 		this.forEach = function (callback) {
@@ -334,9 +346,9 @@ window.l2 = window.l2 || {};
 		earring2: new L2Item('earring2'),
 		ring1: new L2Item('ring1'),
 		ring2: new L2Item('ring2'),
-		tatto1: new L2Tatoo('tatto1'),
-		tatto2: new L2Tatoo('tatto2'),
-		tatto3: new L2Tatoo('tatto3'),
+		tatoo1: new L2Tatoo('tatoo1'),
+		tatoo2: new L2Tatoo('tatoo2'),
+		tatoo3: new L2Tatoo('tatoo3'),
 		selfBuffs: new L2SkillList('selfBuffs'),
 		toggles: new L2SkillList('toggles'),
 		commonBuffs: new L2SkillList('commonBuffs'),

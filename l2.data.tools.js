@@ -73,7 +73,7 @@ l2.data.tools.findItems = function (grade, filter) {
 	var items = [];
 	for (var id in l2.data.items) {
 		var item = l2.data.items[id];
-		if (filter(item) && (item.grade || 'none') == grade)
+		if (filter(item) && item.grade == grade)
 			items.push(item);
 	}
 	l2.data.tools.sortItems(items);

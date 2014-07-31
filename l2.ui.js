@@ -4,6 +4,7 @@ window.l2.ui = window.l2.ui || {};
 l2.ui.disableValuesUpdate = false;
 l2.ui.disableStorageUpdate = false;
 l2.ui.disableRecalc = false;
+l2.ui.loadingProcess = false;
 
 l2.ui.storagePrefix = 'c:';
 l2.ui.modelEquipments = [
@@ -20,39 +21,26 @@ l2.ui.bindClasses = function () {
 	l2.model.classId = $('#l2class').val();
 };
 
-l2.ui.bindWeapons = function () {
-	var grade = $('#weapon-grade').val();
-	var type = $('#weapon-type').val();
-	$('#weapon').empty();
-	l2.ui.tools.addOption('#weapon', '', 'Unequipped');
-	var weapons = l2.data.tools.findWeapons(grade, type);
-	$.each(weapons, function () {
-		l2.ui.tools.addOption('#weapon', this.id, this.name);
-	});
-	l2.model.weapon.id = null;
-};
-
-l2.ui.bindShields = function () {
-	var grade = $('#shield-grade').val();
-	var type = $('#shield-type').val();
-	$('#shield').empty();
-	l2.ui.tools.addOption('#shield', '', 'Unequipped');
-	var shields = l2.data.tools.findShields(grade);
-	$.each(shields, function () {
-		var name = this.name;
-		if (this.skill != null)
-			name = name + ' [Rare]';
-		l2.ui.tools.addOption('#shield', this.id, name);
-	});	
-	l2.model.shield.id = null;
+l2.ui.createBindItemsFunction = function (elementId, model, findFunc) {
+	return function () {
+		var element = $('#' + elementId);
+		element.empty();
+		l2.ui.tools.addOption(element, '', 'Unequipped');
+		var grade = l2.model[model].grade;
+		var type = l2.model[model].type;
+		findFunc(grade, type).forEach(function (item) {
+			l2.ui.tools.addOption(element, item.id, item.name);
+		});
+		l2.model[model].id = null;
+	};
 };
 
 l2.ui.bindSets = function () {
-	var grade = $('#set-grade').val();
 	$('#set').empty();
 	l2.ui.tools.addOption('#set', '', 'Unequipped');
-	l2.data.armorSets.filter(function (s) {
-		return (s.grade || 'none') == grade;
+	var grade = l2.model.setGrade;
+	l2.data.armorSets.filter(function (set) {
+		return set.grade == grade;
 	}).sort(function (s1, s2) {
 		var skill1 = l2.data.tools.getSkill(s1.skill[1]);
 		var skill2 = l2.data.tools.getSkill(s2.skill[1]);
@@ -75,27 +63,27 @@ l2.ui.applySet = function () {
 	l2.ui.disableRecalc = true;
 	if (set.chest != null) {
 		var armor = l2.data.tools.getItem(set.chest[0]);
-		l2.model.bodyUpper.grade = armor.grade || 'none';
+		l2.model.bodyUpper.grade = armor.grade;
 		l2.model.bodyUpper.id = set.chest[0];
 	}
 	if (set.legs != null) {
 		var armor = l2.data.tools.getItem(set.legs[0]);
-		l2.model.bodyLower.grade = armor.grade || 'none';
+		l2.model.bodyLower.grade = armor.grade;
 		l2.model.bodyLower.id = set.legs[0];
 	}
 	if (set.head != null) {
 		var armor = l2.data.tools.getItem(set.head[0]);
-		l2.model.helmet.grade = armor.grade || 'none';
+		l2.model.helmet.grade = armor.grade;
 		l2.model.helmet.id = set.head[0];
 	}
 	if (set.gloves != null) {
 		var armor = l2.data.tools.getItem(set.gloves[0]);
-		l2.model.gloves.grade = armor.grade || 'none';
+		l2.model.gloves.grade = armor.grade;
 		l2.model.gloves.id = set.gloves[0];
 	}
 	if (set.feet != null) {
 		var armor = l2.data.tools.getItem(set.feet[0]);
-		l2.model.boots.grade = armor.grade || 'none';
+		l2.model.boots.grade = armor.grade;
 		l2.model.boots.id = set.feet[0];
 	}
 	l2.ui.disableRecalc = false;
@@ -139,125 +127,6 @@ l2.ui.checkSet = function (char) {
 	if (equipedSet.wit) char.stats.wit += equipedSet.wit;
 	if (equipedSet.men) char.stats.men += equipedSet.men;
 };
-
-l2.ui.bindHelmets = function () {
-	var grade = $('#helmet-grade').val();
-	$('#helmet').empty();
-	l2.ui.tools.addOption('#helmet', '', 'Unequipped');
-	var helmets = l2.data.tools.findHelmets(grade);
-	$.each(helmets, function () {
-		if (this.skill)
-			l2.ui.tools.addOption('#helmet', this.id, '[Rare] ' + this.name);
-		else
-			l2.ui.tools.addOption('#helmet', this.id, this.name);
-	});
-	l2.model.helmet.id = null;
-};
-
-l2.ui.bindBodyUpper = function () {
-	var grade = $('#body-upper-grade').val();
-	$('#body-upper').empty();
-	l2.ui.tools.addOption('#body-upper', '', 'Unequipped');
-	var bodyUppers = l2.data.tools.findBodyUppers(grade);
-	$.each(bodyUppers, function () {
-		l2.ui.tools.addOption('#body-upper', this.id, this.name);
-	});
-	l2.model.bodyUpper.id = null;
-};
-
-l2.ui.bindBodyLower = function () {
-	var grade = $('#body-lower-grade').val();
-	$('#body-lower').empty();
-	l2.ui.tools.addOption('#body-lower', '', 'Unequipped');
-	var bodyLowers = l2.data.tools.findBodyLowers(grade);
-	$.each(bodyLowers, function () {
-		l2.ui.tools.addOption('#body-lower', this.id, this.name);
-	});
-	l2.model.bodyLower.id = null;
-};
-
-l2.ui.bindGloves = function () {
-	var grade = $('#gloves-grade').val();
-	$('#gloves').empty();
-	l2.ui.tools.addOption('#gloves', '', 'Unequipped');
-	var gloves = l2.data.tools.findGloves(grade);
-	$.each(gloves, function () {
-		l2.ui.tools.addOption('#gloves', this.id, this.name);
-	});
-	l2.model.gloves.id = null;
-};
-
-l2.ui.bindBoots = function () {
-	var grade = $('#boots-grade').val();
-	$('#boots').empty();
-	l2.ui.tools.addOption('#boots', '', 'Unequipped');
-	var boots = l2.data.tools.findBoots(grade);
-	$.each(boots, function () {
-		l2.ui.tools.addOption('#boots', this.id, this.name);
-	});
-	l2.model.boots.id = null;
-};
-
-l2.ui.bindUnderwears = function () {
-	var grade = $('#underwear-grade').val();
-	$('#underwear').empty();
-	l2.ui.tools.addOption('#underwear', '', 'Unequipped');
-	var underwears = l2.data.tools.findUnderwears(grade);
-	$.each(underwears, function () {
-		l2.ui.tools.addOption('#underwear', this.id, this.name);
-	});
-	l2.model.underwear.id = null;
-};
-
-l2.ui.bindBelts = function () {
-	var grade = $('#belt-grade').val();
-	$('#belt').empty();
-	l2.ui.tools.addOption('#belt', '', 'Unequipped');
-	var belts = l2.data.tools.findBelts(grade);
-	$.each(belts, function () {
-		l2.ui.tools.addOption('#belt', this.id, this.name);
-	});
-	l2.model.belt.id = null;
-};
-
-l2.ui.bindNecklaces = function () {
-	var grade = $('#necklace-grade').val();
-	$('#necklace').empty();
-	l2.ui.tools.addOption('#necklace', '', 'Unequipped');
-	var necklaces = l2.data.tools.findNecklaces(grade);
-	$.each(necklaces, function () {
-		l2.ui.tools.addOption('#necklace', this.id, this.name);
-	});
-	l2.model.necklace.id = null;
-};
-
-l2.ui.bindEarrings = function (index) {
-	var grade = $('#earring' + index + '-grade').val();
-	$('#earring' + index).empty();
-	l2.ui.tools.addOption('#earring' + index, '', 'Unequipped');
-	var earrings = l2.data.tools.findEarrings(grade);
-	$.each(earrings, function () {
-		l2.ui.tools.addOption('#earring' + index, this.id, this.name);
-	});
-	l2.model['earring' + index].id = null;
-};
-
-l2.ui.bindEarrings1 = l2.ui.bindEarrings.bind(null, 1);
-l2.ui.bindEarrings2 = l2.ui.bindEarrings.bind(null, 2);
-
-l2.ui.bindRings = function (index) {
-	var grade = $('#ring' + index + '-grade').val();
-	$('#ring' + index).empty();
-	l2.ui.tools.addOption('#ring' + index, '', 'Unequipped');
-	var rings = l2.data.tools.findRings(grade);
-	$.each(rings, function () {
-		l2.ui.tools.addOption('#ring' + index, this.id, this.name);
-	});
-	l2.model['ring' + index].id = null;
-};
-
-l2.ui.bindRings1 = l2.ui.bindRings.bind(null, 1);
-l2.ui.bindRings2 = l2.ui.bindRings.bind(null, 2);
 
 l2.ui.bindPassives = function () {
 	var classId = $('#l2class').val();
@@ -320,22 +189,6 @@ l2.ui.autoSelectPassives = function () {
 		else
 			$(this).val(skillLevel);
 	})
-};
-
-l2.ui.checkAbnormalType = function () {
-	var select = $(this);
-	if (select.val() == '')
-		return;
-	var abnormal = select.attr('data-abnormal');
-	$('#selfbuffs > div > div.self-skill > select, #commonbuffs > div > div > div.common-skill > select').each(function () {
-		if (this == select[0])
-			return;
-		if ($(this).attr('data-abnormal') == abnormal && $(this).val() != '') {
-			$(this).val('');
-			if ($(this).attr('data-storage'))
-				l2.ui.onChangeSaveToStorage.call(this);
-		}
-	});
 };
 
 l2.ui.createChangeSkillListHandler = function (type, id) {
@@ -423,24 +276,53 @@ l2.ui.bindToggles = function () {
 	});
 };
 
-l2.ui.bindClassSkills = function () {
+l2.ui.bindClassSkillsAndTatoo = function () {
+	l2.ui.disableRecalc = true;
 	l2.ui.bindPassives();
 	l2.ui.bindSelfBuffs();
 	l2.ui.bindToggles();
 	l2.ui.autoSelectPassives();
-	l2.ui.recalc();
+	l2.ui.bindClassTatoos();
+	l2.ui.disableRecalc = false;
 };
 
-l2.ui.bindClassTattos = function () {
+l2.ui.isForbidMen = function () {
 	var _class = l2.data.tools.getClass(l2.model.classId);
-	l2.model.tatto1.enabled = _class.prof > 0;
-	l2.model.tatto2.enabled = _class.prof > 0;
-	l2.model.tatto3.enabled = _class.prof > 1;
-	/*if (_class.prof == 3)
+	if (_class.prof == 3)
 		_class = l2.data.tools.getClass(_class.parent);
-	if (l2.model.tatto1.enabled) {
-		l2.model.tatto1.add.enableInt = true;
-	}*/
+	return _class.forbidMen;
+};
+
+l2.ui.isForbidInt = function () {
+	var _class = l2.data.tools.getClass(l2.model.classId);
+	if (_class.prof == 3)
+		_class = l2.data.tools.getClass(_class.parent);
+	return _class.forbidInt;
+};
+
+l2.ui.bindClassTatoos = function () {
+	var _class = l2.data.tools.getClass(l2.model.classId);
+	l2.model.tatoo1.enabled = _class.prof > 0;
+	l2.model.tatoo2.enabled = _class.prof > 0;
+	l2.model.tatoo3.enabled = _class.prof > 1;
+	if (_class.prof == 3)
+		_class = l2.data.tools.getClass(_class.parent);
+	for (var i = 1; i <= 3; i++) {
+		var slot = l2.model['tatoo' + i];
+		slot.add.maxValue = _class.prof <= 1 ? 1 : 4;
+		if (slot.enabled) {
+			slot.add.enableAll();
+			slot.sub.enableAll();
+			if (_class.forbidMen) {
+				slot.add.enableMen = false;
+				slot.sub.enableMen = false;
+			}
+			if (_class.forbidInt) {
+				slot.add.enableInt = false;
+				slot.sub.enableInt = false;	
+			}
+		}
+	}
 };
 
 l2.ui.bindCommonBuffs = function () {
@@ -554,8 +436,8 @@ l2.ui.bindClanSkils = function () {
 		var div = $('<div>').addClass('left clan-skill');
 		var select = $('<select>')
 			.attr('data-skill-id', id)
-			.attr('data-storage', 'clan-' + skill.id)
-			.change(l2.ui.recalc);
+			.change(l2.ui.createChangeSkillListHandler('clanSkills', id));
+		l2.model.clanSkills.add(id);
 		l2.ui.tools.addOption(select, '', '---');
 		for (var i = 0; i < skill.levels; i++)
 			l2.ui.tools.addOption(select, i + 1, i + 1);
@@ -570,8 +452,8 @@ l2.ui.bindClanSkils = function () {
 		var input = $('<input>')
 			.attr('type', 'checkbox')
 			.attr('data-skill-id', id)
-			.attr('data-storage', 'clan-' + skill.id)
-			.click(l2.ui.recalc);		
+			.click(l2.ui.createChangeSkillListHandler('clanSkills', id));
+		l2.model.clanSkills.add(id);
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
@@ -628,48 +510,38 @@ l2.ui.clearToggles = function () {
 };
 
 l2.ui.clearCommonBuffs = function () {
-	$('#commonbuffs > div > div > div.common-skill > select').val('');
-	l2.ui.saveAllToStorage();
+	l2.ui.disableRecalc = true;
+	l2.model.commonBuffs.clear();
+	l2.ui.disableRecalc = false;
 	l2.ui.recalc();
 };
 
 l2.ui.clearCommonTriggers = function () {
-	$('#commontriggers > div > div.trigger-skill > label > input').prop('checked', false);
-	l2.ui.saveAllToStorage();
-	l2.ui.recalc();
+	/*l2.ui.disableRecalc = true;
+	l2.model.comm.forEach(function (t) { t.level = 0; });
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();*/
 };
 
 l2.ui.clearSongs = function () {
-	$('#songbuffs > div > div.song-skill > label > input').prop('checked', false);
-	l2.ui.saveAllToStorage();
-	l2.ui.recalc();
+	l2.ui.disableRecalc = true;
+	l2.model.songs.forEach(function (s) { s.level = 0; });
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();	
 };
 
 l2.ui.clearDances = function () {
-	$('#dancebuffs > div > div.dance-skill > label > input').prop('checked', false);
-	l2.ui.saveAllToStorage();
-	l2.ui.recalc();
+	l2.ui.disableRecalc = true;
+	l2.model.dances.forEach(function (d) { d.level = 0; });
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();	
 };
 
 l2.ui.clearClanSkills = function () {
-	$('#clanskills select').val('');
-	$('#clanskills > div > div.clan-skill input').prop('checked', false);
-	l2.ui.saveAllToStorage();
-	l2.ui.recalc();
-};
-
-l2.ui.setupEnchantInput = function () {
-	var id = this.id;
-	var enchInput = $('#' + id + '-ench');
-	if (this.value == '')
-		enchInput.attr('disabled', true).val(0);
-	else {
-		var item = l2.data.tools.getItem(this.value);
-		enchInput.attr('disabled', !item.canEnchant);
-		if (!item.canEnchant)
-			enchInput.val(0);
-	}
-	l2.ui.onChangeSaveToStorage.call(enchInput);
+	l2.ui.disableRecalc = true;
+	l2.model.clanSkills.forEach(function (cs) { cs.level = 0; });
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();	
 };
 
 l2.ui.formatPercent = function (val) {
@@ -721,185 +593,53 @@ l2.ui.parseSkills = function (array, str) {
 };
 
 l2.ui.recalc = function () {
-	if (l2.ui.disableRecalc)
+	if (l2.ui.disableRecalc || l2.ui.loadingProcess)
 		return;
 
-	var classId = parseInt($('#l2class').val());
-	if (isNaN(classId))
-		return;
-	var $class = l2.data.tools.getClass(classId);
-	var baseStats = l2.data.subRace[$class.subRace];
-	var stats = $.extend({}, baseStats.stats);
-	var hpPerc = parseInt($('#hpperc').val());
+	console.log('recalc ' + new Date().getMilliseconds());
 
-	var char = {
-		classId: classId,
-		$class: $class,
-		stats: stats,
-		lvl: parseInt($('#lvl').val()),
-		hpPerc: hpPerc,
-		atkFrom: $('#atkfrom').val(),
-		passives: [],
-		buffs: []
-	};
-	char.lm = (char.lvl + 89) / 100;
+	var stats = l2.calc.stats();
 
-	char.enchants = {};
-	var processEquip = function (id, name) {
-		if (!name)
-			name = id;
-		if ($('#' + id).val()) {
-			char[name] = l2.data.tools.getItem($('#' + id).val());
-			char.enchants[name] = parseInt($('#' + id + '-ench').val());
-			if (char[name].ench4 && char.enchants[name] >= 4)
-				l2.ui.parseSkills(char.passives, char[name].ench4);	
-			l2.ui.parseSkills(char.passives, char[name].skill);
-		} else
-			char[name] = null;
-	};
-	processEquip('weapon');
-	processEquip('shield');
-	processEquip('helmet');
-	processEquip('body-upper', 'bodyUpper');
-	processEquip('body-lower', 'bodyLower');
-	processEquip('gloves');
-	processEquip('boots');
-	processEquip('underwear');
-	processEquip('belt');
-	processEquip('necklace');
-	processEquip('earring1');
-	processEquip('earring2');
-	processEquip('ring1');
-	processEquip('ring2');
+	$('#str').text(stats.baseStats.str);
+	$('#dex').text(stats.baseStats.dex);
+	$('#con').text(stats.baseStats.con);
+	$('#int').text(stats.baseStats.int);
+	$('#wit').text(stats.baseStats.wit);
+	$('#men').text(stats.baseStats.men);
 
-	if (char.bodyUpper)
-		if (char.bodyUpper.bodyPart == 'onepiece')
-			char.armorType = char.bodyUpper.armorType;
-		else
-			if (char.bodyLower && char.bodyUpper.armorType == char.bodyLower.armorType)
-				char.armorType = char.bodyUpper.armorType;
-
-	$('#passives > div > div.passive-skill').each(function () {
-		var select = $(this).find('select');
-		if (select.val() != '')
-			char.passives.push({ id: parseInt(select.attr('data-skill-id')), lvl: parseInt(select.val()) })
-	});
-
-	$('#selfbuffs > div > div.self-skill').each(function () {
-		var select = $(this).find('select');
-		if (select.val() != '')
-			char.passives.push({ id: parseInt(select.attr('data-skill-id')), lvl: parseInt(select.val()) })
-	});
-	$('#toggles > div > div.toggle-skill').each(function () {
-		var select = $(this).find('select');
-		if (select.val() != '')
-			char.passives.push({ id: parseInt(select.attr('data-skill-id')), lvl: parseInt(select.val()) })
-	});
-	$('#commonbuffs > div > div > div.common-skill').each(function () {
-		var select = $(this).find('select');
-		if (select.val() != '') {
-			var ss = select.val().split(':');
-			char.buffs.push({ id: parseInt(ss[0]), lvl: parseInt(ss[1]) })
-		}
-	});
-	$('#commontriggers > div > div.trigger-skill').each(function () {
-		var input = $(this).find('input');
-		var select = $(this).find('select');
-		if (input.is(':checked') && select.val() == '100')
-			char.buffs.push({ id : parseInt(input.attr('data-skill-id')), lvl: 1 });
-	});
-	$('#songbuffs > div > div.song-skill').each(function () {
-		var input = $(this).find('input');
-		if (input.is(':checked'))
-			char.buffs.push({ id : parseInt(input.attr('data-skill-id')), lvl: 1 });
-	});
-	$('#dancebuffs > div > div.dance-skill').each(function () {
-		var input = $(this).find('input');
-		if (input.is(':checked'))
-			char.buffs.push({ id : parseInt(input.attr('data-skill-id')), lvl: 1 });
-	});
-	$('#clanskills > div:first > div.clan-skill').each(function () {
-		var select = $(this).find('select');
-		if (select.val() != '')
-			char.passives.push({ id: parseInt(select.attr('data-skill-id')), lvl: parseInt(select.val()) })
-	});
-	$('#clanskills > div:last > div.clan-skill').each(function () {
-		var input = $(this).find('input');
-		if (input.is(':checked'))
-			char.buffs.push({ id : parseInt(input.attr('data-skill-id')), lvl: 1 });
-	});
-
-	l2.ui.checkSet(char);
-
-	l2.calc.stats(char);
-
-	for (var i = 1; i <= 3; i++) {
-		var div = $('#tatoo-slot-' + i);
-		if (div.find('input[type=checkbox]').is(':checked')) {
-			stats[div.find('select:eq(0)').val()] += parseInt(div.find('select:eq(1)').val());
-			stats[div.find('select:eq(2)').val()] += parseInt(div.find('select:eq(3)').val());
-		}
-	}
-
-	for (var stat in stats)
-		if (stats[stat] < 0)
-			stats[stat] = 0;
-
-	$('#str').text(stats.str);
-	$('#dex').text(stats.dex);
-	$('#con').text(stats.con);
-	$('#int').text(stats.int);
-	$('#wit').text(stats.wit);
-	$('#men').text(stats.men);
-
-	char.hp = l2.calc.HP(char);
-	char.cp = l2.calc.CP(char);
-	char.pDef = l2.calc.pDef(char);
-	char.pAtk = l2.calc.pAtk(char);
-	char.mAtk = l2.calc.mAtk(char);
-	char.accuracy = l2.calc.accuracy(char);
-	char.pCritical = l2.calc.pCritical(char);
-	char.pCritMultiplier = l2.calc.pCritMultiplier(char);
-	char.pCritAtk = l2.calc.pCritAtk(char);
-	char.atkSpeed = l2.calc.atkSpeed(char);
-	char.castSpeed = l2.calc.castSpeed(char);
-	char.speed = l2.calc.speed(char);
-	char.evasion = l2.calc.evasion(char);
-	char.mDef = l2.calc.mDef(char);
-	char.pDPS = l2.calc.pDPS(char);
-	$('#hp').text(char.hp);
-	$('#cp').text(char.cp);
-	$('#pdef').text(char.pDef);
-	$('#patk').text(char.pAtk);
-	$('#matk').text(char.mAtk);
-	$('#accuracy').text(char.accuracy);
-	$('#pcritical').text(char.pCritical);
-	$('#pcritmult').text(char.pCritMultiplier.toFixed(5));
-	$('#atkspd').text(char.atkSpeed);
-	$('#castspd').text(char.castSpeed);
-	$('#speed').text(char.speed);
-	$('#evasion').text(char.evasion);
-	$('#mdef').text(char.mDef);
-	$('#pdps').text(l2.ui.tools.formatNumber(Math.round(char.pDPS)));
-	$('#patkcrit').text(char.pCritAtk);
+	$('#hp').text(stats.hp);
+	$('#cp').text(stats.cp);
+	$('#pdef').text(stats.pDef);
+	$('#patk').text(stats.pAtk);
+	$('#matk').text(stats.mAtk);
+	$('#accuracy').text(stats.accuracy);
+	$('#pcritical').text(stats.pCritical);
+	$('#pcritmult').text(stats.pCritMultiplier.toFixed(5));
+	$('#atkspd').text(stats.atkSpeed);
+	$('#castspd').text(stats.castSpeed);
+	$('#speed').text(stats.speed);
+	$('#evasion').text(stats.evasion);
+	$('#mdef').text(stats.mDef);
+	$('#pdps').text(l2.ui.tools.formatNumber(Math.round(stats.pDPS)));
+	$('#patkcrit').text(stats.pCritAtk);
 
 	var prevStats = l2.ui.prevStats;
-	l2.ui.prevStats = char;
+	l2.ui.prevStats = stats;
 
 	if (l2.ui.canShowDelta && prevStats) {
-		l2.ui.highlightStat(prevStats, char, 'hp', $('#hp').next(), 1);
-		l2.ui.highlightStat(prevStats, char, 'cp', $('#cp').next(), 1);
-		l2.ui.highlightStat(prevStats, char, 'pDef', $('#pdef').next(), 1);
-		l2.ui.highlightStat(prevStats, char, 'pAtk', $('#patk').next(), 1);
-		l2.ui.highlightStat(prevStats, char, 'atkSpeed', $('#atkspd').next(), 1);
-		l2.ui.highlightStat(prevStats, char, 'pDPS', $('#pdps').next(), 1);
-		l2.ui.highlightStat(prevStats, char, 'mAtk', $('#matk').next(), 1);
-		l2.ui.highlightStat(prevStats, char, 'castSpeed', $('#castspd').next(), 1);
-		l2.ui.highlightStat(prevStats, char, 'mDef', $('#mdef').next(), 1);
-		l2.ui.highlightStat(prevStats, char, 'accuracy', $('#accuracy').next(), 0);
-		l2.ui.highlightStat(prevStats, char, 'pCritical', $('#pcritical').next(), 0);
-		l2.ui.highlightStat(prevStats, char, 'evasion', $('#evasion').next(), 0);
-		l2.ui.highlightStat(prevStats, char, 'speed', $('#speed').next(), 0);
+		l2.ui.highlightStat(prevStats, stats, 'hp', $('#hp').next(), 1);
+		l2.ui.highlightStat(prevStats, stats, 'cp', $('#cp').next(), 1);
+		l2.ui.highlightStat(prevStats, stats, 'pDef', $('#pdef').next(), 1);
+		l2.ui.highlightStat(prevStats, stats, 'pAtk', $('#patk').next(), 1);
+		l2.ui.highlightStat(prevStats, stats, 'atkSpeed', $('#atkspd').next(), 1);
+		l2.ui.highlightStat(prevStats, stats, 'pDPS', $('#pdps').next(), 1);
+		l2.ui.highlightStat(prevStats, stats, 'mAtk', $('#matk').next(), 1);
+		l2.ui.highlightStat(prevStats, stats, 'castSpeed', $('#castspd').next(), 1);
+		l2.ui.highlightStat(prevStats, stats, 'mDef', $('#mdef').next(), 1);
+		l2.ui.highlightStat(prevStats, stats, 'accuracy', $('#accuracy').next(), 0);
+		l2.ui.highlightStat(prevStats, stats, 'pCritical', $('#pcritical').next(), 0);
+		l2.ui.highlightStat(prevStats, stats, 'evasion', $('#evasion').next(), 0);
+		l2.ui.highlightStat(prevStats, stats, 'speed', $('#speed').next(), 0);
 	}
 };
 
@@ -935,9 +675,9 @@ l2.ui.bindBaseStatsFieldSet = function () {
 		l2.ui.tools.addOption('.tatoo-stat', this, this.toUpperCase());
 	});
 	for (var i = 1; i <= 4; i++)
-		l2.ui.tools.addOption('.tatoo-plus', i, '+' + i);
+		l2.ui.tools.addOption('.tatoo-add', i, '+' + i);
 	for (var i = 1; i <= 6; i++)
-		l2.ui.tools.addOption('.tatoo-minus', -i, '-' + i);
+		l2.ui.tools.addOption('.tatoo-sub', i, '-' + i);
 };
 
 l2.ui.bindEquipmentFieldSet = function () {
@@ -983,35 +723,105 @@ l2.ui.prepareModel = function () {
 
 	l2.model.addHandler('raceId', l2.ui.bindClasses);
 	l2.model.addHandler('prof', l2.ui.bindClasses);
-	l2.model.addHandler('classId', l2.ui.bindClassSkills);
-	l2.model.addHandler('classId', l2.ui.bindClassTattos);
+	l2.model.addHandler('classId', l2.ui.bindClassSkillsAndTatoo);
 	l2.model.addHandler('level', l2.ui.autoSelectPassives);
 
-	l2.model.addHandler('tatto1.enabled', function (value) {
-		$('#tatoo-slot-1 input, #tatoo-slot-1 select').attr('disabled', !value);
-	});
-	l2.model.addHandler('tatto2.enabled', function (value) {
-		$('#tatoo-slot-2 input, #tatoo-slot-2 select').attr('disabled', !value);
-	});
-	l2.model.addHandler('tatto3.enabled', function (value) {
-		$('#tatoo-slot-3 input, #tatoo-slot-3 select').attr('disabled', !value);
-	});
+	var capStat = function (stat) {
+		return stat.charAt(0).toUpperCase() + stat.substring(1);
+	};
 
-	l2.model.addHandler('weapon.type', l2.ui.bindWeapons);
-	l2.model.addHandler('weapon.grade', l2.ui.bindWeapons);
-	l2.model.addHandler('shield.grade', l2.ui.bindShields);
-	l2.model.addHandler('helmet.grade', l2.ui.bindHelmets);
-	l2.model.addHandler('bodyUpper.grade', l2.ui.bindBodyUpper);
-	l2.model.addHandler('bodyLower.grade', l2.ui.bindBodyLower);
-	l2.model.addHandler('gloves.grade', l2.ui.bindGloves);
-	l2.model.addHandler('boots.grade', l2.ui.bindBoots);
-	l2.model.addHandler('underwear.grade', l2.ui.bindUnderwears);
-	l2.model.addHandler('belt.grade', l2.ui.bindBelts);
-	l2.model.addHandler('necklace.grade', l2.ui.bindNecklaces);
-	l2.model.addHandler('earring1.grade', l2.ui.bindEarrings1);
-	l2.model.addHandler('earring2.grade', l2.ui.bindEarrings2);
-	l2.model.addHandler('ring1.grade', l2.ui.bindRings1);
-	l2.model.addHandler('ring2.grade', l2.ui.bindRings2);
+	for (var i = 1; i <= 3; i++) {
+		(function (slot, div) {
+			l2.model.addHandler(slot + '.enabled', function (value) {
+				div.find('input, select').attr('disabled', !value);
+			});
+			['add', 'sub'].forEach(function (dir) {
+				var statPos = dir == 'add' ? 'first' : 'last';
+				l2.model.addHandler(slot + '.' + dir + '.stat', function (value) {
+					div.find('select.tatoo-stat:' + statPos).val(value);
+					if (dir == 'add') {
+						l2.model[slot].sub.enableAll();
+						if (l2.ui.isForbidInt())
+							l2.model[slot].sub.enableInt = false;
+						if (l2.ui.isForbidMen())
+							l2.model[slot].sub.enableMen = false;
+						l2.model[slot].sub['enable' + capStat(value)] = false;
+						if (['str', 'dex', 'con'].indexOf(value) >= 0) {
+							l2.model[slot].sub.enableInt = false;
+							l2.model[slot].sub.enableWit = false;
+							l2.model[slot].sub.enableMen = false;
+						} else {
+							l2.model[slot].sub.enableStr = false;
+							l2.model[slot].sub.enableDex = false;
+							l2.model[slot].sub.enableCon = false;
+						}
+					}
+				});
+				l2.model.addHandler(slot + '.' + dir + '.minValue', function (value) {
+					var select = div.find('select.tatoo-' + dir);
+					select.children().hide();
+					for (var i = value; i <= l2.model[slot][dir].maxValue; i++)
+						select.children('[value=' + i + ']').show();
+					if (l2.model[slot][dir].value < value)
+						l2.model[slot][dir].value = value;
+				});
+				l2.model.addHandler(slot + '.' + dir + '.maxValue', function (value) {
+					var select = div.find('select.tatoo-' + dir);
+					select.children().hide();
+					for (var i = l2.model[slot][dir].minValue; i <= value; i++)
+						select.children('[value=' + i + ']').show();
+					if (l2.model[slot][dir].value > value)
+						l2.model[slot][dir].value = value;
+				});
+				['str', 'dex', 'con', 'int', 'wit', 'men'].forEach(function (stat) {
+					var prop = 'enable' + capStat(stat);
+					l2.model.addHandler(slot + '.' + dir + '.' + prop, function (value) {
+						var option = div.find('select.tatoo-stat:' + statPos + ' > option[value=' + stat + ']');
+						if (value)
+							option.show();
+						else {
+							option.hide();
+							if (l2.model[slot][dir].stat == stat) {
+								if (l2.model[slot][dir].enableStr)
+									l2.model[slot][dir].stat = 'str';
+								else if (l2.model[slot][dir].enableDex)
+									l2.model[slot][dir].stat = 'dex';
+								else if (l2.model[slot][dir].enableCon)
+									l2.model[slot][dir].stat = 'con';
+								else if (l2.model[slot][dir].enableInt)
+									l2.model[slot][dir].stat = 'int';
+								else if (l2.model[slot][dir].enableWit)
+									l2.model[slot][dir].stat = 'wit';
+								else if (l2.model[slot][dir].enableMen)
+									l2.model[slot][dir].stat = 'men';
+							}
+						}
+					});
+				});
+			});
+			l2.model.addHandler(slot + '.add.value', function (value) {
+				div.find('select.tatoo-add').val(value);
+				l2.model[slot].sub.minValue = value;
+				l2.model[slot].sub.maxValue = value + 2;
+			});
+		})('tatoo' + i, $('#tatoo-slot-' + i));
+	}
+
+	l2.model.addHandler('weapon.type', l2.ui.createBindItemsFunction('weapon', 'weapon', l2.data.tools.findWeapons));
+	l2.model.addHandler('weapon.grade', l2.ui.createBindItemsFunction('weapon', 'weapon', l2.data.tools.findWeapons));
+	l2.model.addHandler('shield.grade', l2.ui.createBindItemsFunction('shield', 'shield', l2.data.tools.findShields));
+	l2.model.addHandler('helmet.grade', l2.ui.createBindItemsFunction('helmet', 'helmet', l2.data.tools.findHelmets));
+	l2.model.addHandler('bodyUpper.grade', l2.ui.createBindItemsFunction('body-upper', 'bodyUpper', l2.data.tools.findBodyUppers));
+	l2.model.addHandler('bodyLower.grade', l2.ui.createBindItemsFunction('body-lower', 'bodyLower', l2.data.tools.findBodyLowers));
+	l2.model.addHandler('gloves.grade', l2.ui.createBindItemsFunction('gloves', 'gloves', l2.data.tools.findGloves));
+	l2.model.addHandler('boots.grade', l2.ui.createBindItemsFunction('boots', 'boots', l2.data.tools.findBoots));
+	l2.model.addHandler('underwear.grade', l2.ui.createBindItemsFunction('underwear', 'underwear', l2.data.tools.findUnderwears));
+	l2.model.addHandler('belt.grade', l2.ui.createBindItemsFunction('belt', 'belt', l2.data.tools.findBelts));
+	l2.model.addHandler('necklace.grade', l2.ui.createBindItemsFunction('necklace', 'necklace', l2.data.tools.findNecklaces));
+	l2.model.addHandler('earring1.grade', l2.ui.createBindItemsFunction('earring1', 'earring1', l2.data.tools.findEarrings));
+	l2.model.addHandler('earring2.grade', l2.ui.createBindItemsFunction('earring2', 'earring2', l2.data.tools.findEarrings));
+	l2.model.addHandler('ring1.grade', l2.ui.createBindItemsFunction('ring1', 'ring1', l2.data.tools.findRings));
+	l2.model.addHandler('ring2.grade', l2.ui.createBindItemsFunction('ring2', 'ring2', l2.data.tools.findRings));
 
 	l2.model.addHandler('weapon.id', function () {
 		var item = l2.model.weapon.item;
@@ -1040,11 +850,15 @@ l2.ui.prepareModel = function () {
 
 	l2.model.addHandler('setGrade', l2.ui.bindSets);
 
-	['selfBuffs', 'toggles'].forEach(function (type) {
+	['selfBuffs', 'toggles', 'songs', 'dances', 'clanSkills'].forEach(function (type) {
 		l2.model.addHandler(type + '[].level', function (value, skill) {
-			if (!l2.ui.disableValuesUpdate)
-				$('select[data-skill-id=' + skill.id + ']').val(value || '');
-			else
+			if (!l2.ui.disableValuesUpdate) {
+				var element = $('[data-skill-id=' + skill.id + ']');
+				if (element.is('select'))
+					element.val(value || '');
+				else
+					element.attr('checked', !!value);
+			} else
 				l2.ui.disableValuesUpdate = false;
 			if (!l2.ui.disableStorageUpdate)
 				localStorage[l2.ui.storagePrefix + type] = l2.model[type].toJSON();
@@ -1062,25 +876,36 @@ l2.ui.prepareModel = function () {
 		if (!l2.ui.disableStorageUpdate)
 			localStorage[l2.ui.storagePrefix + 'commonBuffs'] = l2.model.commonBuffs.toJSON();
 	});
-	l2.model.addHandler('commonBuffs.remove', function () {
+	l2.model.addHandler('commonBuffs.remove', function (s) {
+		if (!l2.ui.disableValuesUpdate) {
+			var value = s.id + ':' + s.level;
+			var option = $('#commonbuffs select > option[value="' + value + '"]');
+			if (option.length)
+				option.parent().val('');
+		} else
+			l2.ui.disableValuesUpdate = false;
 		if (!l2.ui.disableStorageUpdate)
 			localStorage[l2.ui.storagePrefix + 'commonBuffs'] = l2.model.commonBuffs.toJSON();
-	});
-
-	['songs', 'dances'].forEach(function (type) {
-		l2.model.addHandler(type + '[].level', function (value, skill) {
-			if (!l2.ui.disableValuesUpdate)
-				$('input[data-skill-id=' + skill.id + ']').attr('checked', !!value);
-			else
-				l2.ui.disableValuesUpdate = false;
-			if (!l2.ui.disableStorageUpdate)
-				localStorage[l2.ui.storagePrefix + type] = l2.model[type].toJSON();
-		});
 	});
 
 	l2.model.addGlobalHandler(function (property) {
 		if (property == 'setGrade')
 			return;
+		// for tatto
+		if (property.indexOf('.add.enable') > 0)
+			return;
+		if (property.indexOf('.sub.enable') > 0)
+			return;
+		if (property.indexOf('.add.minValue') > 0)
+			return;
+		if (property.indexOf('.add.maxValue') > 0)
+			return;
+		if (property.indexOf('.sub.minValue') > 0)
+			return;
+		if (property.indexOf('.sub.maxValue') > 0)
+			return;
+		if (!l2.ui.disableRecalc && !l2.ui.loadingProcess)
+			console.log(property);
 		l2.ui.recalc();
 	});
 };
@@ -1092,6 +917,7 @@ $(function () {
 	};
 
 	l2.ui.disableStorageUpdate = true;
+	l2.ui.loadingProcess = true;
 
 	l2.ui.prepareModel();
 
@@ -1106,18 +932,21 @@ $(function () {
 	l2.model.hpPercent = 100;
 	l2.model.position = 'front';
 
-	l2.model.tatto1.add.stat = 'str';
-	l2.model.tatto1.add.val = 1;
-	l2.model.tatto1.sub.stat = 'str';
-	l2.model.tatto1.sub.val = -1;
-	l2.model.tatto2.add.stat = 'str';
-	l2.model.tatto2.add.val = 1;
-	l2.model.tatto2.sub.stat = 'str';
-	l2.model.tatto2.sub.val = -1;
-	l2.model.tatto3.add.stat = 'str';
-	l2.model.tatto3.add.val = 1;
-	l2.model.tatto3.sub.stat = 'str';
-	l2.model.tatto3.sub.val = -1;
+	l2.model.tatoo1.add.stat = 'str';
+	l2.model.tatoo1.add.value = 1;
+	l2.model.tatoo1.add.maxValue = 1;
+	l2.model.tatoo1.sub.stat = 'dex';
+	l2.model.tatoo1.sub.value = 1;
+	l2.model.tatoo2.add.stat = 'str';
+	l2.model.tatoo2.add.value = 1;
+	l2.model.tatoo2.add.maxValue = 1;
+	l2.model.tatoo2.sub.stat = 'dex';
+	l2.model.tatoo2.sub.value = 1;
+	l2.model.tatoo3.add.stat = 'str';
+	l2.model.tatoo3.add.value = 1;
+	l2.model.tatoo3.add.maxValue = 1;
+	l2.model.tatoo3.sub.stat = 'dex';
+	l2.model.tatoo3.sub.value = 1;
 
 	l2.model.weapon.type = 'bigsword';
 	l2.ui.modelEquipments.forEach(function (eq) {
@@ -1191,7 +1020,7 @@ $(function () {
 		l2.model.setValue(m.model, localStorage[l2.ui.storagePrefix + m.model]);
 	});
 
-	['selfBuffs', 'toggles', 'dances', 'songs'].forEach(function (type) {
+	['selfBuffs', 'toggles', 'dances', 'songs', 'clanSkills'].forEach(function (type) {
 		if (localStorage[l2.ui.storagePrefix + type])
 			JSON.parse(localStorage[l2.ui.storagePrefix + type]).forEach(function (s) {
 				l2.model[type].findById(s.id).level = s.level;
@@ -1207,5 +1036,7 @@ $(function () {
 
 	// end new !!!
 
+	l2.ui.loadingProcess = false;
+	l2.ui.recalc();
 	l2.ui.canShowDelta = true;
 });

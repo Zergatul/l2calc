@@ -44,11 +44,15 @@ weaponBaseData - add dual daggers
 
 rare items - not always correctly showing (for example some non grade items have skills)
 
-l2.ui.checkset - move to l2.calc
+
 
 my gnom mdef = wrong - check!
 
 refactor all!
+
+fix frenzy
+
+model, parsing item grade and set grade - similar code
 
 === MODEL ===
 
@@ -56,4 +60,7 @@ refactor all!
 		select.change(l2.ui.checkAbnormalType);
 	*/
 
-	clan skills - continue!
+	passives - move to model
+	common trigers
+
+	l2.ui.checkset - move to l2.calc
