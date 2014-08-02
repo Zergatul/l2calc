@@ -1,7 +1,7 @@
 window.l2 = window.l2 || {};
 window.l2.calc = window.l2.calc || {};
 
-l2.calc.forEachBuff = function (char, stat, callback) {
+l2.calc.forEachEffect = function (char, stat, callback) {
 	char.effects.forEach(function (s) {
 		var skill = l2.data.tools.getSkill(s.id);
 		if (skill.effects == null)
@@ -60,27 +60,27 @@ l2.calc.checkConditions = function (char, usings, hp, atkFrom) {
 };
 
 l2.calc.baseStats = function (char) {
-	l2.calc.forEachBuff(char, 'STR', function (op, val) {
+	l2.calc.forEachEffect(char, 'STR', function (op, val) {
 		if (op == 'add') { char.baseStats.str += val; return; }
 		throw 'not implemented';
 	});
-	l2.calc.forEachBuff(char, 'DEX', function (op, val) {
+	l2.calc.forEachEffect(char, 'DEX', function (op, val) {
 		if (op == 'add') { char.baseStats.dex += val; return; }
 		throw 'not implemented';
 	});
-	l2.calc.forEachBuff(char, 'CON', function (op, val) {
+	l2.calc.forEachEffect(char, 'CON', function (op, val) {
 		if (op == 'add') { char.baseStats.con += val; return; }
 		throw 'not implemented';
 	});
-	l2.calc.forEachBuff(char, 'INT', function (op, val) {
+	l2.calc.forEachEffect(char, 'INT', function (op, val) {
 		if (op == 'add') { char.baseStats.int += val; return; }
 		throw 'not implemented';
 	});
-	l2.calc.forEachBuff(char, 'WIT', function (op, val) {
+	l2.calc.forEachEffect(char, 'WIT', function (op, val) {
 		if (op == 'add') { char.baseStats.wit += val; return; }
 		throw 'not implemented';
 	});
-	l2.calc.forEachBuff(char, 'MEN', function (op, val) {
+	l2.calc.forEachEffect(char, 'MEN', function (op, val) {
 		if (op == 'add') { char.baseStats.men += val; return; }
 		throw 'not implemented';
 	});
@@ -98,7 +98,7 @@ l2.calc.HP = function (char) {
 	var baseHP = coefs.a + coefs.b * char.lvl + coefs.c * char.lvl * char.lvl;
 	var addHP = 0;
 	var multHP = 1;
-	l2.calc.forEachBuff(char, 'maxHp', function (op, val) {
+	l2.calc.forEachEffect(char, 'maxHp', function (op, val) {
 		if (op == 'add') { addHP += val; return; }
 		if (op == 'sub') { addHP -= val; return; }
 		if (op == 'mul') { multHP *= val; return; }
@@ -129,7 +129,7 @@ l2.calc.CP = function (char) {
 	var baseHP = coefs.a + coefs.b * char.lvl + coefs.c * char.lvl * char.lvl;
 	var addCP = 0;
 	var multCP = 1;
-	l2.calc.forEachBuff(char, 'maxCp', function (op, val) {
+	l2.calc.forEachEffect(char, 'maxCp', function (op, val) {
 		if (op == 'add') { addCP += val; return; }
 		if (op == 'mul') { multCP *= val; return; }
 		throw 'not implemented';
@@ -196,7 +196,7 @@ l2.calc.pDef = function (char) {
 	armorPdef += l2.calc.bootsPDef(char);
 	var addPdef = 0;
 	var multPdef = 1;
-	l2.calc.forEachBuff(char, 'pDef', function (op, val) {
+	l2.calc.forEachEffect(char, 'pDef', function (op, val) {
 		if (op == 'add') { addPdef += val; return; }
 		if (op == 'mul') { multPdef *= val; return; }
 		throw 'not implemented';
@@ -206,7 +206,7 @@ l2.calc.pDef = function (char) {
 
 l2.calc.weaponPAtk = function (char) {
 	if (char.weapon) {
-		var enchant = char.enchants.weapon;
+		var enchant = l2.model.weapon.enchant;
 		var delta = 0;
 		if (char.weapon.grade) {
 			var d = 0;
@@ -230,7 +230,7 @@ l2.calc.weaponPAtk = function (char) {
 l2.calc.pAtk = function (char) {
 	var addPAtk = 0;
 	var multPAtk = 1;
-	l2.calc.forEachBuff(char, 'pAtk', function (op, val) {
+	l2.calc.forEachEffect(char, 'pAtk', function (op, val) {
 		if (op == 'add') { addPAtk += val; return; }
 		if (op == 'mul') { multPAtk *= val; return; }
 		throw 'not implemented';
@@ -245,7 +245,7 @@ l2.calc.pCritical = function (char) {
 	var dexBonus = l2.data.statBonus['dex'][char.baseStats.dex];
 	var baseCritial = l2.data.tools.getBaseCritital(char.weapon.weaponType) * dexBonus;
 	var addCritial = 0;
-	l2.calc.forEachBuff(char, 'rCrit', function (op, val) {
+	l2.calc.forEachEffect(char, 'rCrit', function (op, val) {
 		if (op == 'basemul') { addCritial += baseCritial * val; return; }
 		if (op == 'add') { addCritial += val; return; }
 		throw 'not implemented';
@@ -255,7 +255,7 @@ l2.calc.pCritical = function (char) {
 
 l2.calc.pCritMultiplier = function (char) {
 	var mult = 2;
-	l2.calc.forEachBuff(char, 'cAtk', function (op, val) {
+	l2.calc.forEachEffect(char, 'cAtk', function (op, val) {
 		if (op == 'mul') { mult *= val; return; }
 		throw 'not implemented';
 	});
@@ -264,7 +264,7 @@ l2.calc.pCritMultiplier = function (char) {
 
 l2.calc.pCritAtk = function (char, stats) {
 	var addCritPAtk = 0;
-	l2.calc.forEachBuff(char, 'cAtkAdd', function (op, val) {
+	l2.calc.forEachEffect(char, 'cAtkAdd', function (op, val) {
 		if (op == 'add') { addCritPAtk += val; return; };
 		throw 'not implemented';
 	});
@@ -277,7 +277,7 @@ l2.calc.atkSpeed = function (char) {
 	var baseWeaponAtkSpeed = l2.data.tools.getBaseAtkSpeed(char.weapon.weaponType);
 	var dexBonus = l2.data.statBonus['dex'][char.baseStats.dex];
 	var multAtkSpeed = 1;
-	l2.calc.forEachBuff(char, 'pAtkSpd', function (op, val) {
+	l2.calc.forEachEffect(char, 'pAtkSpd', function (op, val) {
 		if (op == 'mul') { multAtkSpeed *= val; return; }
 		throw 'not implemented';
 	});
@@ -292,7 +292,7 @@ l2.calc.accuracy = function (char) {
 		if (['blunt', 'bigblunt', 'dualfist'].indexOf(char.weapon.weaponType) >= 0)
 			addAcc += 4.75;
 	}
-	l2.calc.forEachBuff(char, 'accCombat', function (op, val) {
+	l2.calc.forEachEffect(char, 'accCombat', function (op, val) {
 		if (op == 'add') { addAcc += val; return; }
 		if (op == 'sub') { addAcc -= val; return; }
 		throw 'not implemented';
@@ -309,7 +309,7 @@ l2.calc.mAtk = function (char) {
 		return 0;	
 	var addMAtk = 0;
 	var multMAtk = 1;
-	l2.calc.forEachBuff(char, 'mAtk', function (op, val) {
+	l2.calc.forEachEffect(char, 'mAtk', function (op, val) {
 		if (op == 'add') { addMAtk += val; return; }
 		if (op == 'mul') { multMAtk *= val; return; }
 		throw 'not implemented';
@@ -321,7 +321,7 @@ l2.calc.mAtk = function (char) {
 l2.calc.castSpeed = function (char) {
 	var addCSpeed = 0;
 	var multCSpeed = 1;
-	l2.calc.forEachBuff(char, 'mAtkSpd', function (op, val) {
+	l2.calc.forEachEffect(char, 'mAtkSpd', function (op, val) {
 		if (op == 'add') { addCSpeed += val; return; }
 		if (op == 'mul') { multCSpeed *= val; return; }
 		throw 'not implemented';
@@ -333,7 +333,7 @@ l2.calc.castSpeed = function (char) {
 l2.calc.speed = function (char) {
 	var addSpeed = 0;
 	var multSpeed = 1;
-	l2.calc.forEachBuff(char, 'runSpd', function (op, val) {
+	l2.calc.forEachEffect(char, 'runSpd', function (op, val) {
 		if (op == 'add') { addSpeed += val; return; }
 		if (op == 'mul') { multSpeed *= val; return; }
 		throw 'not implemented';
@@ -344,7 +344,7 @@ l2.calc.speed = function (char) {
 
 l2.calc.evasion = function (char) {
 	var addEva = 0;
-	l2.calc.forEachBuff(char, 'rEvas', function (op, val) {
+	l2.calc.forEachEffect(char, 'rEvas', function (op, val) {
 		if (op == 'add') { addEva += val; return; }
 		if (op == 'sub') { addEva -= val; return; }
 		throw 'not implemented';
@@ -396,7 +396,7 @@ l2.calc.mDef = function (char) {
 	jewelryMdef += l2.calc.ring2MDef(char);
 	var addMdef = 0;
 	var multMdef = 1;
-	l2.calc.forEachBuff(char, 'mDef', function (op, val) {
+	l2.calc.forEachEffect(char, 'mDef', function (op, val) {
 		if (op == 'add') { addMdef += val; return; }
 		if (op == 'mul') { multMdef *= val; return; }
 		throw 'not implemented';
@@ -465,7 +465,8 @@ l2.calc.stats = function () {
 		lm: (l2.model.level + 89) / 100,
 		hpPerc: l2.model.hpPercent,
 		atkFrom: l2.model.position,
-		effects: []
+		effects: [],
+		weapon: l2.model.weapon.item
 	};
 
 	l2.ui.modelEquipments.forEach(function (model) {
@@ -497,11 +498,22 @@ l2.calc.stats = function () {
 
 	l2.calc.baseStats(char);
 
-	// apply tatto's
+	var delta = { str: 0, dex: 0, con: 0, int: 0, wit: 0, men: 0 };
+	for (var i = 1; i <= 3; i++) {
+		var slot = l2.model['tatoo' + i];
+		if (slot.checked) {
+			delta[slot.add.stat] += slot.add.value;
+			delta[slot.sub.stat] -= slot.sub.value;
+		}
+	}
 
-	for (var stat in stats)
+	for (var stat in delta) {
+		if (delta[stat] > 5)
+			delta[stat] = 5;
+		char.baseStats[stat] += delta[stat];
 		if (char.baseStats[stat] <= 0)
 			char.baseStats[stat] = 1;
+	}
 
 	var stats = {
 		baseStats: char.baseStats,

@@ -56,10 +56,11 @@ window.l2 = window.l2 || {};
 				notifyPropertyChanged(itemType + '.grade', grade);
 			}
 		});
-		var enchant = 0;
+		var enchant = -1;
 		Object.defineProperty(this, 'enchant', {
 			get: function () { return enchant; },
 			set: function (value) {
+				var old = enchant;
 				if (value == null || value == '')
 					enchant = 0;
 				else {
@@ -69,13 +70,15 @@ window.l2 = window.l2 || {};
 					else
 						throw 'Invalid enchant';
 				}
-				notifyPropertyChanged(itemType + '.enchant', enchant);
+				if (old != enchant)
+					notifyPropertyChanged(itemType + '.enchant', enchant);
 			}
 		});
-		var id = null;
+		var id = -1;
 		Object.defineProperty(this, 'id', {
 			get: function () { return id; },
 			set: function (value) {
+				var old = id;
 				if (value == null || value == '')
 					id = null;
 				else {
@@ -85,7 +88,8 @@ window.l2 = window.l2 || {};
 					else
 						throw 'Invalid id';
 				}
-				notifyPropertyChanged(itemType + '.id', id);
+				if (old != id)
+					notifyPropertyChanged(itemType + '.id', id);
 			}
 		});
 		Object.defineProperty(this, 'item', {

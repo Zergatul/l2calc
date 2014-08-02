@@ -825,7 +825,7 @@ l2.ui.prepareModel = function () {
 
 	l2.model.addHandler('weapon.id', function () {
 		var item = l2.model.weapon.item;
-		l2.model.shield.disabled = item && ['bow', 'pole', 'bigsword', 'bigblunt'].indexOf(item.weaponType) >= 0;
+		l2.model.shield.disabled = item && ['bow', 'pole', 'bigsword', 'bigblunt', 'dual'].indexOf(item.weaponType) >= 0;
 	});
 
 	l2.model.addHandler('bodyUpper.id', function () {
@@ -903,6 +903,12 @@ l2.ui.prepareModel = function () {
 		if (property.indexOf('.sub.minValue') > 0)
 			return;
 		if (property.indexOf('.sub.maxValue') > 0)
+			return;
+		if (property.indexOf('.canEnchant') > 0)
+			return;
+		if (property.indexOf('.disabled') > 0)
+			return;
+		if (property.indexOf('.grade') > 0)
 			return;
 		if (!l2.ui.disableRecalc && !l2.ui.loadingProcess)
 			console.log(property);
@@ -982,15 +988,6 @@ $(function () {
 			l2.ui.autoSelectPassives();
 		} else
 			$('#passives > div > div.passive-skill > select').attr('disabled', false);
-		l2.ui.recalc();
-	});
-
-	$('.eq-enchant > input').val('0').attr('disabled', true).change(function () {
-		var val = parseInt($(this).val());
-		if (isNaN(val) || val < 0)
-			val = 0;
-		if ($(this).val() != val.toString())
-			$(this).val(val);
 		l2.ui.recalc();
 	});
 
