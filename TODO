@@ -10,8 +10,6 @@ pdef for first prof without armor - maybe wrong
 
 bind self, toggles, passives - similar code
 
-tatto for profs
-
 Sword/Blunt Weapon Mastery - to fix - to test!
 
 warcryer weapon mastery - bad constants in p.atk add, llook like good! need check!
@@ -20,25 +18,19 @@ check with real data naked characters - mages and fighters
 
 implement NOT parsing and using in calculator
 
-when change prof - clear saved self togles/buffs
-
 transforms - ? tank
 
 penalty when grade > lvl
 
 add self triggers
 
-critical, atk speed, matk for no weapon = 0
-
-savings
+savings (show last 3 as buttons, all other in select)
 
 +6 set bonus
 
 first prof 85 lvl  = 1kk HP, why?
 
 base speed for kamael???
-
-hide shield for 2h weapon
 
 weaponBaseData - add dual daggers
 
@@ -60,7 +52,7 @@ model, parsing item grade and set grade - similar code
 		select.change(l2.ui.checkAbnormalType);
 	*/
 
-	passives - move to model
 	common trigers
 
-	l2.ui.checkset - move to l2.calc
+
+	end passives, what next - hz

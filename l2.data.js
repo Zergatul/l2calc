@@ -187,6 +187,8 @@ l2.data.weaponTypes = [
 	{ name: 'Ancient', code: 'ancient' },
 ];
 
+l2.data.twoHand = ['bow', 'pole', 'bigsword', 'bigblunt', 'dual', 'dualfist', 'dualdagger', 'crossbow', 'ancient'];
+
 l2.data.weaponBaseData = [
 	{ name: 'bigsword', baseCritical: 80, baseAtkSpeed: 325 },
 	{ name: 'sword', baseCritical: 80, baseAtkSpeed: 379 },

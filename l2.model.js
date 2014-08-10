@@ -294,6 +294,7 @@ window.l2 = window.l2 || {};
 				notifyPropertyChanged(type + '.remove', s);
 			});
 			list = [];
+			notifyPropertyChanged(type + '.clear');
 		};
 		this.forEach = function (callback) {
 			list.forEach(callback);
@@ -358,7 +359,8 @@ window.l2 = window.l2 || {};
 		commonBuffs: new L2SkillList('commonBuffs'),
 		songs: new L2SkillList('songs'),
 		dances: new L2SkillList('dances'),
-		clanSkills: new L2SkillList('clanSkills')
+		clanSkills: new L2SkillList('clanSkills'),
+		passives: new L2SkillList('passives')
 	};
 
 	var addModel = function (property, getter, setter) {
@@ -437,6 +439,12 @@ window.l2 = window.l2 || {};
 			else
 				throw 'Invalid grade';
 		notifyPropertyChanged('setGrade', setGrade);
+	});
+
+	var autoSelectPassives = true;
+	addModel('autoSelectPassives', function () { return autoSelectPassives; }, function (value) {
+		autoSelectPassives = value == 'false' ? false : value;
+		notifyPropertyChanged('autoSelectPassives', autoSelectPassives);
 	});
 
 })();

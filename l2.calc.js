@@ -240,10 +240,9 @@ l2.calc.pAtk = function (char) {
 };
 
 l2.calc.pCritical = function (char) {
-	if (char.weapon == null)
-		return 0;
+	var weaponBaseCritical = char.weapon == null ? 40 : l2.data.tools.getBaseCritical(char.weapon.weaponType);
 	var dexBonus = l2.data.statBonus['dex'][char.baseStats.dex];
-	var baseCritial = l2.data.tools.getBaseCritital(char.weapon.weaponType) * dexBonus;
+	var baseCritial = weaponBaseCritical * dexBonus;
 	var addCritial = 0;
 	l2.calc.forEachEffect(char, 'rCrit', function (op, val) {
 		if (op == 'basemul') { addCritial += baseCritial * val; return; }
@@ -272,9 +271,7 @@ l2.calc.pCritAtk = function (char, stats) {
 };
 
 l2.calc.atkSpeed = function (char) {
-	if (char.weapon == null)
-		return 0;
-	var baseWeaponAtkSpeed = l2.data.tools.getBaseAtkSpeed(char.weapon.weaponType);
+	var baseWeaponAtkSpeed = char.weapon == null ? 325 : l2.data.tools.getBaseAtkSpeed(char.weapon.weaponType);
 	var dexBonus = l2.data.statBonus['dex'][char.baseStats.dex];
 	var multAtkSpeed = 1;
 	l2.calc.forEachEffect(char, 'pAtkSpd', function (op, val) {
@@ -304,9 +301,21 @@ l2.calc.pDPS = function (char) {
 	return (char.pAtk * (1 - char.pCritical / 1000) + char.pCritAtk * char.pCritical / 1000) * char.atkSpeed / 100;
 };
 
+l2.calc.weaponMAtk = function (char) {
+	if (char.weapon) {
+		var enchant = l2.model.weapon.enchant;
+		var delta = 0;
+		if (char.weapon.grade) {
+			var d = l2.data.weaponEnchant[char.weapon.grade].mAtk;
+			delta += Math.min(3, enchant) * d;
+			delta += Math.max(0, enchant - 3) * 2 * d;
+		};
+		return char.weapon.pAtk + delta;
+	} else
+		return 6;
+};
+
 l2.calc.mAtk = function (char) {
-	if (char.weapon == null)
-		return 0;	
 	var addMAtk = 0;
 	var multMAtk = 1;
 	l2.calc.forEachEffect(char, 'mAtk', function (op, val) {
@@ -315,7 +324,7 @@ l2.calc.mAtk = function (char) {
 		throw 'not implemented';
 	});
 	var intBonus = l2.data.statBonus['int'][char.baseStats.int];
-	return Math.floor(char.weapon.mAtk * char.lm * char.lm * intBonus * intBonus * multMAtk + addMAtk);
+	return Math.floor(l2.calc.weaponMAtk(char) * char.lm * char.lm * intBonus * intBonus * multMAtk + addMAtk);
 };
 
 l2.calc.castSpeed = function (char) {
@@ -495,6 +504,7 @@ l2.calc.stats = function () {
 	l2.model.songs.forEach(skillCallback);
 	l2.model.dances.forEach(skillCallback);
 	l2.model.clanSkills.forEach(skillCallback);
+	l2.model.passives.forEach(skillCallback);
 
 	l2.calc.baseStats(char);
 

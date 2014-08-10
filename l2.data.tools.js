@@ -50,7 +50,7 @@ l2.data.tools.isMystic = function (classId) {
 	var baseClassId = base[base.length - 1];
 	return [10, 25, 38, 49].indexOf(baseClassId) >= 0;
 };
-l2.data.tools.getBaseCritital = function (weaponType) {
+l2.data.tools.getBaseCritical = function (weaponType) {
 	for (var i = 0; i < l2.data.weaponBaseData.length; i++)
 		if (l2.data.weaponBaseData[i].name == weaponType)
 			return l2.data.weaponBaseData[i].baseCritical;

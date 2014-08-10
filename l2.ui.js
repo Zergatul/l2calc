@@ -90,49 +90,9 @@ l2.ui.applySet = function () {
 	l2.ui.recalc();
 };
 
-l2.ui.checkSet = function (char) {
-	var helmet = parseInt($('#helmet').val());
-	var bodyUpper = parseInt($('#body-upper').val());
-	var bodyLower = parseInt($('#body-lower').val());
-	var gloves = parseInt($('#gloves').val());
-	var boots = parseInt($('#boots').val());
-	var shield = parseInt($('#shield').val());
-
-	var equipedSet = null;
-	l2.data.armorSets.forEach(function (set) {
-		if (set.chest.indexOf(bodyUpper) == -1)
-			return;
-		if (set.legs && set.legs.indexOf(bodyLower) == -1)
-			return;
-		if (set.head && set.head.indexOf(helmet) == -1)
-			return;
-		if (set.gloves && set.gloves.indexOf(gloves) == -1)
-			return;
-		if (set.feet && set.feet.indexOf(boots) == -1)
-			return;
-		equipedSet = set;
-	});
-
-	if (equipedSet == null)
-		return;
-
-	char.passives.push({ id: equipedSet.skill[1], lvl: 1});
-	if (equipedSet.shield && equipedSet.shield.indexOf(shield) >= 0 && equipedSet.shieldSkill != null)
-		char.passives.push({ id: equipedSet.shieldSkill, lvl: 1});
-
-	if (equipedSet.str) char.stats.str += equipedSet.str;
-	if (equipedSet.dex) char.stats.dex += equipedSet.dex;
-	if (equipedSet.con) char.stats.con += equipedSet.con;
-	if (equipedSet.int) char.stats.int += equipedSet.int;
-	if (equipedSet.wit) char.stats.wit += equipedSet.wit;
-	if (equipedSet.men) char.stats.men += equipedSet.men;
-};
-
 l2.ui.bindPassives = function () {
-	var classId = $('#l2class').val();
-	var lvl = $('#lvl').val();
 	var skills = {};
-	var classesId = l2.data.tools.getBaseClasses(classId);
+	var classesId = l2.data.tools.getBaseClasses(l2.model.classId);
 	classesId.forEach(function (classId) {
 		l2.data.tools.getSkillTree(classId).forEach(function (skill) {
 			if (skills[skill.id])
@@ -141,54 +101,51 @@ l2.ui.bindPassives = function () {
 				skills[skill.id] = [skill];
 		});
 	});
-	$('#passives > div > div.passive-skill').remove();
+	l2.model.passives.clear();
 	for (var id in skills) {
 		var skill = l2.data.tools.getSkill(id);
 		skills[id].sort(function (s1, s2) {
 			return s1.lvl - s2.lvl;
 		});
-		if (skill && skill.operateType == 'P') {
-			var div = $('<div>').addClass('left passive-skill');
-			var select = $('<select>').attr('data-skill-id', skill.id);
-			select.change(l2.ui.recalc);
-			l2.ui.tools.addOption(select, '', '---');
-			for (var j = 0; j < skills[id].length; j++)
-				l2.ui.tools.addOption(select, skills[id][j].lvl, skills[id][j].lvl + ' [' + skills[id][j].minLvl + ']', function (option) {
-					option.attr('data-min-lvl', skills[id][j].minLvl);
-				});
-			if ($('#auto-select-passives').is(':checked'))
-				select.attr('disabled', 'disabled');
-			div.append(select);
-			div.append($('<span>').text(skill.name));
-			$('#passives > div').append(div);
-		}
+		if (skill && skill.operateType == 'P')
+			l2.model.passives.add(skill.id, skills[id]);
 	}
+
+	$('#passives > div > div.passive-skill').remove();
+	l2.model.passives.forEach(function (ps) {
+		var skill = ps.skill;
+		var div = $('<div>').addClass('left passive-skill');
+		var select = $('<select>').attr('data-skill-id', skill.id);
+		select.change(l2.ui.createChangeSkillListHandler('passives', skill.id));
+		l2.ui.tools.addOption(select, '', '---');
+		for (var i = 0; i < ps.data.length; i++)
+			l2.ui.tools.addOption(select, ps.data[i].lvl, ps.data[i].lvl + ' [' + ps.data[i].minLvl + ']');
+		if (l2.model.autoSelectPassives)
+			select.attr('disabled', true);
+		div.append(select);
+		div.append($('<span>').text(skill.name));
+		$('#passives > div').append(div);
+	});
 
 	l2.ui.autoSelectPassives();
 };
 
 l2.ui.autoSelectPassives = function () {
-	if (!$('#auto-select-passives').is(':checked'))
+	if (!l2.model.autoSelectPassives)
 		return;
-	var classId = $('#l2class').val();
-	var lvl = $('#lvl').val();
-	var classesId = l2.data.tools.getBaseClasses(classId);
-	$('#passives select').each(function () {
-		var skillId = parseInt($(this).attr('data-skill-id'));
+
+	var prev = l2.ui.disableRecalc;
+	l2.ui.disableRecalc = true;
+	var classesId = l2.data.tools.getBaseClasses(l2.model.classId);
+	l2.model.passives.forEach(function (ps) {
 		var skillLevel = 0;
-		$(this).children('option').each(function () {
-			var minLvl = $(this).attr('data-min-lvl');
-			if (!minLvl)
-				return;
-			minLvl = parseInt(minLvl);
-			if (minLvl <= lvl)
-				skillLevel = $(this).val();
-		});
-		if (skillLevel == 0)
-			$(this).val('');
-		else
-			$(this).val(skillLevel);
-	})
+		for (var i = 0; i < ps.data.length; i++)
+			if (ps.data[i].minLvl <= l2.model.level && skillLevel < ps.data[i].lvl)
+				skillLevel = ps.data[i].lvl;
+		ps.level = skillLevel;
+	});
+	l2.ui.disableRecalc = prev;
+	l2.ui.recalc();
 };
 
 l2.ui.createChangeSkillListHandler = function (type, id) {
@@ -231,8 +188,8 @@ l2.ui.bindSelfBuffs = function () {
 		select.attr('data-skill-id', skill.id);
 		select.change(l2.ui.createChangeSkillListHandler('selfBuffs', skill.id));
 		l2.ui.tools.addOption(select, '', '---');
-		for (var j = 0; j < sb.data.length; j++)
-			l2.ui.tools.addOption(select, sb.data[j].lvl, sb.data[j].lvl + ' [' + sb.data[j].minLvl + ']');
+		for (var i = 0; i < sb.data.length; i++)
+			l2.ui.tools.addOption(select, sb.data[i].lvl, sb.data[i].lvl + ' [' + sb.data[i].minLvl + ']');
 		div.append(select);
 		div.append($('<span>').text(skill.name));
 		$('#selfbuffs > div').append(div);
@@ -312,15 +269,11 @@ l2.ui.bindClassTatoos = function () {
 		slot.add.maxValue = _class.prof <= 1 ? 1 : 4;
 		if (slot.enabled) {
 			slot.add.enableAll();
-			slot.sub.enableAll();
-			if (_class.forbidMen) {
+			if (_class.forbidMen)
 				slot.add.enableMen = false;
-				slot.sub.enableMen = false;
-			}
-			if (_class.forbidInt) {
+			if (_class.forbidInt)
 				slot.add.enableInt = false;
-				slot.sub.enableInt = false;	
-			}
+			slot.add.stat = slot.add.stat;
 		}
 	}
 };
@@ -825,7 +778,7 @@ l2.ui.prepareModel = function () {
 
 	l2.model.addHandler('weapon.id', function () {
 		var item = l2.model.weapon.item;
-		l2.model.shield.disabled = item && ['bow', 'pole', 'bigsword', 'bigblunt', 'dual'].indexOf(item.weaponType) >= 0;
+		l2.model.shield.disabled = item && l2.data.twoHand.indexOf(item.weaponType) >= 0;
 	});
 
 	l2.model.addHandler('bodyUpper.id', function () {
@@ -850,7 +803,7 @@ l2.ui.prepareModel = function () {
 
 	l2.model.addHandler('setGrade', l2.ui.bindSets);
 
-	['selfBuffs', 'toggles', 'songs', 'dances', 'clanSkills'].forEach(function (type) {
+	['selfBuffs', 'toggles', 'songs', 'dances', 'clanSkills', 'passives'].forEach(function (type) {
 		l2.model.addHandler(type + '[].level', function (value, skill) {
 			if (!l2.ui.disableValuesUpdate) {
 				var element = $('[data-skill-id=' + skill.id + ']');
@@ -860,6 +813,10 @@ l2.ui.prepareModel = function () {
 					element.attr('checked', !!value);
 			} else
 				l2.ui.disableValuesUpdate = false;
+			if (!l2.ui.disableStorageUpdate)
+				localStorage[l2.ui.storagePrefix + type] = l2.model[type].toJSON();
+		});
+		l2.model.addHandler(type + '.clear', function () {
 			if (!l2.ui.disableStorageUpdate)
 				localStorage[l2.ui.storagePrefix + type] = l2.model[type].toJSON();
 		});
@@ -887,9 +844,20 @@ l2.ui.prepareModel = function () {
 		if (!l2.ui.disableStorageUpdate)
 			localStorage[l2.ui.storagePrefix + 'commonBuffs'] = l2.model.commonBuffs.toJSON();
 	});
+	l2.model.addHandler('autoSelectPassives', function (val) {
+		if (!l2.ui.disableValuesUpdate) {
+			$('#auto-select-passives').attr('checked', val);
+		} else
+			l2.ui.disableValuesUpdate = false;
+		$('#passives select').attr('disabled', val);
+		if (val)
+			l2.ui.autoSelectPassives();
+	});
 
 	l2.model.addGlobalHandler(function (property) {
 		if (property == 'setGrade')
+			return;
+		if (property == 'autoSelectPassives')
 			return;
 		// for tatto
 		if (property.indexOf('.add.enable') > 0)
@@ -931,13 +899,6 @@ $(function () {
 	l2.ui.bindBaseStatsFieldSet();
 	l2.ui.bindEquipmentFieldSet();
 
-	l2.model.raceId = 0;
-	l2.model.prof = 0;
-	l2.model.classId = 0;
-	l2.model.level = 1;
-	l2.model.hpPercent = 100;
-	l2.model.position = 'front';
-
 	l2.model.tatoo1.add.stat = 'str';
 	l2.model.tatoo1.add.value = 1;
 	l2.model.tatoo1.add.maxValue = 1;
@@ -953,6 +914,13 @@ $(function () {
 	l2.model.tatoo3.add.maxValue = 1;
 	l2.model.tatoo3.sub.stat = 'dex';
 	l2.model.tatoo3.sub.value = 1;
+
+	l2.model.raceId = 0;
+	l2.model.prof = 0;
+	l2.model.classId = 0;
+	l2.model.level = 1;
+	l2.model.hpPercent = 100;
+	l2.model.position = 'front';
 
 	l2.model.weapon.type = 'bigsword';
 	l2.ui.modelEquipments.forEach(function (eq) {
@@ -982,15 +950,6 @@ $(function () {
 	$('#dancebuffs span.clear-btn').click(l2.ui.clearDances);
 	$('#clanskills span.clear-btn').click(l2.ui.clearClanSkills);
 
-	$('#auto-select-passives').click(function () {
-		if ($(this).is(':checked')) {
-			$('#passives > div > div.passive-skill > select').attr('disabled', true);
-			l2.ui.autoSelectPassives();
-		} else
-			$('#passives > div > div.passive-skill > select').attr('disabled', false);
-		l2.ui.recalc();
-	});
-
 	$(window).resize(l2.ui.adjustContainer);
 	l2.ui.adjustContainer();
 
@@ -1017,7 +976,7 @@ $(function () {
 		l2.model.setValue(m.model, localStorage[l2.ui.storagePrefix + m.model]);
 	});
 
-	['selfBuffs', 'toggles', 'dances', 'songs', 'clanSkills'].forEach(function (type) {
+	['selfBuffs', 'toggles', 'dances', 'songs', 'clanSkills', 'passives'].forEach(function (type) {
 		if (localStorage[l2.ui.storagePrefix + type])
 			JSON.parse(localStorage[l2.ui.storagePrefix + type]).forEach(function (s) {
 				l2.model[type].findById(s.id).level = s.level;
