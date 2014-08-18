@@ -29,7 +29,9 @@ l2.ui.createBindItemsFunction = function (elementId, model, findFunc) {
 		var grade = l2.model[model].grade;
 		var type = l2.model[model].type;
 		findFunc(grade, type).forEach(function (item) {
-			l2.ui.tools.addOption(element, item.id, item.name);
+			var opt = l2.ui.tools.addOption(element, item.id, item.name);
+			if (item.skill)
+				opt.css('color', '#CCCC00');
 		});
 		l2.model[model].id = null;
 	};

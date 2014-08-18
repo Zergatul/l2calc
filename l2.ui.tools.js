@@ -7,6 +7,7 @@ l2.ui.tools.addOption = function (element, value, text, callback) {
 	$(element).append(option);
 	if ($.isFunction(callback))
 		callback(option);
+	return option;
 };
 
 l2.ui.tools.formatNumber = function (number) {

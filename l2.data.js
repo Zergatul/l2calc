@@ -412,6 +412,7 @@ l2.data.clanSkills = [
 	376, // Clan Might
 	377, // Clan Shield
 	378, // Clan Empower
+	379, // Clan Magic Resistance
 	380, // Clan Guidance
 	381, // Clan Agility
 	382, // Clan Shield Defense

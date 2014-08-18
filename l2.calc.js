@@ -106,11 +106,11 @@ l2.calc.HP = function (char) {
 	});
 	['shield', 'helmet', 'bodyUpper', 'bodyLower', 'gloves', 'boots', 'underwear', 'belt'].forEach(function (part) {
 		if (char[part] && char[part].grade) {
-			if (char.enchants[part] >= 4)
+			if (char[part].enchant >= 4)
 				if (char[part].bodyPart == 'onepiece')
-					addHP += l2.data.oeArmorHPBonus[char[part].grade.charAt(0)].fullbody[char.enchants[part] - 4];
+					addHP += l2.data.oeArmorHPBonus[char[part].grade.charAt(0)].fullbody[char[part].enchant - 4];
 				else
-					addHP += l2.data.oeArmorHPBonus[char[part].grade.charAt(0)].single[char.enchants[part] - 4];
+					addHP += l2.data.oeArmorHPBonus[char[part].grade.charAt(0)].single[char[part].enchant - 4];
 		}
 	});
 	var conBonus = l2.data.statBonus['con'][char.baseStats.con];
@@ -151,14 +151,14 @@ l2.calc.applyArmorEnchant = function (pDef, grade, enchant) {
 
 l2.calc.helmetPDef = function (char) {
 	if (char.helmet)
-		return l2.calc.applyArmorEnchant(char.helmet.pDef, char.helmet.grade, char.enchants.helmet);
+		return l2.calc.applyArmorEnchant(char.helmet.pDef, char.helmet.grade, char.helmet.enchant);
 	else
 		return 12;
 };
 
 l2.calc.bodyUpperPdef = function (char) {
 	if (char.bodyUpper)
-		return l2.calc.applyArmorEnchant(char.bodyUpper.pDef, char.bodyUpper.grade, char.enchants.bodyUpper);
+		return l2.calc.applyArmorEnchant(char.bodyUpper.pDef, char.bodyUpper.grade, char.bodyUpper.enchant);
 	else
 		return l2.data.tools.isMystic(char._class.id) ? 15 : 31;
 };
@@ -166,7 +166,7 @@ l2.calc.bodyUpperPdef = function (char) {
 l2.calc.bodyLowerPDef = function (char) {
 	if (char.bodyUpper == null || char.bodyUpper.bodyPart != 'onepiece') {
 		if (char.bodyLower)
-			return l2.calc.applyArmorEnchant(char.bodyLower.pDef, char.bodyLower.grade, char.enchants.bodyLower);
+			return l2.calc.applyArmorEnchant(char.bodyLower.pDef, char.bodyLower.grade, char.bodyLower.enchant);
 		else
 			return l2.data.tools.isMystic(char._class.id) ? 8 : 18;
 	} else
@@ -175,16 +175,23 @@ l2.calc.bodyLowerPDef = function (char) {
 
 l2.calc.glovesPDef = function (char) {
 	if (char.gloves)
-		return l2.calc.applyArmorEnchant(char.gloves.pDef, char.gloves.grade, char.enchants.gloves);
+		return l2.calc.applyArmorEnchant(char.gloves.pDef, char.gloves.grade, char.gloves.enchant);
 	else
 		return 8;
 };
 
 l2.calc.bootsPDef = function (char) {
 	if (char.boots)
-		return l2.calc.applyArmorEnchant(char.boots.pDef, char.boots.grade, char.enchants.boots);
+		return l2.calc.applyArmorEnchant(char.boots.pDef, char.boots.grade, char.boots.enchant);
 	else
 		return 7;
+};
+
+l2.calc.underwearPDef = function (char) {
+	if (char.underwear)
+		return l2.calc.applyArmorEnchant(char.underwear.pDef, char.underwear.grade, char.underwear.enchant);
+	else
+		return 0;
 };
 
 l2.calc.pDef = function (char) {
@@ -194,6 +201,8 @@ l2.calc.pDef = function (char) {
 	armorPdef += l2.calc.bodyLowerPDef(char);
 	armorPdef += l2.calc.glovesPDef(char);
 	armorPdef += l2.calc.bootsPDef(char);
+	var othersPdef = 0;
+	othersPdef += l2.calc.underwearPDef(char);
 	var addPdef = 0;
 	var multPdef = 1;
 	l2.calc.forEachEffect(char, 'pDef', function (op, val) {
@@ -201,7 +210,7 @@ l2.calc.pDef = function (char) {
 		if (op == 'mul') { multPdef *= val; return; }
 		throw 'not implemented';
 	});
-	return Math.floor((4 + armorPdef) * char.lm * multPdef + addPdef);
+	return Math.floor((4 + armorPdef) * char.lm * multPdef + addPdef/* + othersPdef * char.lm*/);
 };
 
 l2.calc.weaponPAtk = function (char) {
@@ -310,7 +319,7 @@ l2.calc.weaponMAtk = function (char) {
 			delta += Math.min(3, enchant) * d;
 			delta += Math.max(0, enchant - 3) * 2 * d;
 		};
-		return char.weapon.pAtk + delta;
+		return char.weapon.mAtk + delta;
 	} else
 		return 6;
 };
@@ -363,35 +372,35 @@ l2.calc.evasion = function (char) {
 
 l2.calc.necklaceMDef = function (char) {
 	if (char.necklace)
-		return l2.calc.applyArmorEnchant(char.necklace.mDef, char.necklace.grade, char.enchants.necklace);
+		return l2.calc.applyArmorEnchant(char.necklace.mDef, char.necklace.grade, char.necklace.enchant);
 	else
 		return 13;
 };
 
 l2.calc.earring1MDef = function (char) {
 	if (char.earring1)
-		return l2.calc.applyArmorEnchant(char.earring1.mDef, char.earring1.grade, char.enchants.earring1);
+		return l2.calc.applyArmorEnchant(char.earring1.mDef, char.earring1.grade, char.earring1.enchant);
 	else
 		return 9;
 };
 
 l2.calc.earring2MDef = function (char) {
 	if (char.earring2)
-		return l2.calc.applyArmorEnchant(char.earring2.mDef, char.earring2.grade, char.enchants.earring2);
+		return l2.calc.applyArmorEnchant(char.earring2.mDef, char.earring2.grade, char.earring2.enchant);
 	else
 		return 9;
 };
 
 l2.calc.ring1MDef = function (char) {
 	if (char.ring1)
-		return l2.calc.applyArmorEnchant(char.ring1.mDef, char.ring1.grade, char.enchants.ring1);
+		return l2.calc.applyArmorEnchant(char.ring1.mDef, char.ring1.grade, char.ring1.enchant);
 	else
 		return 5;
 };
 
 l2.calc.ring2MDef = function (char) {
 	if (char.ring2)
-		return l2.calc.applyArmorEnchant(char.ring2.mDef, char.ring2.grade, char.enchants.ring2);
+		return l2.calc.applyArmorEnchant(char.ring2.mDef, char.ring2.grade, char.ring2.enchant);
 	else
 		return 5;
 };
@@ -445,6 +454,55 @@ l2.calc.checkSet = function (char) {
 	if (equipedSet.men) char.baseStats.men += equipedSet.men;
 };
 
+l2.calc.convertGrade = function (grade) {
+	switch (grade) {
+		case 'd': return 1;
+		case 'c': return 2;
+		case 'b': return 3;
+		case 'a': return 4;
+		case 's': return 5;
+		case 's80': return 6;
+		case 's84': return 7;
+		default:
+			throw 'Invalid grade';
+	}
+};
+
+l2.calc.charGrade = function (char) {
+	if (char.lvl < 20)
+		return 0;
+	if (char.lvl < 40)
+		return 1;
+	if (char.lvl < 52)
+		return 2;
+	if (char.lvl < 61)
+		return 3;
+	if (char.lvl < 76)
+		return 4;
+	if (char.lvl < 80)
+		return 5;
+	if (char.lvl < 84)
+		return 6;
+	return 7;
+};
+
+l2.calc.checkWeaponPenalty = function (char) {
+	if (!char.weapon)
+		return;
+	if (!char.weapon.grade)
+		return;
+	var charGrade = l2.calc.charGrade(char);
+	var weaponGrade = l2.calc.convertGrade(char.weapon.grade);
+	if (charGrade < weaponGrade) {
+		char.effects.push({
+			id: 6209,
+			lvl: Math.min(4, weaponGrade - charGrade),
+			skill: l2.data.tools.getSkill(6209)
+		});
+		char.weapon.skill = null;
+	}
+};
+
 l2.calc.parseSkills = function (array, str) {
 	if (!str)
 		return;
@@ -474,18 +532,29 @@ l2.calc.stats = function () {
 		lm: (l2.model.level + 89) / 100,
 		hpPerc: l2.model.hpPercent,
 		atkFrom: l2.model.position,
-		effects: [],
-		weapon: l2.model.weapon.item
+		effects: []
 	};
 
 	l2.ui.modelEquipments.forEach(function (model) {
 		if (l2.model[model].id) {
+			char[model] = $.extend({}, l2.model[model].item);
+			char[model].enchant = l2.model[model].enchant;
+
 			var item = l2.model[model].item;
 			if (item.ench4 && l2.model[model].enchant >= 4)
 				l2.calc.parseSkills(char.effects, item.ench4);
 			l2.calc.parseSkills(char.effects, item.skill);
 		}
 	});
+
+	if (char.bodyUpper)
+		if (char.bodyUpper.bodyPart == 'onepiece')
+			char.armorType = char.bodyUpper.armorType;
+		else
+			if (char.bodyLower && char.bodyUpper.armorType == char.bodyLower.armorType)
+				char.armorType = char.bodyUpper.armorType;
+
+	l2.calc.checkWeaponPenalty(char);
 
 	l2.calc.checkSet(char);
 
