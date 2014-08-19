@@ -4,13 +4,13 @@ window.l2.calc = window.l2.calc || {};
 l2.calc.forEachEffect = function (char, stat, callback) {
 	char.effects.forEach(function (s) {
 		var skill = l2.data.tools.getSkill(s.id);
-		if (skill.effects == null)
+		if (!skill || !skill.effects)
 			return;
 		for (var j = 0; j < skill.effects.length; j++)
 			if (skill.effects[j].stat == stat) {
 				var val = (typeof skill.effects[j].val == 'number' ? skill.effects[j].val : skill.effects[j].val[s.lvl - 1]);
 				if (l2.calc.checkConditions(char, skill.effects[j].using, skill.effects[j].hp, skill.effects[j].atkFrom))
-					callback(skill.effects[j].op, val);
+					callback(skill.effects[j].op, val, skill.effects[j].finalChange);
 			}
 	});
 };
@@ -239,13 +239,18 @@ l2.calc.weaponPAtk = function (char) {
 l2.calc.pAtk = function (char) {
 	var addPAtk = 0;
 	var multPAtk = 1;
-	l2.calc.forEachEffect(char, 'pAtk', function (op, val) {
+	var multFinalPAtk = 1;
+	l2.calc.forEachEffect(char, 'pAtk', function (op, val, fc) {
 		if (op == 'add') { addPAtk += val; return; }
-		if (op == 'mul') { multPAtk *= val; return; }
+		if (op == 'mul') {
+			if (fc)	multFinalPAtk *= val;
+			else multPAtk *= val;
+			return;
+		}
 		throw 'not implemented';
 	});
 	var strBonus = l2.data.statBonus['str'][char.baseStats.str];
-	return Math.floor(l2.calc.weaponPAtk(char) * char.lm * strBonus * multPAtk + addPAtk);
+	return Math.floor(multFinalPAtk * (l2.calc.weaponPAtk(char) * char.lm * strBonus * multPAtk + addPAtk));
 };
 
 l2.calc.pCritical = function (char) {
@@ -425,17 +430,24 @@ l2.calc.mDef = function (char) {
 
 l2.calc.checkSet = function (char) {
 	var equipedSet = null;
+	var enchant6 = false;
 	l2.data.armorSets.forEach(function (set) {
-		if (set.chest.indexOf(l2.model.bodyUpper.id) == -1)
+		if (set.chest.indexOf(char.bodyUpper.id) == -1)
 			return;
-		if (set.legs && set.legs.indexOf(l2.model.bodyLower.id) == -1)
+		if (set.legs && set.legs.indexOf(char.bodyLower.id) == -1)
 			return;
-		if (set.head && set.head.indexOf(l2.model.helmet.id) == -1)
+		if (set.head && set.head.indexOf(char.helmet.id) == -1)
 			return;
-		if (set.gloves && set.gloves.indexOf(l2.model.gloves.id) == -1)
+		if (set.gloves && set.gloves.indexOf(char.gloves.id) == -1)
 			return;
-		if (set.feet && set.feet.indexOf(l2.model.boots.id) == -1)
+		if (set.feet && set.feet.indexOf(char.boots.id) == -1)
 			return;
+		enchant6 =
+			(char.bodyUpper.enchant >= 6) &&
+			(!set.legs || char.bodyLower.enchant >= 6) &&
+			(!set.head || char.helmet.enchant >= 6) &&
+			(!set.gloves || char.gloves.enchant >= 6) &&
+			(!set.feet || char.boots.enchant >= 6);
 		equipedSet = set;
 	});
 
@@ -443,8 +455,17 @@ l2.calc.checkSet = function (char) {
 		return;
 
 	char.effects.push({ id: equipedSet.skill[1], lvl: 1, skill: l2.data.tools.getSkill(equipedSet.skill[1]) });
-	if (equipedSet.shield && equipedSet.shield.indexOf(l2.model.shield.id) >= 0 && equipedSet.shieldSkill != null)
+	if (equipedSet.shield && char.shield && equipedSet.shield.indexOf(char.shield.id) >= 0 && equipedSet.shieldSkill != null)
 		char.passives.push({ id: equipedSet.shieldSkill, lvl: 1, skill: l2.data.tools.getSkill(equipedSet.shieldSkill) });
+	if (enchant6)
+		if (char.bodyUpper.grade) {
+			var ench6id = l2.data.set6Bonus[char.bodyUpper.grade.charAt(0)][char.bodyUpper.armorType];
+			char.effects.push({
+				id: ench6id,
+				lvl: 1,
+				skill: l2.data.tools.getSkill(ench6id)
+			});
+		}
 
 	if (equipedSet.str) char.baseStats.str += equipedSet.str;
 	if (equipedSet.dex) char.baseStats.dex += equipedSet.dex;

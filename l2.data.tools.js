@@ -129,6 +129,11 @@ l2.data.tools.findRings = function (grade) {
 		return item.bodyPart == 'rfinger;lfinger';
 	});
 };
+l2.data.tools.findCloaks = function (grade) {
+	return l2.data.tools.findItems(grade, function (item) {
+		return item.bodyPart == 'back';
+	});
+};
 l2.data.tools.findUnderwears = function (grade) {
 	return l2.data.tools.findItems(grade, function (item) {
 		return item.bodyPart == 'underwear';

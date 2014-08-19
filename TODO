@@ -26,8 +26,6 @@ add self triggers
 
 savings (show last 3 as buttons, all other in select)
 
-+6 set bonus
-
 first prof 85 lvl  = 1kk HP, why?
 
 base speed for kamael???
@@ -42,8 +40,6 @@ my gnom mdef = wrong - check!
 
 refactor all!
 
-fix frenzy
-
 model, parsing item grade and set grade - similar code
 
 === MODEL ===
@@ -54,11 +50,6 @@ model, parsing item grade and set grade - similar code
 
 	common trigers
 
-
-	end passives, what next - hz
-
-	weapon grade penalty - order of patk mult
-
-	clear common buffs - do not save to storage
-
 	underwear on tank - pdef ???
+
+	enchant 6 - to do

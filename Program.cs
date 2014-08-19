@@ -21,7 +21,7 @@ namespace l2calc
         {
             /*r = new Regex(@"^.+?(\d[0-9.]+).+?(\d[0-9.]+).+?(\d[0-9.]+).+?$");
             ParseSkillNameDat(250, 42, ParsingCallback);*/
-            Items();
+            Skills();
         }
 
         static void Items()
@@ -336,12 +336,17 @@ namespace l2calc
 
                         foreach (var eff in effElements)
                         {
+                            var andElement = eff.Element("and");
                             if (eff.Elements("using").Count() > 1)
                                 throw new Exception();
                             if (eff.Elements("player").Count() > 1)
                                 throw new Exception();
                             string usingKind = eff.GetInner("using", "kind");
+                            if (andElement != null && string.IsNullOrEmpty(usingKind))
+                                usingKind = andElement.GetInner("using", "kind");
                             string playerHp = eff.GetInner("player", "hp");
+                            if (andElement != null && string.IsNullOrEmpty(playerHp))
+                                playerHp = andElement.GetInnerAttrCountCheck("player", "hp");
                             bool playerFront = eff.GetInner("player", "front") == "true";
                             var tmp = eff.GetInnerCombo("and", "player", "front", "behind");
                             bool playerSide = tmp == null ? false : (tmp[0] == "false" && tmp[1] == "false");
@@ -467,6 +472,15 @@ namespace l2calc
             if (el.Elements(tag).Count() > 1)
                 throw new Exception();
             return el.Element(tag).GetAttr(attr);
+        }
+
+        public static string GetInnerAttrCountCheck(this XElement el, string tag, string attr)
+        {
+            if (el.Elements(tag).Count(e => e.Attribute(attr) != null) == 0)
+                return null;
+            if (el.Elements(tag).Count(e => e.Attribute(attr) != null) > 1)
+                throw new Exception();
+            return el.Elements(tag).Single(e => e.Attribute(attr) != null).GetAttr(attr);
         }
 
         public static string[] GetInnerCombo(this XElement el, string tag1, string tag2, params string[] attrs)

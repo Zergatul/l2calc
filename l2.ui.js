@@ -9,7 +9,7 @@ l2.ui.loadingProcess = false;
 l2.ui.storagePrefix = 'c:';
 l2.ui.modelEquipments = [
 	'weapon', 'shield', 'helmet', 'bodyUpper', 'bodyLower', 'boots', 'gloves',
-	'underwear', 'belt',
+	'cloak', 'underwear', 'belt',
 	'necklace', 'earring1', 'earring2', 'ring1', 'ring2'];
 
 l2.ui.bindClasses = function () {
@@ -770,6 +770,7 @@ l2.ui.prepareModel = function () {
 	l2.model.addHandler('bodyLower.grade', l2.ui.createBindItemsFunction('body-lower', 'bodyLower', l2.data.tools.findBodyLowers));
 	l2.model.addHandler('gloves.grade', l2.ui.createBindItemsFunction('gloves', 'gloves', l2.data.tools.findGloves));
 	l2.model.addHandler('boots.grade', l2.ui.createBindItemsFunction('boots', 'boots', l2.data.tools.findBoots));
+	l2.model.addHandler('cloak.grade', l2.ui.createBindItemsFunction('cloak', 'cloak', l2.data.tools.findCloaks));
 	l2.model.addHandler('underwear.grade', l2.ui.createBindItemsFunction('underwear', 'underwear', l2.data.tools.findUnderwears));
 	l2.model.addHandler('belt.grade', l2.ui.createBindItemsFunction('belt', 'belt', l2.data.tools.findBelts));
 	l2.model.addHandler('necklace.grade', l2.ui.createBindItemsFunction('necklace', 'necklace', l2.data.tools.findNecklaces));

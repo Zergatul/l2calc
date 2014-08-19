@@ -49,7 +49,7 @@ window.l2 = window.l2 || {};
 				if (['d', 'c', 'b', 'a', 's', 's80', 's84'].indexOf(value) >= 0)
 					grade = value;
 				else
-					if (value == 'none' || value == null)
+					if (value == 'none' || value == null || value == '')
 						grade = null;
 					else
 						throw 'Invalid grade';
@@ -344,6 +344,7 @@ window.l2 = window.l2 || {};
 		bodyLower: new L2Item('bodyLower'),
 		gloves: new L2Item('gloves'),
 		boots: new L2Item('boots'),
+		cloak: new L2Item('cloak'),
 		underwear: new L2Item('underwear'),
 		belt: new L2Item('belt'),
 		necklace: new L2Item('necklace'),

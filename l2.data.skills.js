@@ -126,9 +126,9 @@ l2.data.skills = [
 		{ stat: 'fall', val: [60, 100], op: 'sub' } ]},
 	{ id: 176, levels: 3, name: 'Frenzy', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pinch', effects: [
 		{ stat: 'pAtk', val: [1.1, 1.12, 1.15], op: 'mul' },
-		{ stat: 'pAtk', val: [1.2, 1.3, 1.4], op: 'mul' },
-		{ stat: 'pAtk', val: [1.05, 1.07, 1.1], op: 'mul' },
-		{ stat: 'accCombat', val: [2, 4, 6], op: 'add' } ]},
+		{ stat: 'pAtk', val: [1.2, 1.3, 1.4], op: 'mul', using: 'Sword,Big Sword,Blunt,Big Blunt', hp: 60 },
+		{ stat: 'pAtk', val: [1.05, 1.07, 1.1], op: 'mul', using: 'Big Sword,Big Blunt', hp: 60 },
+		{ stat: 'accCombat', val: [2, 4, 6], op: 'add', using: 'Big Sword,Big Blunt', hp: 60 } ]},
 	{ id: 191, levels: 6, name: 'Focus Mind', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'regMp', val: [3.1, 3.5, 3.9, 4.3, 4.7, 5.1], op: 'add' } ]},
 	{ id: 193, levels: 7, name: 'Critical Power', target: 'SELF', operateType: 'P', effects: [
