@@ -293,11 +293,11 @@ l2.data.accuracyFix = Array.apply(null, new Array(70)).map(Number.prototype.valu
 	[1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 18, 20, 22, 24]);
 
 l2.data.oeArmorHPBonus = {
-	'd': { single: [9, 26, 52, 86, 130, 181, 242], fullbody: [13, 39, 78, 129, 195, 271, 363] },
-	'c': { single: [12, 36, 71, 118, 178, 249, 332], fullbody: [18, 54, 106, 177, 267, 373, 498] },
-	'b': { single: [14, 42, 84, 139, 209, 293, 390], fullbody: [21, 63, 126, 208, 313, 439, 585] },
-	'a': { single: [16, 47, 94, 157, 235, 329, 439], fullbody: [24, 70, 141, 235, 352, 493, 658] },
-	's': { single: [17, 52, 104, 173, 259, 363, 484], fullbody: [25, 78, 156, 259, 388, 544, 726] },
+	'd': [9, 26, 52, 86, 130, 181, 242, 311, 389],
+	'c': [12, 36, 71, 118, 178, 249, 332, 426, 533],
+	'b': [14, 42, 84, 139, 209, 293, 390, 502, 627],
+	'a': [16, 47, 94, 157, 235, 329, 439, 564, 705],
+	's': [17, 52, 104, 173, 259, 363, 484, 623, 778]
 };
 
 l2.data.set6Bonus = {
@@ -434,3 +434,37 @@ l2.data.clanSkills = [
 ];
 
 l2.data.territorySkills = [848, 849, 850, 851, 852, 853, 854, 855, 856];
+
+l2.data.subClassSkills = [
+	631, // Emergent Ability - Attack
+	632, // Emergent Ability - Defense
+	633, // Emergent Ability - Empower
+	634, // Emergent Ability - Magic Defense
+	637, // Master Ability - Attack
+	638, // Master Ability - Empower
+	639, // Master Ability - Casting
+	640, // Master Ability - Focus
+	641, // Knight Ability - Boost HP
+	642, // Enchanter Ability - Boost Mana
+	643, // Summoner Ability - Boost HP/MP
+	644, // Rogue Ability - Evasion
+	645, // Rogue Ability - Long Shot
+	646, // Wizard Ability - Mana Gain
+	647, // Enchanter Ability - Mana Recovery
+	648, // Healer Ability - Prayer
+	650, // Warrior Ability - Resist Trait
+	651, // Warrior Ability - Haste
+	652, // Knight Ability - Defense
+	653, // Rogue Ability - Critical Chance
+	654, // Wizard Ability - Mana Steal
+	655, // Enchanter Ability - Barrier
+	799, // Master Ability - Defense
+	800, // Master Ability - Magic Defense
+	801, // Warrior Ability - Boost CP
+	802, // Wizard Ability - Anti-magic
+	803, // Healer Ability - Divine Protection
+	804, // Knight Ability - Resist Critical
+	1489, // Summoner Ability - Resist Attribute
+	1490, // Healer Ability - Heal
+	1491, // Summoner Ability - Spirit
+];

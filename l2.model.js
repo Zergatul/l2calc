@@ -358,9 +358,12 @@ window.l2 = window.l2 || {};
 		selfBuffs: new L2SkillList('selfBuffs'),
 		toggles: new L2SkillList('toggles'),
 		commonBuffs: new L2SkillList('commonBuffs'),
+		commonTriggers: new L2SkillList('commonTriggers'),
+		selfTriggers: new L2SkillList('selfTriggers'),
 		songs: new L2SkillList('songs'),
 		dances: new L2SkillList('dances'),
 		clanSkills: new L2SkillList('clanSkills'),
+		subClassSkills: new L2SkillList('subClassSkills'),
 		passives: new L2SkillList('passives')
 	};
 

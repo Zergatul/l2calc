@@ -161,7 +161,7 @@ select:disabled, input:disabled {
 	width: 36px;
 	padding-left: 2px;
 }
-.passive-skill, .song-skill, .dance-skill, .self-skill, .toggle-skill, .trigger-skill, .clan-skill {
+.passive-skill, .song-skill, .dance-skill, .self-skill, .toggle-skill, .trigger-skill, .clan-skill, .subclass-skill {
 	margin: 2px;
 	border: 1px solid #aaaaaa;
 	padding: 1px 4px;
@@ -177,7 +177,7 @@ select:disabled, input:disabled {
 	margin: 6px 6px 0px 4px;
 	width: 90px;
 }
-.passive-skill > span, .self-skill > span, .toggle-skill > span, .clan-skill > span {
+.passive-skill > span, .self-skill > span, .toggle-skill > span, .clan-skill > span, .subclass-skill > span {
 	padding-left: 4px;
 }
 .trigger-skill > label {
@@ -208,7 +208,7 @@ select:disabled, input:disabled {
 #selfbuffs, #toggles {
 	width: 600px;
 }
-#commonbuffs, #commontriggers, #songbuffs, #dancebuffs, #clanskills {
+#commonbuffs, #commontriggers, #songbuffs, #dancebuffs, #clanskills, #subclassskills {
 	width: 600px;
 }
 #passives {

@@ -1,7 +1,5 @@
 ??? add steal buff
 add enchanting for skill
-clan skills
-CP calc - buffs add
 pdef for first prof without armor - maybe wrong
 
 //pledgeSkillTree
@@ -52,4 +50,4 @@ model, parsing item grade and set grade - similar code
 
 	underwear on tank - pdef ???
 
-	enchant 6 - to do
+	self triggers when check/uncheck sub class skills

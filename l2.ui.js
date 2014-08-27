@@ -416,12 +416,44 @@ l2.ui.bindClanSkils = function () {
 	});
 };
 
+l2.ui.bindSubClassSkills = function () {
+	l2.data.subClassSkills.forEach(function (id) {
+		var skill = l2.data.tools.getSkill(id);
+		if (skill.levels == 1) {
+			var div = $('<div>').addClass('left subclass-skill');
+			var label = $('<label>');
+			var input = $('<input>')
+				.attr('type', 'checkbox')
+				.attr('data-skill-id', id)
+				.click(l2.ui.createChangeSkillListHandler('subClassSkills', id));
+			l2.model.subClassSkills.add(id);
+			label.append(input);
+			label.append(skill.name);
+			div.append(label);
+			$('#subclassskills > div:last').append(div);
+		} else {
+			var div = $('<div>').addClass('left subclass-skill');
+			var select = $('<select>')
+				.attr('data-skill-id', id)
+				.change(l2.ui.createChangeSkillListHandler('subClassSkills', id));
+			l2.model.subClassSkills.add(id);
+			l2.ui.tools.addOption(select, '', '---');
+			for (var i = 0; i < skill.levels; i++)
+				l2.ui.tools.addOption(select, i + 1, i + 1);
+			div.append(select);
+			div.append($('<span>').text(skill.name));
+			$('#subclassskills > div:first').append(div);
+		}
+	});
+};
+
 l2.ui.bindBuffs = function () {
 	l2.ui.bindCommonBuffs();
 	l2.ui.bindCommonTriggers();
 	l2.ui.bindSongs();
 	l2.ui.bindDances();
 	l2.ui.bindClanSkils();
+	l2.ui.bindSubClassSkills();
 };
 
 l2.ui.canShowDelta = false;
@@ -806,7 +838,7 @@ l2.ui.prepareModel = function () {
 
 	l2.model.addHandler('setGrade', l2.ui.bindSets);
 
-	['selfBuffs', 'toggles', 'songs', 'dances', 'clanSkills', 'passives'].forEach(function (type) {
+	['selfBuffs', 'toggles', 'songs', 'dances', 'clanSkills', 'subClassSkills', 'passives'].forEach(function (type) {
 		l2.model.addHandler(type + '[].level', function (value, skill) {
 			if (!l2.ui.disableValuesUpdate) {
 				var element = $('[data-skill-id=' + skill.id + ']');
@@ -823,6 +855,11 @@ l2.ui.prepareModel = function () {
 			if (!l2.ui.disableStorageUpdate)
 				localStorage[l2.ui.storagePrefix + type] = l2.model[type].toJSON();
 		});
+	});
+
+	l2.model.addHandler('subClassSkills[].level', function (value, skill) {
+		// TODO
+		// Add or remove self triggers
 	});
 
 	l2.model.addHandler('commonBuffs.add', function (s) {
@@ -940,9 +977,10 @@ $(function () {
 	$('#commonbuffs-chb').click(l2.ui.toggleFieldSet);
 	$('#songbuffs-chb').click(l2.ui.toggleFieldSet);
 	$('#dancebuffs-chb').click(l2.ui.toggleFieldSet);
-	$('#passives-chb').click(l2.ui.toggleFieldSet);
 	$('#commontriggers-chb').click(l2.ui.toggleFieldSet);
 	$('#clanskills-chb').click(l2.ui.toggleFieldSet);
+	$('#subclassskills-chb').click(l2.ui.toggleFieldSet);
+	$('#passives-chb').click(l2.ui.toggleFieldSet);	
 
 	$('#equipment span.clear-btn').click(l2.ui.clearEquipment);
 	$('#selfbuffs span.clear-btn').click(l2.ui.clearSelfBuffs);
@@ -979,7 +1017,7 @@ $(function () {
 		l2.model.setValue(m.model, localStorage[l2.ui.storagePrefix + m.model]);
 	});
 
-	['selfBuffs', 'toggles', 'dances', 'songs', 'clanSkills', 'passives'].forEach(function (type) {
+	['selfBuffs', 'toggles', 'dances', 'songs', 'clanSkills', 'subClassSkills', 'passives'].forEach(function (type) {
 		if (localStorage[l2.ui.storagePrefix + type])
 			JSON.parse(localStorage[l2.ui.storagePrefix + type]).forEach(function (s) {
 				l2.model[type].findById(s.id).level = s.level;

@@ -106,11 +106,14 @@ l2.calc.HP = function (char) {
 	});
 	['shield', 'helmet', 'bodyUpper', 'bodyLower', 'gloves', 'boots', 'underwear', 'belt'].forEach(function (part) {
 		if (char[part] && char[part].grade) {
-			if (char[part].enchant >= 4)
+			if (char[part].enchant >= 4) {
+				var grade = char[part].grade.charAt(0);
+				var index = Math.min(12, char[part].enchant) - 4;
 				if (char[part].bodyPart == 'onepiece')
-					addHP += l2.data.oeArmorHPBonus[char[part].grade.charAt(0)].fullbody[char[part].enchant - 4];
+					addHP += Math.floor(1.5 * l2.data.oeArmorHPBonus[grade][index]);
 				else
-					addHP += l2.data.oeArmorHPBonus[char[part].grade.charAt(0)].single[char[part].enchant - 4];
+					addHP += l2.data.oeArmorHPBonus[grade][index];
+			}
 		}
 	});
 	var conBonus = l2.data.statBonus['con'][char.baseStats.con];
@@ -187,9 +190,23 @@ l2.calc.bootsPDef = function (char) {
 		return 7;
 };
 
+l2.calc.cloakPDef = function (char) {
+	if (char.cloak)
+		return char.cloak.pDef;
+	else
+		return 0;
+};
+
 l2.calc.underwearPDef = function (char) {
 	if (char.underwear)
 		return l2.calc.applyArmorEnchant(char.underwear.pDef, char.underwear.grade, char.underwear.enchant);
+	else
+		return 0;
+};
+
+l2.calc.beltPDef = function (char) {
+	if (char.belt)
+		return l2.calc.applyArmorEnchant(char.belt.pDef, char.belt.grade, char.belt.enchant);
 	else
 		return 0;
 };
@@ -202,7 +219,9 @@ l2.calc.pDef = function (char) {
 	armorPdef += l2.calc.glovesPDef(char);
 	armorPdef += l2.calc.bootsPDef(char);
 	var othersPdef = 0;
+	othersPdef += l2.calc.cloakPDef(char);
 	othersPdef += l2.calc.underwearPDef(char);
+	othersPdef += l2.calc.beltPDef(char);
 	var addPdef = 0;
 	var multPdef = 1;
 	l2.calc.forEachEffect(char, 'pDef', function (op, val) {
@@ -210,7 +229,7 @@ l2.calc.pDef = function (char) {
 		if (op == 'mul') { multPdef *= val; return; }
 		throw 'not implemented';
 	});
-	return Math.floor((4 + armorPdef) * char.lm * multPdef + addPdef/* + othersPdef * char.lm*/);
+	return Math.floor((4 + armorPdef + othersPdef) * char.lm * multPdef + addPdef/* + othersPdef * char.lm*/);
 };
 
 l2.calc.weaponPAtk = function (char) {
@@ -594,6 +613,7 @@ l2.calc.stats = function () {
 	l2.model.songs.forEach(skillCallback);
 	l2.model.dances.forEach(skillCallback);
 	l2.model.clanSkills.forEach(skillCallback);
+	l2.model.subClassSkills.forEach(skillCallback);
 	l2.model.passives.forEach(skillCallback);
 
 	l2.calc.baseStats(char);
