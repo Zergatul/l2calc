@@ -46,8 +46,6 @@ model, parsing item grade and set grade - similar code
 		select.change(l2.ui.checkAbnormalType);
 	*/
 
-	common trigers
-
 	underwear on tank - pdef ???
 
-	self triggers when check/uncheck sub class skills
+	triggers when add passives or check common buff

@@ -302,6 +302,14 @@ namespace l2calc
                             operateType);
 
                         var triggeredId = skill.GetInnerFilter("set", "name", "triggeredId", "val");
+                        if (triggeredId == null)
+                        {
+                            var el = skill.Element("for");
+                            if (el != null)
+                                el = el.Elements("effect").Where(e => e.GetAttr("name") == "ChanceSkillTrigger").SingleOrDefault();
+                            if (el != null)
+                                triggeredId = el.GetAttr("triggeredId");
+                        }
                         if (triggeredId != null)
                         {
                             if (triggeredId.StartsWith("#"))

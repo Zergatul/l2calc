@@ -451,15 +451,15 @@ l2.calc.checkSet = function (char) {
 	var equipedSet = null;
 	var enchant6 = false;
 	l2.data.armorSets.forEach(function (set) {
-		if (set.chest.indexOf(char.bodyUpper.id) == -1)
+		if (!char.bodyUpper || set.chest.indexOf(char.bodyUpper.id) == -1)
 			return;
-		if (set.legs && set.legs.indexOf(char.bodyLower.id) == -1)
+		if (set.legs && (!char.bodyLower || set.legs.indexOf(char.bodyLower.id) == -1))
 			return;
-		if (set.head && set.head.indexOf(char.helmet.id) == -1)
+		if (set.head && (!char.helmet || set.head.indexOf(char.helmet.id) == -1))
 			return;
-		if (set.gloves && set.gloves.indexOf(char.gloves.id) == -1)
+		if (set.gloves && (!char.gloves || set.gloves.indexOf(char.gloves.id) == -1))
 			return;
-		if (set.feet && set.feet.indexOf(char.boots.id) == -1)
+		if (set.feet && (!char.boots || set.feet.indexOf(char.boots.id) == -1))
 			return;
 		enchant6 =
 			(char.bodyUpper.enchant >= 6) &&
@@ -610,6 +610,7 @@ l2.calc.stats = function () {
 	l2.model.selfBuffs.forEach(skillCallback);
 	l2.model.toggles.forEach(skillCallback);
 	l2.model.commonBuffs.forEach(skillCallback);
+	l2.model.triggers.forEach(skillCallback);
 	l2.model.songs.forEach(skillCallback);
 	l2.model.dances.forEach(skillCallback);
 	l2.model.clanSkills.forEach(skillCallback);

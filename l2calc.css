@@ -208,9 +208,14 @@ select:disabled, input:disabled {
 #selfbuffs, #toggles {
 	width: 600px;
 }
-#commonbuffs, #commontriggers, #songbuffs, #dancebuffs, #clanskills, #subclassskills {
+#commonbuffs, #triggers, #songbuffs, #dancebuffs, #clanskills, #subclassskills {
 	width: 600px;
 }
 #passives {
 	width: 600px;
+}
+
+#profession button {
+	border: 1px solid black;
+	border-radius: 3px;
 }

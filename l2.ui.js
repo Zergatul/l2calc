@@ -332,27 +332,6 @@ l2.ui.bindCommonBuffs = function () {
 	});
 };
 
-l2.ui.bindCommonTriggers = function () {
-	l2.data.commonTriggers.forEach(function (id) {
-		var skill = l2.data.tools.getSkill(id);
-		var div = $('<div>').addClass('left trigger-skill');
-		var label = $('<label>');
-		var input = $('<input>').attr('type', 'checkbox').attr('data-skill-id', id);
-		input.change(l2.ui.recalc);
-		label.append(input);
-		label.append(skill.name);
-		div.append(label);
-		var select = $('<select>');
-		[10, 20, 30, 40, 50, 60, 70, 80, 90, 100].forEach(function (perc) {
-			l2.ui.tools.addOption(select, perc, perc + '% of time');
-		});
-		select.val(100);
-		select.change(l2.ui.recalc);
-		div.append(select);
-		$('#commontriggers > div').append(div);
-	});
-};
-
 l2.ui.bindSongs = function () {
 	for (var i = 0; i < l2.data.songs.length; i++) {
 		var skill = l2.data.tools.getSkill(l2.data.songs[i]);
@@ -447,13 +426,19 @@ l2.ui.bindSubClassSkills = function () {
 	});
 };
 
+l2.ui.bindCommonTriggers = function () {
+	l2.data.commonTriggers.forEach(function (id) {
+		l2.model.triggers.add(id);
+	});	
+};
+
 l2.ui.bindBuffs = function () {
 	l2.ui.bindCommonBuffs();
-	l2.ui.bindCommonTriggers();
 	l2.ui.bindSongs();
 	l2.ui.bindDances();
 	l2.ui.bindClanSkils();
 	l2.ui.bindSubClassSkills();
+	l2.ui.bindCommonTriggers();
 };
 
 l2.ui.canShowDelta = false;
@@ -501,13 +486,6 @@ l2.ui.clearCommonBuffs = function () {
 	l2.model.commonBuffs.clear();
 	l2.ui.disableRecalc = false;
 	l2.ui.recalc();
-};
-
-l2.ui.clearCommonTriggers = function () {
-	/*l2.ui.disableRecalc = true;
-	l2.model.comm.forEach(function (t) { t.level = 0; });
-	l2.ui.disableRecalc = false;
-	l2.ui.recalc();*/
 };
 
 l2.ui.clearSongs = function () {
@@ -838,7 +816,7 @@ l2.ui.prepareModel = function () {
 
 	l2.model.addHandler('setGrade', l2.ui.bindSets);
 
-	['selfBuffs', 'toggles', 'songs', 'dances', 'clanSkills', 'subClassSkills', 'passives'].forEach(function (type) {
+	['selfBuffs', 'toggles', 'triggers', 'songs', 'dances', 'clanSkills', 'subClassSkills', 'passives'].forEach(function (type) {
 		l2.model.addHandler(type + '[].level', function (value, skill) {
 			if (!l2.ui.disableValuesUpdate) {
 				var element = $('[data-skill-id=' + skill.id + ']');
@@ -857,9 +835,32 @@ l2.ui.prepareModel = function () {
 		});
 	});
 
-	l2.model.addHandler('subClassSkills[].level', function (value, skill) {
-		// TODO
-		// Add or remove self triggers
+	l2.model.addHandler('subClassSkills[].level', function (value, s) {
+		var skill = s.skill;
+		if (value) {
+			if (skill.trigger && !l2.model.triggers.findById(skill.trigger))
+				l2.model.triggers.add(skill.trigger);
+		} else {
+			if (skill.trigger)
+				l2.model.triggers.removeById(skill.trigger);
+		}
+	});
+
+	l2.model.addHandler('triggers.add', function (s) {
+		var skill = s.skill;
+		var div = $('<div>').addClass('left trigger-skill');
+		var label = $('<label>');
+		var input = $('<input>').attr('type', 'checkbox')
+			.attr('data-skill-id', skill.id);
+		input.change(l2.ui.createChangeSkillListHandler('triggers', skill.id));
+		label.append(input);
+		label.append(skill.name);
+		div.append(label);
+		$('#triggers > div').append(div);
+	});
+	l2.model.addHandler('triggers.remove', function (s) {
+		var skill = s.skill;
+		$('#triggers input[data-skill-id=' + skill.id + ']').closest('div.trigger-skill').remove();
 	});
 
 	l2.model.addHandler('commonBuffs.add', function (s) {
@@ -924,6 +925,50 @@ l2.ui.prepareModel = function () {
 	});
 };
 
+l2.ui.loadFromStorage = function () {
+	l2.ui.disableStorageUpdate = true;
+	l2.ui.loadingProcess = true;
+	l2.ui.canShowDelta = false;
+
+	var saved = [];
+	for (var property in localStorage)
+		if (property.indexOf(l2.ui.storagePrefix) == 0)
+			saved.push({
+				model: property.substring(2)
+			});
+	saved.forEach(function (m) {
+		m.elements = $('[data-model="' + m.model + '"]');
+	});
+	saved = saved.filter(function (m) {
+		return m.elements.length > 0;
+	});
+	saved.sort(function (m1, m2) {
+		var lo1 = parseInt(m1.elements.attr('data-load-order')) || 0;
+		var lo2 = parseInt(m2.elements.attr('data-load-order')) || 0;
+		return lo2 - lo1;
+	});
+	saved.forEach(function (m) {
+		l2.model.setValue(m.model, localStorage[l2.ui.storagePrefix + m.model]);
+	});
+
+	['selfBuffs', 'toggles', 'dances', 'songs', 'clanSkills', 'subClassSkills', 'passives'].forEach(function (type) {
+		if (localStorage[l2.ui.storagePrefix + type])
+			JSON.parse(localStorage[l2.ui.storagePrefix + type]).forEach(function (s) {
+				l2.model[type].findById(s.id).level = s.level;
+			});
+	});
+
+	if (localStorage[l2.ui.storagePrefix + 'commonBuffs'])
+		JSON.parse(localStorage[l2.ui.storagePrefix + 'commonBuffs']).forEach(function (cb) {
+			l2.model.commonBuffs.add(cb.id, null, cb.level);
+		});
+
+	l2.ui.disableStorageUpdate = false;
+	l2.ui.loadingProcess = false;
+	l2.ui.recalc();
+	l2.ui.canShowDelta = true;
+};
+
 $(function () {
 
 	window.onerror = function (msg) {
@@ -974,10 +1019,10 @@ $(function () {
 	$('#equipment-chb').click(l2.ui.toggleFieldSet);
 	$('#selfbuffs-chb').click(l2.ui.toggleFieldSet);
 	$('#toggles-chb').click(l2.ui.toggleFieldSet);
+	$('#triggers-chb').click(l2.ui.toggleFieldSet);
 	$('#commonbuffs-chb').click(l2.ui.toggleFieldSet);
 	$('#songbuffs-chb').click(l2.ui.toggleFieldSet);
-	$('#dancebuffs-chb').click(l2.ui.toggleFieldSet);
-	$('#commontriggers-chb').click(l2.ui.toggleFieldSet);
+	$('#dancebuffs-chb').click(l2.ui.toggleFieldSet);	
 	$('#clanskills-chb').click(l2.ui.toggleFieldSet);
 	$('#subclassskills-chb').click(l2.ui.toggleFieldSet);
 	$('#passives-chb').click(l2.ui.toggleFieldSet);	
@@ -985,8 +1030,8 @@ $(function () {
 	$('#equipment span.clear-btn').click(l2.ui.clearEquipment);
 	$('#selfbuffs span.clear-btn').click(l2.ui.clearSelfBuffs);
 	$('#toggles span.clear-btn').click(l2.ui.clearToggles);
+	//$('#triggers span.clear-btn').click(l2.ui.clearTriggers);
 	$('#commonbuffs span.clear-btn').click(l2.ui.clearCommonBuffs);
-	$('#commontriggers span.clear-btn').click(l2.ui.clearCommonTriggers);
 	$('#songbuffs span.clear-btn').click(l2.ui.clearSongs);
 	$('#dancebuffs span.clear-btn').click(l2.ui.clearDances);
 	$('#clanskills span.clear-btn').click(l2.ui.clearClanSkills);
@@ -994,46 +1039,25 @@ $(function () {
 	$(window).resize(l2.ui.adjustContainer);
 	l2.ui.adjustContainer();
 
-	// new !!!
+	l2.ui.loadFromStorage();
 
-	var saved = [];
-	for (var property in localStorage)
-		if (property.indexOf(l2.ui.storagePrefix) == 0)
-			saved.push({
-				model: property.substring(2)
-			});
-	saved.forEach(function (m) {
-		m.elements = $('[data-model="' + m.model + '"]');
+	$('#savebtn').click(function () {
+		var obj = {};
+		var prefixLength = l2.ui.storagePrefix.length;
+		for (var property in localStorage)
+			if (property.indexOf(l2.ui.storagePrefix) == 0)
+				obj[property.substring(prefixLength)] = localStorage[property].charAt(0) == '[' ?
+					JSON.parse(localStorage[property]) : localStorage[property];
+		prompt('Save this code', JSON.stringify(obj));
 	});
-	saved = saved.filter(function (m) {
-		return m.elements.length > 0;
+	$('#loadbtn').click(function () {
+		var json = prompt('Insert code here');
+		if (json != null) {
+			var obj = JSON.parse(json);
+			for (var property in obj)
+				localStorage[l2.ui.storagePrefix + property] = obj[property] instanceof Array ?
+					JSON.stringify(obj[property]) : obj[property];
+			l2.ui.loadFromStorage();
+		}
 	});
-	saved.sort(function (m1, m2) {
-		var lo1 = parseInt(m1.elements.attr('data-load-order')) || 0;
-		var lo2 = parseInt(m2.elements.attr('data-load-order')) || 0;
-		return lo2 - lo1;
-	});
-	saved.forEach(function (m) {
-		l2.model.setValue(m.model, localStorage[l2.ui.storagePrefix + m.model]);
-	});
-
-	['selfBuffs', 'toggles', 'dances', 'songs', 'clanSkills', 'subClassSkills', 'passives'].forEach(function (type) {
-		if (localStorage[l2.ui.storagePrefix + type])
-			JSON.parse(localStorage[l2.ui.storagePrefix + type]).forEach(function (s) {
-				l2.model[type].findById(s.id).level = s.level;
-			});
-	});
-
-	if (localStorage[l2.ui.storagePrefix + 'commonBuffs'])
-		JSON.parse(localStorage[l2.ui.storagePrefix + 'commonBuffs']).forEach(function (cb) {
-			l2.model.commonBuffs.add(cb.id, null, cb.level);
-		});
-
-	l2.ui.disableStorageUpdate = false;
-
-	// end new !!!
-
-	l2.ui.loadingProcess = false;
-	l2.ui.recalc();
-	l2.ui.canShowDelta = true;
 });

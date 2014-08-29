@@ -621,7 +621,7 @@ l2.data.skills = [
 		{ stat: 'pDef', val: 0.2, op: 'mul' } ]},
 	{ id: 442, levels: 1, name: 'Sonic Barrier', target: 'SELF', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
 	{ id: 443, levels: 1, name: 'Force Barrier', target: 'SELF', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
-	{ id: 445, levels: 1, name: 'Mirage', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'mirage' },
+	{ id: 445, levels: 1, name: 'Mirage', target: 'SELF', operateType: 'A2', trigger: 5144, effectType: 'ChanceSkillTrigger', abnormalType: 'mirage' },
 	{ id: 446, levels: 1, name: 'Dodge', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'avoid_skill', effects: [
 		{ stat: 'pSkillEvas', val: 90, op: 'add' } ]},
 	{ id: 447, levels: 1, name: 'Counterattack', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'counter_skill', effects: [
@@ -646,7 +646,7 @@ l2.data.skills = [
 	{ id: 466, levels: 55, name: 'Magic Immunity', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'mDef', val: [11, 12, 13, 15, 17, 19, 20, 22, 24, 26, 27, 28, 30, 31, 32, 35, 36, 37, 40, 42, 43, 44, 46, 47, 49, 51, 52, 54, 56, 57, 59, 61, 63, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 91, 93, 95, 97, 99, 102, 104, 106, 108], op: 'add' },
 		{ stat: 'magicDamVul', val: [1, 1, 1, 1, 1, 1, 1, 1, 1, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.95, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.75, 0.75, 0.75, 0.75, 0.75, 0.75], op: 'mul' } ]},
-	{ id: 467, levels: 23, name: 'Soul Mastery', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 467, levels: 23, name: 'Soul Mastery', target: 'SELF', operateType: 'P', trigger: 5548, effectType: 'ChanceSkillTrigger' },
 	{ id: 469, levels: 1, name: 'Rapid Attack', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'attack_time_down', effects: [
 		{ stat: 'pAtkSpd', val: 1.15, op: 'mul' } ]},
 	{ id: 472, levels: 45, name: 'Ancient Sword Mastery', target: 'SELF', operateType: 'P', effects: [
@@ -688,7 +688,7 @@ l2.data.skills = [
 		{ stat: 'accCombat', val: [3, 3, 4, 4, 5, 5, 6, 6], op: 'add', using: 'Crossbow' },
 		{ stat: 'rCrit', val: 0.2, op: 'basemul', using: 'Crossbow' },
 		{ stat: 'pAtkRange', val: [50, 50, 100, 100, 150, 150, 200, 200], op: 'add', using: 'Crossbow' } ]},
-	{ id: 527, levels: 1, name: 'Iron Shield', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'iron_shield' },
+	{ id: 527, levels: 1, name: 'Iron Shield', target: 'SELF', operateType: 'A2', trigger: 5425, effectType: 'ChanceSkillTrigger', abnormalType: 'iron_shield' },
 	{ id: 528, levels: 1, name: 'Shield of Faith', target: 'PARTY', operateType: 'A2', effectType: 'TransferDamage', abnormalType: 'transfer_damage', effects: [
 		{ stat: 'transDamToPlayer', val: 90, op: 'add' },
 		{ stat: 'pDef', val: 3600, op: 'add' },
@@ -701,10 +701,10 @@ l2.data.skills = [
 	{ id: 530, levels: 1, name: 'Dance of Alignment', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'dance_of_alignment', effects: [
 		{ stat: 'darkRes', val: 30, op: 'add' },
 		{ stat: 'holyRes', val: 30, op: 'add' } ]},
-	{ id: 532, levels: 1, name: 'Counter Chance', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 533, levels: 1, name: 'Counter Rapid Shot', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 534, levels: 1, name: 'Counter Dash', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 535, levels: 1, name: 'Counter Mind', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 532, levels: 1, name: 'Counter Chance', target: 'SELF', operateType: 'P', trigger: 5426, effectType: 'ChanceSkillTrigger' },
+	{ id: 533, levels: 1, name: 'Counter Rapid Shot', target: 'SELF', operateType: 'P', trigger: 5427, effectType: 'ChanceSkillTrigger' },
+	{ id: 534, levels: 1, name: 'Counter Dash', target: 'SELF', operateType: 'P', trigger: 5428, effectType: 'ChanceSkillTrigger' },
+	{ id: 535, levels: 1, name: 'Counter Mind', target: 'SELF', operateType: 'P', trigger: 5429, effectType: 'ChanceSkillTrigger' },
 	{ id: 536, levels: 1, name: 'Over the Body', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'multi_buff', effects: [
 		{ stat: 'maxHp', val: 1.35, op: 'mul' },
 		{ stat: 'regHp', val: 1.15, op: 'mul' },
@@ -999,11 +999,11 @@ l2.data.skills = [
 		{ stat: 'rootVuln', val: 5, op: 'sub' },
 		{ stat: 'sleepVuln', val: 5, op: 'sub' },
 		{ stat: 'paralyzeVuln', val: 5, op: 'sub' } ]},
-	{ id: 651, levels: 1, name: 'Warrior Ability - Haste', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 652, levels: 1, name: 'Knight Ability - Defense', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 653, levels: 1, name: 'Rogue Ability - Critical Chance', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 654, levels: 1, name: 'Wizard Ability - Mana Steal', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 655, levels: 1, name: 'Enchanter Ability - Barrier', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 651, levels: 1, name: 'Warrior Ability - Haste', target: 'SELF', operateType: 'P', trigger: 5572, effectType: 'ChanceSkillTrigger' },
+	{ id: 652, levels: 1, name: 'Knight Ability - Defense', target: 'SELF', operateType: 'P', trigger: 5573, effectType: 'ChanceSkillTrigger' },
+	{ id: 653, levels: 1, name: 'Rogue Ability - Critical Chance', target: 'SELF', operateType: 'P', trigger: 5574, effectType: 'ChanceSkillTrigger' },
+	{ id: 654, levels: 1, name: 'Wizard Ability - Mana Steal', target: 'SELF', operateType: 'P', trigger: 5575, effectType: 'ChanceSkillTrigger' },
+	{ id: 655, levels: 1, name: 'Enchanter Ability - Barrier', target: 'SELF', operateType: 'P', trigger: 5576, effectType: 'ChanceSkillTrigger' },
 	{ id: 656, levels: 3, name: 'Transform Divine Warrior', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform', effects: [
 		{ stat: 'STR', val: 40, op: 'set' },
 		{ stat: 'DEX', val: 30, op: 'set' },
@@ -1139,7 +1139,7 @@ l2.data.skills = [
 		{ stat: 'MEN', val: 25, op: 'set' } ]},
 	{ id: 678, levels: 1, name: 'Divine Warrior War Cry', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up_special', effects: [
 		{ stat: 'pAtk', val: 1.25, op: 'mul' } ]},
-	{ id: 679, levels: 1, name: 'Sacrifice Warrior', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
+	{ id: 679, levels: 1, name: 'Sacrifice Warrior', target: 'PARTY', operateType: 'A2', trigger: 5602, effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
 		{ stat: 'pAtk', val: 1.2, op: 'mul' } ]},
 	{ id: 681, levels: 1, name: 'Divine Knight Hate Aura', target: 'AURA', operateType: 'A2', effectType: 'TargetMe', abnormalType: 'lock' },
 	{ id: 683, levels: 1, name: 'Divine Knight Thunder Storm', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
@@ -1147,16 +1147,16 @@ l2.data.skills = [
 		{ stat: 'pDef', val: 3600, op: 'add' },
 		{ stat: 'mDef', val: 2700, op: 'add' },
 		{ stat: 'cancelVuln', val: 80, op: 'sub' } ]},
-	{ id: 685, levels: 1, name: 'Sacrifice Knight', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
+	{ id: 685, levels: 1, name: 'Sacrifice Knight', target: 'PARTY', operateType: 'A2', trigger: 5602, effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
 		{ stat: 'pDef', val: 1.2, op: 'mul' } ]},
 	{ id: 690, levels: 1, name: 'Divine Rogue Agility', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'avoid_up', effects: [
 		{ stat: 'rEvas', val: 4, op: 'add' } ]},
-	{ id: 691, levels: 1, name: 'Sacrifice Rogue', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
+	{ id: 691, levels: 1, name: 'Sacrifice Rogue', target: 'PARTY', operateType: 'A2', trigger: 5602, effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
 		{ stat: 'rEvas', val: 10, op: 'add' } ]},
-	{ id: 697, levels: 1, name: 'Sacrifice Wizard', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
+	{ id: 697, levels: 1, name: 'Sacrifice Wizard', target: 'PARTY', operateType: 'A2', trigger: 5602, effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
 		{ stat: 'mAtk', val: 1.2, op: 'mul' } ]},
 	{ id: 700, levels: 1, name: 'Divine Healer Group Heal', target: 'PARTY', operateType: 'A2', effectType: 'HealOverTime', abnormalType: 'life_force_others' },
-	{ id: 703, levels: 1, name: 'Sacrifice Healer', target: 'PARTY', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
+	{ id: 703, levels: 1, name: 'Sacrifice Healer', target: 'PARTY', operateType: 'A1', trigger: 5602, effectType: 'ChanceSkillTrigger' },
 	{ id: 704, levels: 1, name: 'Divine Enchanter Water Spirit', target: 'PARTY_MEMBER', operateType: 'A2', effectType: 'Buff', abnormalType: 'multi_buff', effects: [
 		{ stat: 'mCritRate', val: 2, op: 'add' },
 		{ stat: 'regMp', val: 1.2, op: 'mul' },
@@ -1210,7 +1210,7 @@ l2.data.skills = [
 		{ stat: 'accCombat', val: 4, op: 'add' },
 		{ stat: 'runSpd', val: 0.8, op: 'mul' } ]},
 	{ id: 708, levels: 1, name: 'Divine Enchanter Mass Binding', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
-	{ id: 709, levels: 1, name: 'Sacrifice Enchanter', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
+	{ id: 709, levels: 1, name: 'Sacrifice Enchanter', target: 'PARTY', operateType: 'A2', trigger: 5602, effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
 		{ stat: 'runSpd', val: 10, op: 'add' },
 		{ stat: 'accCombat', val: 2, op: 'add' },
 		{ stat: 'pDef', val: 1.1, op: 'mul' },
@@ -1223,7 +1223,7 @@ l2.data.skills = [
 		{ stat: 'mAtkSpd', val: 1.1, op: 'mul' } ]},
 	{ id: 711, levels: 1, name: 'Divine Summoner Transfer Pain', target: 'SELF', operateType: 'T', effectType: 'MpConsumePerLevel', effects: [
 		{ stat: 'transDam', val: 50, op: 'add' } ]},
-	{ id: 714, levels: 1, name: 'Sacrifice Summoner', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
+	{ id: 714, levels: 1, name: 'Sacrifice Summoner', target: 'PARTY', operateType: 'A2', trigger: 5602, effectType: 'Buff', abnormalType: 'transform_sacrifice', effects: [
 		{ stat: 'rCrit', val: 0.2, op: 'basemul' },
 		{ stat: 'cAtk', val: 1.2, op: 'mul' } ]},
 	{ id: 719, levels: 1, name: 'Zaken Vampiric Rage', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'vampiric_attack', effects: [
@@ -1247,9 +1247,9 @@ l2.data.skills = [
 		{ stat: 'cancelVuln', val: 80, op: 'sub' } ]},
 	{ id: 754, levels: 1, name: 'Doll Blader Clairvoyance', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'critical_prob_up', effects: [
 		{ stat: 'rCrit', val: 0.3, op: 'basemul' } ]},
-	{ id: 755, levels: 1, name: 'Protection of Rune', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 756, levels: 1, name: 'Protection of Elemental', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 757, levels: 1, name: 'Protection of Alignment', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 755, levels: 1, name: 'Protection of Rune', target: 'SELF', operateType: 'P', trigger: 5556, effectType: 'ChanceSkillTrigger' },
+	{ id: 756, levels: 1, name: 'Protection of Elemental', target: 'SELF', operateType: 'P', trigger: 5556, effectType: 'ChanceSkillTrigger' },
+	{ id: 757, levels: 1, name: 'Protection of Alignment', target: 'SELF', operateType: 'P', trigger: 5556, effectType: 'ChanceSkillTrigger' },
 	{ id: 758, levels: 1, name: 'Fighter\'s Will', target: 'SELF', operateType: 'P', trigger: 5559, effects: [
 		{ stat: 'pAtk', val: 100, op: 'add', using: 'Sword,Big Sword,Blunt,Big Blunt,Dual Sword,Dual Fist,Dagger,Dual Dagger,Pole,Ancient,Rapier' },
 		{ stat: 'pAtkSpd', val: 1.1, op: 'mul', using: 'Sword,Big Sword,Blunt,Big Blunt,Dual Sword,Dual Fist,Dagger,Dual Dagger,Pole,Ancient,Rapier' } ]},
@@ -1258,7 +1258,7 @@ l2.data.skills = [
 		{ stat: 'pAtkRange', val: 50, op: 'add', using: 'Crossbow,Bow' } ]},
 	{ id: 760, levels: 1, name: 'Anti Magic Armor', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up_special', effects: [
 		{ stat: 'mDef', val: 5000, op: 'add' } ]},
-	{ id: 761, levels: 1, name: 'Seed of Revenge', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
+	{ id: 761, levels: 1, name: 'Seed of Revenge', target: 'SELF', operateType: 'A2', trigger: 5561, effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
 		{ stat: 'pAtk', val: 100, op: 'add' } ]},
 	{ id: 762, levels: 1, name: 'Insane Crusher', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'touch_of_death', effects: [
 		{ stat: 'maxCp', val: 0.1, op: 'mul' },
@@ -1277,7 +1277,7 @@ l2.data.skills = [
 		{ stat: 'mAtk', val: 0.01, op: 'mul' } ]},
 	{ id: 766, levels: 1, name: 'Sixth Sense', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'rEvas', val: 15, op: 'add', hp: 30 } ]},
-	{ id: 767, levels: 1, name: 'Expose Weak Point', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 767, levels: 1, name: 'Expose Weak Point', target: 'SELF', operateType: 'P', trigger: 5565, effectType: 'ChanceSkillTrigger' },
 	{ id: 768, levels: 1, name: 'Exciting Adventure', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'avoid_up_special', effects: [
 		{ stat: 'runSpd', val: 20, op: 'add' },
 		{ stat: 'rEvas', val: 15, op: 'add' },
@@ -1307,7 +1307,7 @@ l2.data.skills = [
 		{ stat: 'DEX', val: 29, op: 'set' },
 		{ stat: 'WIT', val: 10, op: 'set' },
 		{ stat: 'MEN', val: 27, op: 'set' } ]},
-	{ id: 784, levels: 1, name: 'Spirit of Phoenix', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
+	{ id: 784, levels: 1, name: 'Spirit of Phoenix', target: 'SELF', operateType: 'A2', trigger: 5562, effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
 		{ stat: 'pDef', val: 200, op: 'add' } ]},
 	{ id: 785, levels: 1, name: 'Flame Icon', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'possession_special', effects: [
 		{ stat: 'debuffVuln', val: 40, op: 'sub' },
@@ -1320,13 +1320,13 @@ l2.data.skills = [
 		{ stat: 'cAtk', val: 2, op: 'mul', using: 'Blunt,Big Blunt' },
 		{ stat: 'cancelVuln', val: 40, op: 'sub' },
 		{ stat: 'healEffect', val: 0.2, op: 'mul' } ]},
-	{ id: 786, levels: 1, name: 'Eva\'s Will', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
+	{ id: 786, levels: 1, name: 'Eva\'s Will', target: 'SELF', operateType: 'A2', trigger: 5563, effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
 		{ stat: 'mDef', val: 200, op: 'add' } ]},
 	{ id: 787, levels: 1, name: 'Touch of Eva', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'touch_of_life', effects: [
 		{ stat: 'cancelVuln', val: 100, op: 'sub' },
 		{ stat: 'debuffVuln', val: 30, op: 'sub' },
 		{ stat: 'healEffect', val: 1.3, op: 'mul' } ]},
-	{ id: 788, levels: 1, name: 'Pain of Shilen', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
+	{ id: 788, levels: 1, name: 'Pain of Shilen', target: 'SELF', operateType: 'A2', trigger: 5564, effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
 		{ stat: 'cAtk', val: 1.1, op: 'mul' } ]},
 	{ id: 789, levels: 1, name: 'Spirit of Shilen', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'possession_special', effects: [
 		{ stat: 'pAtk', val: 1.3, op: 'mul' },
@@ -1337,7 +1337,7 @@ l2.data.skills = [
 		{ stat: 'cAtk', val: 2, op: 'mul', using: 'Blunt,Big Blunt' },
 		{ stat: 'absorbDam', val: 40, op: 'add' },
 		{ stat: 'healEffect', val: 0.2, op: 'mul' } ]},
-	{ id: 791, levels: 1, name: 'Lightning Shock', target: 'AURA', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'paralyze', effects: [
+	{ id: 791, levels: 1, name: 'Lightning Shock', target: 'AURA', operateType: 'A2', trigger: 6092, effectType: 'ChanceSkillTrigger', abnormalType: 'paralyze', effects: [
 		{ stat: 'pAtkSpd', val: 0.5, op: 'mul' },
 		{ stat: 'runSpd', val: 0.5, op: 'mul' },
 		{ stat: 'mAtkSpd', val: 0.5, op: 'mul' } ]},
@@ -1373,9 +1373,9 @@ l2.data.skills = [
 	{ id: 813, levels: 1, name: 'Vanguard', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform', effects: [
 		{ stat: 'sDef', val: 0.5, op: 'mul' },
 		{ stat: 'pAtkSpd', val: 1.08, op: 'mul', using: 'Dual Sword' } ]},
-	{ id: 818, levels: 1, name: 'Evasion Counter', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 819, levels: 1, name: 'Evasion Chance', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 820, levels: 1, name: 'Evasion Haste', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 818, levels: 1, name: 'Evasion Counter', target: 'SELF', operateType: 'P', trigger: 5673, effectType: 'ChanceSkillTrigger' },
+	{ id: 819, levels: 1, name: 'Evasion Chance', target: 'SELF', operateType: 'P', trigger: 5674, effectType: 'ChanceSkillTrigger' },
+	{ id: 820, levels: 1, name: 'Evasion Haste', target: 'SELF', operateType: 'P', trigger: 5675, effectType: 'ChanceSkillTrigger' },
 	{ id: 823, levels: 3, name: 'Strengthen Golem', target: 'SUMMON', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: [1.08, 1.12, 1.15], op: 'mul' },
 		{ stat: 'pAtkSpd', val: [1.03, 1.06, 1.09], op: 'mul' } ]},
@@ -1628,7 +1628,7 @@ l2.data.skills = [
 	{ id: 948, levels: 1, name: 'Eye for Eye', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'counter_skill', effects: [
 		{ stat: 'vengeancePdam', val: 90, op: 'add' },
 		{ stat: 'reflectDam', val: 90, op: 'add' } ]},
-	{ id: 952, levels: 5, name: 'Collector\'s Experience', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 952, levels: 5, name: 'Collector\'s Experience', target: 'SELF', operateType: 'P', trigger: 6920, effectType: 'ChanceSkillTrigger' },
 	{ id: 955, levels: 1, name: 'Strider Dash', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up_special', effects: [
 		{ stat: 'runSpd', val: 66, op: 'add' } ]},
 	{ id: 956, levels: 3, name: 'Boost Morale', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'possession', effects: [
@@ -1663,7 +1663,7 @@ l2.data.skills = [
 	{ id: 982, levels: 3, name: 'Combat Aura', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'knight_aura', effects: [
 		{ stat: 'pAtk', val: [1.03, 1.04, 1.05], op: 'mul' },
 		{ stat: 'pAtkSpd', val: [1.03, 1.04, 1.05], op: 'mul' } ]},
-	{ id: 983, levels: 1, name: 'Patience', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 983, levels: 1, name: 'Patience', target: 'SELF', operateType: 'P', trigger: 6687, effectType: 'ChanceSkillTrigger' },
 	{ id: 988, levels: 3, name: 'Battle Whisper', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'battle_whisper', effects: [
 		{ stat: 'pAtk', val: [1.05, 1.1, 1.15], op: 'mul' },
 		{ stat: 'cAtk', val: [1.05, 1.07, 1.1], op: 'mul' },
@@ -2129,13 +2129,13 @@ l2.data.skills = [
 		{ stat: 'earthRes', val: 5, op: 'add' },
 		{ stat: 'windRes', val: 5, op: 'add' },
 		{ stat: 'waterRes', val: 5, op: 'add' } ]},
-	{ id: 1490, levels: 1, name: 'Healer Ability - Heal', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 1491, levels: 1, name: 'Summoner Ability - Spirit', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 1492, levels: 1, name: 'Flame Armor', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'elemental_armor', effects: [
+	{ id: 1490, levels: 1, name: 'Healer Ability - Heal', target: 'SELF', operateType: 'P', trigger: 5577, effectType: 'ChanceSkillTrigger' },
+	{ id: 1491, levels: 1, name: 'Summoner Ability - Spirit', target: 'SELF', operateType: 'P', trigger: 5578, effectType: 'ChanceSkillTrigger' },
+	{ id: 1492, levels: 1, name: 'Flame Armor', target: 'SELF', operateType: 'A2', trigger: 5567, effectType: 'ChanceSkillTrigger', abnormalType: 'elemental_armor', effects: [
 		{ stat: 'fireRes', val: 60, op: 'add' } ]},
-	{ id: 1493, levels: 1, name: 'Frost Armor', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'elemental_armor', effects: [
+	{ id: 1493, levels: 1, name: 'Frost Armor', target: 'SELF', operateType: 'A2', trigger: 5568, effectType: 'ChanceSkillTrigger', abnormalType: 'elemental_armor', effects: [
 		{ stat: 'waterRes', val: 60, op: 'add' } ]},
-	{ id: 1494, levels: 1, name: 'Hurricane Armor', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'elemental_armor', effects: [
+	{ id: 1494, levels: 1, name: 'Hurricane Armor', target: 'SELF', operateType: 'A2', trigger: 5569, effectType: 'ChanceSkillTrigger', abnormalType: 'elemental_armor', effects: [
 		{ stat: 'windRes', val: 60, op: 'add' } ]},
 	{ id: 1495, levels: 1, name: 'Vampiric Mist', target: 'AURA', operateType: 'A2', effectType: 'Debuff', abnormalType: 'ultimate_debuff', effects: [
 		{ stat: 'pAtk', val: 0.5, op: 'mul' },
@@ -2143,8 +2143,8 @@ l2.data.skills = [
 		{ stat: 'runSpd', val: 0.5, op: 'mul' },
 		{ stat: 'accCombat', val: 12, op: 'sub' } ]},
 	{ id: 1496, levels: 1, name: 'Servitor Barrier', target: 'PET', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
-	{ id: 1497, levels: 1, name: 'Excessive Loyalty', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 1498, levels: 1, name: 'Mutual Response', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 1497, levels: 1, name: 'Excessive Loyalty', target: 'SELF', operateType: 'P', trigger: 5570, effectType: 'ChanceSkillTrigger' },
+	{ id: 1498, levels: 1, name: 'Mutual Response', target: 'SELF', operateType: 'P', trigger: 5571, effectType: 'ChanceSkillTrigger' },
 	{ id: 1499, levels: 1, name: 'Improved Combat', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'improve_pa_pd_up', effects: [
 		{ stat: 'pAtk', val: 1.15, op: 'mul' },
 		{ stat: 'pDef', val: 1.15, op: 'mul' } ]},
@@ -2176,7 +2176,7 @@ l2.data.skills = [
 		{ stat: 'bowWpnVuln', val: 0.9, op: 'mul' },
 		{ stat: 'crossbowWpnVuln', val: 0.94, op: 'mul' },
 		{ stat: 'mDef', val: 2, op: 'mul' } ]},
-	{ id: 1515, levels: 1, name: 'Lightning Barrier', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'elemental_armor' },
+	{ id: 1515, levels: 1, name: 'Lightning Barrier', target: 'SELF', operateType: 'A2', trigger: 5592, effectType: 'ChanceSkillTrigger', abnormalType: 'elemental_armor' },
 	{ id: 1517, levels: 1, name: 'Chant of Combat', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'improve_pa_pd_up', effects: [
 		{ stat: 'pAtk', val: 1.15, op: 'mul' },
 		{ stat: 'pDef', val: 1.15, op: 'mul' } ]},
@@ -2189,11 +2189,12 @@ l2.data.skills = [
 	{ id: 1520, levels: 1, name: 'Inquisitor', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform' },
 	{ id: 1521, levels: 1, name: 'Inquisitor', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform' },
 	{ id: 1522, levels: 1, name: 'Inquisitor', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform' },
-	{ id: 1526, levels: 3, name: 'Steal Mana', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 1526, levels: 3, name: 'Steal Mana', target: 'SELF', operateType: 'P', trigger: [
+		5676, 5677, 5678], effectType: 'ChanceSkillTrigger' },
 	{ id: 1527, levels: 3, name: 'Expert Casting', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'mAtkSpd', val: 1.1, op: 'mul' },
 		{ stat: 'mReuse', val: [0.9, 0.85, 0.8], op: 'mul' } ]},
-	{ id: 1531, levels: 7, name: 'Bless the Blood', target: 'PARTY_MEMBER', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'bless_the_blood' },
+	{ id: 1531, levels: 7, name: 'Bless the Blood', target: 'PARTY_MEMBER', operateType: 'A2', trigger: 5698, effectType: 'ChanceSkillTrigger', abnormalType: 'bless_the_blood' },
 	{ id: 1532, levels: 1, name: 'Enlightenment', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'final_secret', effects: [
 		{ stat: 'mAtk', val: 1.4, op: 'mul' },
 		{ stat: 'mAtkSpd', val: 1.5, op: 'mul' },
@@ -2220,9 +2221,9 @@ l2.data.skills = [
 		{ stat: 'maxHp', val: 1.35, op: 'mul' },
 		{ stat: 'maxMp', val: 1.35, op: 'mul' } ]},
 	{ id: 1540, levels: 1, name: 'Turn to Stone', target: 'SELF', operateType: 'A2', effectType: 'Petrification', abnormalType: 'turn_stone' },
-	{ id: 1542, levels: 1, name: 'Counter Critical', target: 'ONE', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'counter_critical', effects: [
+	{ id: 1542, levels: 1, name: 'Counter Critical', target: 'ONE', operateType: 'A2', trigger: 6059, effectType: 'ChanceSkillTrigger', abnormalType: 'counter_critical', effects: [
 		{ stat: 'critVuln', val: 0.7, op: 'mul' } ]},
-	{ id: 1543, levels: 1, name: 'Great Fury', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 1543, levels: 1, name: 'Great Fury', target: 'SELF', operateType: 'P', trigger: 6060, effectType: 'ChanceSkillTrigger' },
 	{ id: 1547, levels: 3, name: 'Spirit Sharing', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'public_slot', effects: [
 		{ stat: 'pAtk', val: [1.03, 1.04, 1.05], op: 'mul' },
 		{ stat: 'pAtkSpd', val: [1.02, 1.05, 1.07], op: 'mul' },
@@ -2256,7 +2257,7 @@ l2.data.skills = [
 		{ stat: 'runSpd', val: [5, 8], op: 'add' } ]},
 	{ id: 1563, levels: 2, name: 'Fury of Pa\'agrio', target: 'PARTY_CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'attack_time_down', effects: [
 		{ stat: 'pAtkSpd', val: [1.15, 1.33], op: 'mul' } ]},
-	{ id: 1564, levels: 1, name: 'Piercing Attack', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 1564, levels: 1, name: 'Piercing Attack', target: 'SELF', operateType: 'P', trigger: 6706, effectType: 'ChanceSkillTrigger' },
 	{ id: 1565, levels: 6, name: 'Mana Pump', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'maxMp', val: [70, 100, 140, 150, 180, 200], op: 'add' } ]},
 	{ id: 2001, levels: 1, name: 'Red Potion', target: 'SELF', operateType: 'A2', effectType: 'HealOverTime', abnormalType: 'hp_recover' },
@@ -3270,8 +3271,8 @@ l2.data.skills = [
 		{ stat: 'maxHp', val: 492, op: 'add' },
 		{ stat: 'darkRes', val: 8, op: 'add' },
 		{ stat: 'cloak', val: 1, op: 'add' } ]},
-	{ id: 3426, levels: 1, name: 'Maximum Ability', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3427, levels: 1, name: 'Special Ability: Infinity Rapier', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3426, levels: 1, name: 'Maximum Ability', target: 'SELF', operateType: 'P', trigger: 5547, effectType: 'ChanceSkillTrigger' },
+	{ id: 3427, levels: 1, name: 'Special Ability: Infinity Rapier', target: 'SELF', operateType: 'P', trigger: 5547, effectType: 'ChanceSkillTrigger' },
 	{ id: 3428, levels: 1, name: 'Blue Talisman - Explosion', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'talisman', effects: [
 		{ stat: 'pAtk', val: 1.2, op: 'mul' },
 		{ stat: 'pAtkSpd', val: 1.1, op: 'mul' } ]},
@@ -3894,9 +3895,9 @@ l2.data.skills = [
 	{ id: 3607, levels: 1, name: 'Clan Oath Robe Set', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'regMp', val: 1.05, op: 'mul' },
 		{ stat: 'mAtkSpd', val: 1.05, op: 'mul' } ]},
-	{ id: 3608, levels: 3, name: 'Apella Heavy Armor Set', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3609, levels: 3, name: 'Apella Light Armor Set', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3610, levels: 3, name: 'Apella Robe Set', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3608, levels: 3, name: 'Apella Heavy Armor Set', target: 'SELF', operateType: 'P', trigger: 5605, effectType: 'ChanceSkillTrigger' },
+	{ id: 3609, levels: 3, name: 'Apella Light Armor Set', target: 'SELF', operateType: 'P', trigger: 5607, effectType: 'ChanceSkillTrigger' },
+	{ id: 3610, levels: 3, name: 'Apella Robe Set', target: 'SELF', operateType: 'P', trigger: 5608, effectType: 'ChanceSkillTrigger' },
 	{ id: 3611, levels: 1, name: 'Enchant Heavy Armor (Grade D)', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pDef', val: 25, op: 'add', using: 'Heavy' },
 		{ stat: 'regMp', val: 1.518, op: 'add' } ]},
@@ -4078,25 +4079,25 @@ l2.data.skills = [
 		{ stat: 'darkRes', val: 30, op: 'add' },
 		{ stat: 'maxHp', val: 105, op: 'add' },
 		{ stat: 'regMp', val: 0.23, op: 'add' } ]},
-	{ id: 3650, levels: 1, name: 'PvP Weapon - CP Drain', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3651, levels: 1, name: 'PvP Weapon - Cancel', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3652, levels: 1, name: 'PvP Weapon - Ignore Shield Defense', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3653, levels: 1, name: 'PvP Weapon - Attack Chance', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3654, levels: 1, name: 'PvP Weapon - Casting', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3655, levels: 1, name: 'PvP Weapon - Rapid Fire', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3656, levels: 1, name: 'PvP Weapon - Decrease Range', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3657, levels: 1, name: 'PvP Weapon - Decrease Resist', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3658, levels: 1, name: 'PvP Shield - Reflect Damage', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3659, levels: 1, name: 'PvP Armor - Damage Down', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3660, levels: 1, name: 'PvP Armor - Critical Down', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3661, levels: 1, name: 'PvP Armor - Heal', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3662, levels: 1, name: 'PvP Armor - Speed Down', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 3663, levels: 1, name: 'PvP Armor - Mirage', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3650, levels: 1, name: 'PvP Weapon - CP Drain', target: 'SELF', operateType: 'P', trigger: 5681, effectType: 'ChanceSkillTrigger' },
+	{ id: 3651, levels: 1, name: 'PvP Weapon - Cancel', target: 'SELF', operateType: 'P', trigger: 5682, effectType: 'ChanceSkillTrigger' },
+	{ id: 3652, levels: 1, name: 'PvP Weapon - Ignore Shield Defense', target: 'SELF', operateType: 'P', trigger: 5683, effectType: 'ChanceSkillTrigger' },
+	{ id: 3653, levels: 1, name: 'PvP Weapon - Attack Chance', target: 'SELF', operateType: 'P', trigger: 5684, effectType: 'ChanceSkillTrigger' },
+	{ id: 3654, levels: 1, name: 'PvP Weapon - Casting', target: 'SELF', operateType: 'P', trigger: 5685, effectType: 'ChanceSkillTrigger' },
+	{ id: 3655, levels: 1, name: 'PvP Weapon - Rapid Fire', target: 'SELF', operateType: 'P', trigger: 5686, effectType: 'ChanceSkillTrigger' },
+	{ id: 3656, levels: 1, name: 'PvP Weapon - Decrease Range', target: 'SELF', operateType: 'P', trigger: 5687, effectType: 'ChanceSkillTrigger' },
+	{ id: 3657, levels: 1, name: 'PvP Weapon - Decrease Resist', target: 'SELF', operateType: 'P', trigger: 5688, effectType: 'ChanceSkillTrigger' },
+	{ id: 3658, levels: 1, name: 'PvP Shield - Reflect Damage', target: 'SELF', operateType: 'P', trigger: 5689, effectType: 'ChanceSkillTrigger' },
+	{ id: 3659, levels: 1, name: 'PvP Armor - Damage Down', target: 'SELF', operateType: 'P', trigger: 5690, effectType: 'ChanceSkillTrigger' },
+	{ id: 3660, levels: 1, name: 'PvP Armor - Critical Down', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 3661, levels: 1, name: 'PvP Armor - Heal', target: 'SELF', operateType: 'P', trigger: 5692, effectType: 'ChanceSkillTrigger' },
+	{ id: 3662, levels: 1, name: 'PvP Armor - Speed Down', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 3663, levels: 1, name: 'PvP Armor - Mirage', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
 	{ id: 3664, levels: 1, name: 'Red Talisman - Max. CP', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'talisman', effects: [
 		{ stat: 'maxCp', val: 1.3, op: 'mul' } ]},
 	{ id: 3665, levels: 2, name: 'Red Talisman - CP Regeneration', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'talisman', effects: [
 		{ stat: 'regCp', val: 1.3, op: 'mul' } ]},
-	{ id: 3666, levels: 1, name: 'Yellow Talisman - Increase Force', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3666, levels: 1, name: 'Yellow Talisman - Increase Force', target: 'SELF', operateType: 'P', trigger: 5695, effectType: 'ChanceSkillTrigger' },
 	{ id: 3667, levels: 1, name: 'Yellow Talisman - Damage Transition', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'transDam', val: 10, op: 'add' } ]},
 	{ id: 3668, levels: 1, name: 'Zubei\'s Leather Gaiters', target: 'SELF', operateType: 'P', effects: [
@@ -4664,7 +4665,7 @@ l2.data.skills = [
 		{ stat: 'cAtkAdd', val: 220, op: 'add' } ]},
 	{ id: 3828, levels: 1, name: 'Sword of Critical Chance', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'rCrit', val: 54.4, op: 'add' } ]},
-	{ id: 3829, levels: 1, name: 'Sword of Stun', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3829, levels: 1, name: 'Sword of Stun', target: 'SELF', operateType: 'P', trigger: 5665, effectType: 'ChanceSkillTrigger' },
 	{ id: 3830, levels: 3, name: 'Rapier of Might', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtk', val: [16.25, 20.62, 39.3], op: 'add' } ]},
 	{ id: 3831, levels: 2, name: 'Rapier of Boost HP', target: 'SELF', operateType: 'P', effects: [
@@ -4673,7 +4674,7 @@ l2.data.skills = [
 		{ stat: 'cAtkAdd', val: 169, op: 'add' } ]},
 	{ id: 3833, levels: 1, name: 'Rapier of Critical Chance', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'rCrit', val: 54.4, op: 'add' } ]},
-	{ id: 3834, levels: 1, name: 'Rapier of Stun', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3834, levels: 1, name: 'Rapier of Stun', target: 'SELF', operateType: 'P', trigger: 5666, effectType: 'ChanceSkillTrigger' },
 	{ id: 3835, levels: 3, name: 'Dual-Blade Weapon of Might', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtk', val: [21.2, 26.9, 51.26], op: 'add' } ]},
 	{ id: 3836, levels: 2, name: 'Dual-Blade Weapon of Boost HP', target: 'SELF', operateType: 'P', effects: [
@@ -4682,7 +4683,7 @@ l2.data.skills = [
 		{ stat: 'cAtkAdd', val: 268, op: 'add' } ]},
 	{ id: 3838, levels: 1, name: 'Dual-Blade Weapon of Critical Chance', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'rCrit', val: 54.4, op: 'add' } ]},
-	{ id: 3839, levels: 1, name: 'Dual-Blade Weapon of Stun', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3839, levels: 1, name: 'Dual-Blade Weapon of Stun', target: 'SELF', operateType: 'P', trigger: 5667, effectType: 'ChanceSkillTrigger' },
 	{ id: 3840, levels: 2, name: 'Two-handed Sword of Haste', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtkSpd', val: 1.05, op: 'mul' } ]},
 	{ id: 3841, levels: 1, name: 'Two-handed Sword of Guidance', target: 'SELF', operateType: 'P', effects: [
@@ -4725,7 +4726,7 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: 1.05, op: 'mul' } ]},
 	{ id: 3860, levels: 1, name: 'Dagger of Regeneration', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'regHp', val: 1.05, op: 'mul' } ]},
-	{ id: 3861, levels: 1, name: 'Dagger of Poison', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3861, levels: 1, name: 'Dagger of Poison', target: 'SELF', operateType: 'P', trigger: 5668, effectType: 'ChanceSkillTrigger' },
 	{ id: 3862, levels: 1, name: 'Dagger of Guidance', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'accCombat', val: 3.3, op: 'add' } ]},
 	{ id: 3863, levels: 4, name: 'Bow of Guidance', target: 'SELF', operateType: 'P', effects: [
@@ -4756,7 +4757,7 @@ l2.data.skills = [
 		{ stat: 'rCrit', val: 54.4, op: 'add' } ]},
 	{ id: 3875, levels: 1, name: 'Polearm of Regeneration', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'regHp', val: 1.05, op: 'mul' } ]},
-	{ id: 3876, levels: 1, name: 'Polearm of Stun', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3876, levels: 1, name: 'Polearm of Stun', target: 'SELF', operateType: 'P', trigger: 5669, effectType: 'ChanceSkillTrigger' },
 	{ id: 3877, levels: 2, name: 'Polearm of Boost HP', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'maxHp', val: [319, 492], op: 'add' } ]},
 	{ id: 3878, levels: 1, name: 'Polearm of Might', target: 'SELF', operateType: 'P', effects: [
@@ -4767,12 +4768,13 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: 1.05, op: 'mul' } ]},
 	{ id: 3881, levels: 1, name: 'Fist Weapon of Boost HP', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'maxHp', val: 372, op: 'add' } ]},
-	{ id: 3882, levels: 1, name: 'Fist Weapon of Stun', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3882, levels: 1, name: 'Fist Weapon of Stun', target: 'SELF', operateType: 'P', trigger: 5670, effectType: 'ChanceSkillTrigger' },
 	{ id: 3883, levels: 1, name: 'Fist Weapon of Critical Power', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'cAtkAdd', val: 528, op: 'add' } ]},
 	{ id: 3884, levels: 3, name: 'Blunt Weapon of Boost HP', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'maxHp', val: [294, 345, 511], op: 'add' } ]},
-	{ id: 3885, levels: 2, name: 'Blunt Weapon of Stun', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 3885, levels: 2, name: 'Blunt Weapon of Stun', target: 'SELF', operateType: 'P', trigger: [
+		5671, 5672], effectType: 'ChanceSkillTrigger' },
 	{ id: 3886, levels: 1, name: 'Blunt Weapon of Haste', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtkSpd', val: 1.05, op: 'mul' } ]},
 	{ id: 3887, levels: 1, name: 'Blunt Weapon of Regeneration', target: 'SELF', operateType: 'P', effects: [
@@ -5569,7 +5571,7 @@ l2.data.skills = [
 		{ stat: 'waterRes', val: 50, op: 'add' } ]},
 	{ id: 4483, levels: 12, name: 'Hold', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
 	{ id: 4488, levels: 12, name: 'Hold', target: 'AURA', operateType: 'A2', effectType: 'Root', abnormalType: 'root_magically' },
-	{ id: 4493, levels: 12, name: 'NPC Debuff Shield Slow', target: 'ONE', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'debuff_shield' },
+	{ id: 4493, levels: 12, name: 'NPC Debuff Shield Slow', target: 'ONE', operateType: 'A2', trigger: 5520, effectType: 'ChanceSkillTrigger', abnormalType: 'debuff_shield' },
 	{ id: 4517, levels: 1, name: 'Quest - BOSS Defend', target: 'SELF', operateType: 'T', effectType: 'ManaDamOverTime', effects: [
 		{ stat: 'runSpd', val: 0.5, op: 'mul' },
 		{ stat: 'pAtk', val: 0.5, op: 'mul' },
@@ -6003,7 +6005,7 @@ l2.data.skills = [
 		{ stat: 'pAtkSpd', val: 1.15, op: 'mul', using: 'Bow,Crossbow' } ]},
 	{ id: 5428, levels: 1, name: 'Counter Dash', target: 'PARTY', operateType: 'A2', effectType: 'Buff', abnormalType: 'archer_special_i', effects: [
 		{ stat: 'runSpd', val: 40, op: 'add' } ]},
-	{ id: 5434, levels: 1, name: 'Gust', target: 'AURA', operateType: 'A2', effectType: 'Stun', abnormalType: 'stun' },
+	{ id: 5434, levels: 1, name: 'Gust', target: 'AURA', operateType: 'A2', trigger: 5494, effectType: 'Stun', abnormalType: 'stun' },
 	{ id: 5437, levels: 2, name: 'Dissonance', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtk', val: 0.95, op: 'mul' },
 		{ stat: 'mAtk', val: 0.95, op: 'mul' },
@@ -6110,20 +6112,20 @@ l2.data.skills = [
 	{ id: 5559, levels: 1, name: 'Physical Pose', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'will', effects: [
 		{ stat: 'physicalSkillPower', val: 1.2, op: 'mul' },
 		{ stat: 'rCrit', val: 0.2, op: 'basemul' } ]},
-	{ id: 5561, levels: 3, name: 'Seed of Revenge', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
+	{ id: 5561, levels: 3, name: 'Seed of Revenge', target: 'SELF', operateType: 'A2', trigger: 5561, effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
 		{ stat: 'pAtk', val: 300, op: 'add' },
 		{ stat: 'rCrit', val: [0, 0.3, 0.3], op: 'basemul' },
 		{ stat: 'cAtk', val: [1, 1, 1.25], op: 'mul' } ]},
-	{ id: 5562, levels: 3, name: 'Spirit of Phoenix', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
+	{ id: 5562, levels: 3, name: 'Spirit of Phoenix', target: 'SELF', operateType: 'A2', trigger: 5562, effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
 		{ stat: 'pDef', val: 500, op: 'add' },
 		{ stat: 'fireRes', val: [0, 30, 30], op: 'add' },
 		{ stat: 'darkRes', val: [0, 30, 30], op: 'add' },
 		{ stat: 'healEffect', val: [1, 1, 1.3], op: 'mul' } ]},
-	{ id: 5563, levels: 3, name: 'Eva\'s Will', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
+	{ id: 5563, levels: 3, name: 'Eva\'s Will', target: 'SELF', operateType: 'A2', trigger: 5563, effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
 		{ stat: 'mDef', val: 400, op: 'add' },
 		{ stat: 'waterPower', val: [0, 20, 20], op: 'add' },
 		{ stat: 'rCrit', val: [0, 0, 0.2], op: 'basemul' } ]},
-	{ id: 5564, levels: 3, name: 'Pain of Shilen', target: 'SELF', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
+	{ id: 5564, levels: 3, name: 'Pain of Shilen', target: 'SELF', operateType: 'A2', trigger: 5564, effectType: 'ChanceSkillTrigger', abnormalType: 'seed_of_knight', effects: [
 		{ stat: 'cAtk', val: 1.2, op: 'mul' },
 		{ stat: 'windPower', val: [0, 20, 20], op: 'add' },
 		{ stat: 'absorbDam', val: [0, 0, 8], op: 'add' } ]},
@@ -6267,7 +6269,7 @@ l2.data.skills = [
 		{ stat: 'blowRate', val: 1.1, op: 'mul' } ]},
 	{ id: 5675, levels: 1, name: 'Evasion Haste', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'evasion_buff', effects: [
 		{ stat: 'pAtkSpd', val: 1.15, op: 'mul' } ]},
-	{ id: 5679, levels: 3, name: 'Oblivion Trap', target: 'AURA', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'mirage_trap' },
+	{ id: 5679, levels: 3, name: 'Oblivion Trap', target: 'AURA', operateType: 'A2', trigger: 5680, effectType: 'ChanceSkillTrigger', abnormalType: 'mirage_trap' },
 	{ id: 5685, levels: 1, name: 'PvP Weapon - Casting', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pvp_weapon_buff', effects: [
 		{ stat: 'mAtkSpd', val: 1.15, op: 'mul' } ]},
 	{ id: 5686, levels: 1, name: 'PvP Weapon - Rapid Fire', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pvp_weapon_buff', effects: [
@@ -6324,7 +6326,7 @@ l2.data.skills = [
 		{ stat: 'rEvas', val: 2, op: 'add', using: 'Light' },
 		{ stat: 'pDef', val: 1.05, op: 'mul', using: 'Magic' },
 		{ stat: 'regMp', val: 2.0, op: 'add', using: 'Magic' } ]},
-	{ id: 5993, levels: 1, name: 'Command of Anger', target: 'AURA', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'oblivion' },
+	{ id: 5993, levels: 1, name: 'Command of Anger', target: 'AURA', operateType: 'A2', trigger: 5902, effectType: 'ChanceSkillTrigger', abnormalType: 'oblivion' },
 	{ id: 6034, levels: 1, name: 'Freeze', target: 'ONE', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
 	{ id: 6035, levels: 1, name: 'Red Team Transformation', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform' },
 	{ id: 6036, levels: 1, name: 'Blue Team Transformation', target: 'SELF', operateType: 'A2', effectType: 'Transformation', abnormalType: 'transform' },
@@ -6407,8 +6409,8 @@ l2.data.skills = [
 		{ stat: 'runSpd', val: 0.5, op: 'mul' },
 		{ stat: 'pAtkSpd', val: 0.5, op: 'mul' },
 		{ stat: 'mAtkSpd', val: 0.5, op: 'mul' } ]},
-	{ id: 6274, levels: 1, name: 'Eternal Blizzard', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
-	{ id: 6275, levels: 1, name: 'Eternal Blizzard', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
+	{ id: 6274, levels: 1, name: 'Eternal Blizzard', target: 'AURA', operateType: 'A1', trigger: 6662, effectType: 'ChanceSkillTrigger' },
+	{ id: 6275, levels: 1, name: 'Eternal Blizzard', target: 'AURA', operateType: 'A1', trigger: 6662, effectType: 'ChanceSkillTrigger' },
 	{ id: 6282, levels: 1, name: 'Reflect Magic', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'reflect_magic_dd', effects: [
 		{ stat: 'vengeanceMdam', val: 20, op: 'add' } ]},
 	{ id: 6284, levels: 1, name: 'Freya\'s Bless', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
@@ -6431,8 +6433,8 @@ l2.data.skills = [
 		{ stat: 'mAtkSpd', val: 1.25, op: 'mul' } ]},
 	{ id: 6294, levels: 1, name: 'Leader\'s Roar', target: 'CLAN', operateType: 'A2', effectType: 'Buff', abnormalType: 'pa_up', effects: [
 		{ stat: 'pAtk', val: 1.15, op: 'mul' } ]},
-	{ id: 6299, levels: 1, name: 'Breath of Ice Palace - Ice Storm', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
-	{ id: 6300, levels: 1, name: 'Self-Destruction', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
+	{ id: 6299, levels: 1, name: 'Breath of Ice Palace - Ice Storm', target: 'AURA', operateType: 'A1', trigger: 6662, effectType: 'ChanceSkillTrigger' },
+	{ id: 6300, levels: 1, name: 'Self-Destruction', target: 'AURA', operateType: 'A1', trigger: 6662, effectType: 'ChanceSkillTrigger' },
 	{ id: 6301, levels: 2, name: 'Cold Mana\'s Fragment', target: 'AURA', operateType: 'A2', effectType: 'ManaDamOverTime', abnormalType: 'force_meditation' },
 	{ id: 6302, levels: 1, name: 'Cold Air', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'pd_up', effects: [
 		{ stat: 'pDef', val: 1.15, op: 'mul' },
@@ -6548,8 +6550,8 @@ l2.data.skills = [
 		{ stat: 'runSpd', val: 45, op: 'add' } ]},
 	{ id: 6687, levels: 1, name: 'Patience', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'patience', effects: [
 		{ stat: 'physicalSkillPower', val: 1.2, op: 'mul' } ]},
-	{ id: 6697, levels: 1, name: 'Eternal Blizzard', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger' },
-	{ id: 6698, levels: 1, name: 'Pillar of Frozen - Eternal Ice', target: 'AURA', operateType: 'A2', effectType: 'Paralyze', abnormalType: 'freezing' },
+	{ id: 6697, levels: 1, name: 'Eternal Blizzard', target: 'AURA', operateType: 'A1', trigger: 6698, effectType: 'ChanceSkillTrigger' },
+	{ id: 6698, levels: 1, name: 'Pillar of Frozen - Eternal Ice', target: 'AURA', operateType: 'A2', trigger: 6302, effectType: 'Paralyze', abnormalType: 'freezing' },
 	{ id: 6714, levels: 1, name: 'Wind Walk of Elcadia', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'speed_up', effects: [
 		{ stat: 'runSpd', val: 33, op: 'add' } ]},
 	{ id: 6715, levels: 1, name: 'Haste of Elcadia', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'attack_time_down', effects: [
@@ -6578,7 +6580,7 @@ l2.data.skills = [
 	{ id: 6723, levels: 1, name: 'Concentration of Elcadia', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'cancel_prob_down', effects: [
 		{ stat: 'cancel', val: 53, op: 'sub' } ]},
 	{ id: 6724, levels: 1, name: 'Greater Heal of Elcadia', target: 'ONE', operateType: 'A2', effectType: 'HealOverTime', abnormalType: 'life_force_others' },
-	{ id: 6725, levels: 1, name: 'Bless the Blood of Elcadia', target: 'PARTY_MEMBER', operateType: 'A2', effectType: 'ChanceSkillTrigger', abnormalType: 'bless_the_blood' },
+	{ id: 6725, levels: 1, name: 'Bless the Blood of Elcadia', target: 'PARTY_MEMBER', operateType: 'A2', trigger: 6726, effectType: 'ChanceSkillTrigger', abnormalType: 'bless_the_blood' },
 	{ id: 6727, levels: 1, name: 'Vampiric Rage of Elcadia', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'vampiric_attack', effects: [
 		{ stat: 'absorbDam', val: 9, op: 'add' } ]},
 	{ id: 6729, levels: 1, name: 'Resist Holy of Elcadia', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'armor_unholy', effects: [
@@ -7188,46 +7190,46 @@ l2.data.skills = [
 		{ stat: 'paralyzeVuln', val: 2.57, op: 'sub' } ]},
 	{ id: 8192, levels: 1, name: 'Augment Option - Mental Attack Resistance', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'derangementVuln', val: 2.57, op: 'sub' } ]},
-	{ id: 8193, levels: 1, name: 'Heavy Armor of Nightmare Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8194, levels: 1, name: 'Heavy Majestic Plate Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8195, levels: 1, name: 'Light Nightmarish Leather Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8196, levels: 1, name: 'Light Majestic Leather Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8197, levels: 1, name: 'Nightmare Robe Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8198, levels: 1, name: 'Majestic Robe Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8199, levels: 1, name: 'Heavy Imperial Crusader Breastplate Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8200, levels: 1, name: 'Light Draconic Leather Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8201, levels: 1, name: 'Major Arcana Robe Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8202, levels: 1, name: 'Dynasty Breastplate - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8203, levels: 1, name: 'Dynasty Breastplate - PvP Shield Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8204, levels: 1, name: 'Dynasty Breastplate - PvP Weapon Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8205, levels: 1, name: 'Dynasty Breastplate - PvP Force Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8206, levels: 1, name: 'Dynasty Breastplate - PvP Bard', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8207, levels: 1, name: 'Dynasty Leather Armor - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8208, levels: 1, name: 'Dynasty Leather Armor - PvP Dagger Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8209, levels: 1, name: 'Dynasty Leather Armor - PvP Bow Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8210, levels: 1, name: 'Dynasty Tunic - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8211, levels: 1, name: 'Dynasty Tunic - PvP Healer', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8212, levels: 1, name: 'Dynasty Tunic - PvP Enchanter', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8213, levels: 1, name: 'Dynasty Tunic - PvP Summoner', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8214, levels: 1, name: 'Dynasty Tunic - PvP Wizard', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8215, levels: 1, name: 'Dynasty Leather Armor - PvP Force Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8216, levels: 1, name: 'Dynasty Leather Armor - PvP Weapon Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8217, levels: 1, name: 'Dynasty Leather Armor - PvP Enchanter', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8218, levels: 1, name: 'Dynasty Leather Armor - PvP Summoner', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8219, levels: 1, name: 'Dynasty Platinum Breastplate - PvP Shield Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8220, levels: 1, name: 'Dynasty Platinum Breastplate - PvP Weapon Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8221, levels: 1, name: 'Dynasty Platinum Breastplate - PvP Bard', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8222, levels: 1, name: 'Dynasty Platinum Breastplate - PvP Force Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8223, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Dagger Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8224, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Bow Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8225, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Force Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8226, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Weapon Master', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8227, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Summoner', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8228, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Enchanter', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8229, levels: 1, name: 'Dynasty Silver Satin Tunic - PvP Healer', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8230, levels: 1, name: 'Dynasty Silver Satin Tunic - PvP Enchanter', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8231, levels: 1, name: 'Dynasty Silver Satin Tunic - PvP Summoner', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8232, levels: 1, name: 'Dynasty Silver Satin Tunic - PvP Wizard', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 8193, levels: 1, name: 'Heavy Armor of Nightmare Set - PvP', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8194, levels: 1, name: 'Heavy Majestic Plate Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8195, levels: 1, name: 'Light Nightmarish Leather Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8196, levels: 1, name: 'Light Majestic Leather Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8197, levels: 1, name: 'Nightmare Robe Set - PvP', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8198, levels: 1, name: 'Majestic Robe Set - PvP', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8199, levels: 1, name: 'Heavy Imperial Crusader Breastplate Set - PvP', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8200, levels: 1, name: 'Light Draconic Leather Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8201, levels: 1, name: 'Major Arcana Robe Set - PvP', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8202, levels: 1, name: 'Dynasty Breastplate - PvP', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8203, levels: 1, name: 'Dynasty Breastplate - PvP Shield Master', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8204, levels: 1, name: 'Dynasty Breastplate - PvP Weapon Master', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8205, levels: 1, name: 'Dynasty Breastplate - PvP Force Master', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8206, levels: 1, name: 'Dynasty Breastplate - PvP Bard', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8207, levels: 1, name: 'Dynasty Leather Armor - PvP', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8208, levels: 1, name: 'Dynasty Leather Armor - PvP Dagger Master', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8209, levels: 1, name: 'Dynasty Leather Armor - PvP Bow Master', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8210, levels: 1, name: 'Dynasty Tunic - PvP', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8211, levels: 1, name: 'Dynasty Tunic - PvP Healer', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8212, levels: 1, name: 'Dynasty Tunic - PvP Enchanter', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8213, levels: 1, name: 'Dynasty Tunic - PvP Summoner', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8214, levels: 1, name: 'Dynasty Tunic - PvP Wizard', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8215, levels: 1, name: 'Dynasty Leather Armor - PvP Force Master', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8216, levels: 1, name: 'Dynasty Leather Armor - PvP Weapon Master', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8217, levels: 1, name: 'Dynasty Leather Armor - PvP Enchanter', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8218, levels: 1, name: 'Dynasty Leather Armor - PvP Summoner', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8219, levels: 1, name: 'Dynasty Platinum Breastplate - PvP Shield Master', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8220, levels: 1, name: 'Dynasty Platinum Breastplate - PvP Weapon Master', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8221, levels: 1, name: 'Dynasty Platinum Breastplate - PvP Bard', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8222, levels: 1, name: 'Dynasty Platinum Breastplate - PvP Force Master', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8223, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Dagger Master', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8224, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Bow Master', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8225, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Force Master', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8226, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Weapon Master', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8227, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Summoner', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8228, levels: 1, name: 'Dynasty Jewel Leather Armor - PvP Enchanter', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8229, levels: 1, name: 'Dynasty Silver Satin Tunic - PvP Healer', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8230, levels: 1, name: 'Dynasty Silver Satin Tunic - PvP Enchanter', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8231, levels: 1, name: 'Dynasty Silver Satin Tunic - PvP Summoner', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8232, levels: 1, name: 'Dynasty Silver Satin Tunic - PvP Wizard', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
 	{ id: 8233, levels: 1, name: 'Zubei\'s Helmet', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'rEvas', val: 0.88, op: 'add' } ]},
 	{ id: 8234, levels: 1, name: 'Zubei\'s Helmet', target: 'SELF', operateType: 'P', effects: [
@@ -7349,13 +7351,13 @@ l2.data.skills = [
 		{ stat: 'pvpMagicalDmg', val: 1.05, op: 'mul' } ]},
 	{ id: 8300, levels: 1, name: 'Dynasty Sigil', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'maxMp', val: 1.05, op: 'mul' } ]},
-	{ id: 8301, levels: 1, name: 'Vesper Heavy Armor Set for Adults', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8302, levels: 1, name: 'Vesper Noble Heavy Armor Set for Adults', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8303, levels: 1, name: 'Vesper Light Armor Set for Adults', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8304, levels: 1, name: 'Vesper Noble Light Armor Set for Adults', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8305, levels: 1, name: 'Vesper Robe Set for Adults', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8306, levels: 1, name: 'Vesper Noble Robe Set for Adults', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8307, levels: 1, name: 'Boing Hammer\'s Effect of Doubt', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 8301, levels: 1, name: 'Vesper Heavy Armor Set for Adults', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8302, levels: 1, name: 'Vesper Noble Heavy Armor Set for Adults', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8303, levels: 1, name: 'Vesper Light Armor Set for Adults', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8304, levels: 1, name: 'Vesper Noble Light Armor Set for Adults', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8305, levels: 1, name: 'Vesper Robe Set for Adults', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8306, levels: 1, name: 'Vesper Noble Robe Set for Adults', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8307, levels: 1, name: 'Boing Hammer\'s Effect of Doubt', target: 'SELF', operateType: 'P', trigger: 21007, effectType: 'ChanceSkillTrigger' },
 	{ id: 8308, levels: 1, name: 'Red Talisman - Guardian of the Territory', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'talisman', effects: [
 		{ stat: 'maxCp', val: 1200, op: 'add' } ]},
 	{ id: 8309, levels: 1, name: 'Red Talisman - Territory Convoy', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'talisman', effects: [
@@ -7595,15 +7597,15 @@ l2.data.skills = [
 		{ stat: 'maxMp', val: 92, op: 'add' },
 		{ stat: 'MagicalMpConsumeRate', val: 0.97, op: 'mul' },
 		{ stat: 'cloak', val: 1, op: 'add' } ]},
-	{ id: 8406, levels: 1, name: 'Moirai Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8407, levels: 1, name: 'Moirai Leather Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8408, levels: 1, name: 'Moirai Robe Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8409, levels: 1, name: 'Vorpal Heavy Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8410, levels: 1, name: 'Vorpal Leather Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8411, levels: 1, name: 'Vorpal Robe Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8412, levels: 1, name: 'Elegia Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8413, levels: 1, name: 'Elegia Leather Armor Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 8414, levels: 1, name: 'Elegia Robe Set - PvP', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 8406, levels: 1, name: 'Moirai Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8407, levels: 1, name: 'Moirai Leather Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8408, levels: 1, name: 'Moirai Robe Set - PvP', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8409, levels: 1, name: 'Vorpal Heavy Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8410, levels: 1, name: 'Vorpal Leather Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8411, levels: 1, name: 'Vorpal Robe Set - PvP', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
+	{ id: 8412, levels: 1, name: 'Elegia Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5693, effectType: 'ChanceSkillTrigger' },
+	{ id: 8413, levels: 1, name: 'Elegia Leather Armor Set - PvP', target: 'SELF', operateType: 'P', trigger: 5694, effectType: 'ChanceSkillTrigger' },
+	{ id: 8414, levels: 1, name: 'Elegia Robe Set - PvP', target: 'SELF', operateType: 'P', trigger: 5691, effectType: 'ChanceSkillTrigger' },
 	{ id: 8418, levels: 1, name: 'Moirai Helmet', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'pAtk', val: 1.0125, op: 'mul' },
 		{ stat: 'pAtkSpd', val: 1.01, op: 'mul' },
@@ -8217,12 +8219,12 @@ l2.data.skills = [
 	{ id: 21235, levels: 1, name: '7th Anniversary T-shirt: Speed', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'runSpd', val: 7, op: 'add' } ]},
 	{ id: 21237, levels: 1, name: '7th Anniversary T-shirt: Blessed Protection Ability', target: 'SELF', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
-	{ id: 21252, levels: 1, name: 'Hellblade', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 21253, levels: 1, name: 'Butcher Blades', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 21254, levels: 1, name: 'Claw of Destruction', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 21255, levels: 1, name: 'Blades of Delusion', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 21256, levels: 1, name: 'Blood Brother', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 21257, levels: 1, name: 'Mardil', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 21252, levels: 1, name: 'Hellblade', target: 'SELF', operateType: 'P', trigger: 23319, effectType: 'ChanceSkillTrigger' },
+	{ id: 21253, levels: 1, name: 'Butcher Blades', target: 'SELF', operateType: 'P', trigger: 23320, effectType: 'ChanceSkillTrigger' },
+	{ id: 21254, levels: 1, name: 'Claw of Destruction', target: 'SELF', operateType: 'P', trigger: 23321, effectType: 'ChanceSkillTrigger' },
+	{ id: 21255, levels: 1, name: 'Blades of Delusion', target: 'SELF', operateType: 'P', trigger: 23322, effectType: 'ChanceSkillTrigger' },
+	{ id: 21256, levels: 1, name: 'Blood Brother', target: 'SELF', operateType: 'P', trigger: 23323, effectType: 'ChanceSkillTrigger' },
+	{ id: 21257, levels: 1, name: 'Mardil', target: 'SELF', operateType: 'P', trigger: 23324, effectType: 'ChanceSkillTrigger' },
 	{ id: 21258, levels: 1, name: 'Rocking Horse Mount', target: 'SELF', operateType: 'A1', effectType: 'Transformation', abnormalType: 'transform' },
 	{ id: 22004, levels: 1, name: 'Energy Ginseng', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'br_event_buf2', effects: [
 		{ stat: 'vitalityConsumeRate', val: 10, op: 'sub' } ]},
@@ -8460,8 +8462,8 @@ l2.data.skills = [
 	{ id: 22164, levels: 1, name: 'Eggplant Herb', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'br_event_buf1', effects: [
 		{ stat: 'mAtkSpd', val: 1.1, op: 'mul' },
 		{ stat: 'mCritRate', val: 2, op: 'add' } ]},
-	{ id: 22175, levels: 1, name: 'Rune of Life', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
-	{ id: 22176, levels: 1, name: 'Rune of Spirit', target: 'SELF', operateType: 'P', effectType: 'ChanceSkillTrigger' },
+	{ id: 22175, levels: 1, name: 'Rune of Life', target: 'SELF', operateType: 'P', trigger: 23214, effectType: 'ChanceSkillTrigger' },
+	{ id: 22176, levels: 1, name: 'Rune of Spirit', target: 'SELF', operateType: 'P', trigger: 23215, effectType: 'ChanceSkillTrigger' },
 	{ id: 22182, levels: 1, name: 'Birthday Joy', target: 'SELF', operateType: 'A1', effectType: 'Buff', abnormalType: 'vp_up', effects: [
 		{ stat: 'vitalityConsumeRate', val: 10, op: 'sub' } ]},
 	{ id: 22183, levels: 1, name: 'Dragon Master Lee Transformation Scroll', target: 'SELF', operateType: 'A1', effectType: 'Transformation', abnormalType: 'transform' },
@@ -8579,7 +8581,7 @@ l2.data.skills = [
 	{ id: 23245, levels: 1, name: 'Master\'s Blessing - Embroider', target: 'ONE', operateType: 'A1', effectType: 'Buff', abnormalType: 'dwarf_defence_buff', effects: [
 		{ stat: 'pDef', val: 1.05, op: 'mul', using: 'Magic' },
 		{ stat: 'regMp', val: 2, op: 'add', using: 'Magic' } ]},
-	{ id: 23246, levels: 1, name: 'Master\'s Blessing - Counter Critical', target: 'ONE', operateType: 'A1', effectType: 'ChanceSkillTrigger', abnormalType: 'counter_critical', effects: [
+	{ id: 23246, levels: 1, name: 'Master\'s Blessing - Counter Critical', target: 'ONE', operateType: 'A1', trigger: 6059, effectType: 'ChanceSkillTrigger', abnormalType: 'counter_critical', effects: [
 		{ stat: 'critVuln', val: 0.7, op: 'mul' } ]},
 	{ id: 23247, levels: 1, name: 'Master\'s Blessing - Elemental Protection', target: 'ONE', operateType: 'A1', effectType: 'Buff', abnormalType: 'md_up_attr', effects: [
 		{ stat: 'waterRes', val: 20, op: 'add' },
@@ -8750,7 +8752,7 @@ l2.data.skills = [
 	{ id: 23293, levels: 1, name: 'Master\'s Blessing - Embroider', target: 'AURA', operateType: 'A1', effectType: 'Buff', abnormalType: 'dwarf_defence_buff', effects: [
 		{ stat: 'pDef', val: 1.05, op: 'mul', using: 'Magic' },
 		{ stat: 'regMp', val: 2, op: 'add', using: 'Magic' } ]},
-	{ id: 23294, levels: 1, name: 'Master\'s Blessing - Counter Critical', target: 'AURA', operateType: 'A1', effectType: 'ChanceSkillTrigger', abnormalType: 'counter_critical', effects: [
+	{ id: 23294, levels: 1, name: 'Master\'s Blessing - Counter Critical', target: 'AURA', operateType: 'A1', trigger: 6059, effectType: 'ChanceSkillTrigger', abnormalType: 'counter_critical', effects: [
 		{ stat: 'critVuln', val: 0.7, op: 'mul' } ]},
 	{ id: 23295, levels: 1, name: 'Master\'s Blessing - Elemental Protection', target: 'AURA', operateType: 'A1', effectType: 'Buff', abnormalType: 'md_up_attr', effects: [
 		{ stat: 'waterRes', val: 20, op: 'add' },
