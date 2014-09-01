@@ -86,7 +86,7 @@ l2.data.tools.findWeapons = function (grade, type) {
 };
 l2.data.tools.findShields = function (grade) {
 	return l2.data.tools.findItems(grade, function (item) {
-		return item.bodyPart == 'lhand' && item.sDef != null;
+		return item.bodyPart == 'lhand' && (item.sDef != null || item.armorType == 'sigil');
 	});
 };
 l2.data.tools.findBodyUppers = function (grade) {
@@ -143,4 +143,13 @@ l2.data.tools.findBelts = function (grade) {
 	return l2.data.tools.findItems(grade, function (item) {
 		return item.bodyPart == 'waist';
 	});
+};
+l2.data.tools.compareAbnormal = function (oldAbn, newAbn) {
+	if (oldAbn == newAbn)
+		return true;
+	if (l2.data.comboBuffs[oldAbn])
+		return l2.data.comboBuffs[oldAbn].indexOf(newAbn) >= 0;
+	if (l2.data.comboBuffs[newAbn])
+		return l2.data.comboBuffs[newAbn].indexOf(oldAbn) >= 0;
+	return false;
 };

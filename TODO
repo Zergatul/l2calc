@@ -2,10 +2,6 @@
 add enchanting for skill
 pdef for first prof without armor - maybe wrong
 
-//pledgeSkillTree
-//subClassSkillTree
-//subPledgeSkillTree
-
 bind self, toggles, passives - similar code
 
 Sword/Blunt Weapon Mastery - to fix - to test!
@@ -20,8 +16,6 @@ transforms - ? tank
 
 penalty when grade > lvl
 
-add self triggers
-
 savings (show last 3 as buttons, all other in select)
 
 first prof 85 lvl  = 1kk HP, why?
@@ -32,20 +26,14 @@ weaponBaseData - add dual daggers
 
 rare items - not always correctly showing (for example some non grade items have skills)
 
-
-
 my gnom mdef = wrong - check!
-
-refactor all!
 
 model, parsing item grade and set grade - similar code
 
-=== MODEL ===
+underwear on tank - pdef ???
 
-	/*
-		select.change(l2.ui.checkAbnormalType);
-	*/
+pdef with sigil
 
-	underwear on tank - pdef ???
+quick select buffs
 
-	triggers when add passives or check common buff
+last to do: cool saving on localstorage

@@ -39,6 +39,12 @@ window.l2 = window.l2 || {};
 		obj[parts[parts.length - 1]] = value;
 	};
 
+	var toBool = function (val) {
+		if (val == 'false')
+			return false;
+		return !!val;
+	};
+
 	var L2Item = function (itemType) {
 		var grade = null;
 		Object.defineProperty(this, 'grade', {
@@ -235,7 +241,7 @@ window.l2 = window.l2 || {};
 		Object.defineProperty(this, 'enabled', {
 			get: function () { return enabled; },
 			set: function (value) {
-				enabled = value == 'false' ? false : value;
+				enabled = toBool(value);
 				if (!enabled)
 					this.checked = false;
 				notifyPropertyChanged(slot + '.enabled', enabled);
@@ -245,7 +251,7 @@ window.l2 = window.l2 || {};
 		Object.defineProperty(this, 'checked', {
 			get: function () { return checked; },
 			set: function (value) {
-				checked = value == 'false' ? false : value;
+				checked = toBool(value);
 				notifyPropertyChanged(slot + '.checked', checked);
 			}
 		});
@@ -446,8 +452,19 @@ window.l2 = window.l2 || {};
 
 	var autoSelectPassives = true;
 	addModel('autoSelectPassives', function () { return autoSelectPassives; }, function (value) {
-		autoSelectPassives = value == 'false' ? false : value;
+		autoSelectPassives = toBool(value);
 		notifyPropertyChanged('autoSelectPassives', autoSelectPassives);
+	});
+
+	var checkboxes = {};
+	l2.ui.fieldsets.forEach(function (fs) {
+		checkboxes[fs] = true;
+		addModel(fs + 'Visible', function () {
+			return checkboxes[fs];
+		}, function (value) {
+			checkboxes[fs] = toBool(value);
+			notifyPropertyChanged(fs + 'Visible', checkboxes[fs]);
+		});
 	});
 
 })();

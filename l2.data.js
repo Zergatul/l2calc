@@ -308,54 +308,101 @@ l2.data.set6Bonus = {
 	's': { 'heavy': 3623, 'light': 3624, 'magic': 3625 }
 };
 
+l2.data.comboBuffs = {
+	'improve_pa_pd_up': ['pa_up', 'pd_up'],
+	'improve_ma_md_up': ['ma_up', 'md_up'],
+	'improve_hp_mp_up': ['max_hp_up', 'max_mp_up'],
+	'improve_crt_rate_dmg_up': ['critical_prob_up', 'critical_dmg_up'],
+	'improve_shield_rate_defence_up': ['shield_prob_up', 'shield_defence_up'],
+	'improve_speed_avoid_up': ['speed_up', 'avoid_up'],
+	'improve_vampiric_haste': ['vampiric_attack', 'attack_time_down']
+};
+
 l2.data.songs = [269, 267, 268, 270, 265, 264, 266, 306, 304, 308, 305, 764, 349, 363, 364, 529, 914];
 l2.data.dances = [274, 277, 272, 273, 276, 271, 275, 309, 311, 307, 310, 765, 366, 365, 530, 915];
 
 l2.data.commonBuffs = [
 	{ group: 'P. Atk/Def', ids: [
+		1499, // Improved Combat
+		1536, // Combat of Pa'agrio
+		1517, // Chant of Combat
 		1068, // Might
 		1007, // Chant of Battle
+		1003, // Pa'agrian Gift
 		1040, // Shield
 		1009, // Chant Of Shielding
+		1005, //Blessings of Pa'agrio
 		1010, // Soul Shield
 		1388, // Greater Might
-		1389, // Greater Shield		
+		1389, // Greater Shield
+		1390, // War Chant
+		1391, // Earth Chant
 	]},
 	{ group: 'Tank Buff', ids: [
 		982
 	]},
 	{ group: 'Accuracy', ids: [
 		1240, // Guidance
+		1249, // The Vision of Pa'agrio
+		1309, // Chant of Eagle
 	]},
 	{ group: 'P. Critical', ids: [
+		1502, // Improved Critical Attack
+		1537, // Critical of Pa'agrio
+		1518, // Chant of Critical Attack
 		1077, // Focus
+		1308, // Chant of Predator
 		1242, // Death Whisper
 		1253, // Chant of Rage
 	]},
 	{ group: 'M. Atk/Def', ids: [
+		1500, // Improved Magic
+		1365, // Soul of Pa'agrio
 		1059, // Empower
 		1006, // Chant of Fire
 		1008, // The Glory of Pa'agrio
 	]},
-	{ group: 'Atk/Cast Speed', ids: [
+	{ group: 'Atk Spd/Vamp', ids: [
+		1519, // Chant of Blood Awakening
 		1086, // Haste
-		1251, // Chant of Fury
+		1251, // Chant of Fury		
+		1563, // Fury of Pa'agrio
+	]},
+	{ group: 'Cast Speed', ids: [
 		1085, // Acumen
+		1002, // Flame Chant
+		1004, // The Wisdom of Pa'agrio
 	]},
 	{ group: 'Bers', ids: [
 		1062, // Bers Spirit
 		1261, // The Rage of Pa'agrio
+		1562, // Chant of Berserker
 	]},
 	{ group: 'Speed/Agility', ids: [
+		1504, // Improved Movement
+		1535, // Chant of Movement
 		1204, // Wind Walk
 		1282, // Pa'agrian Haste
 		1087, // Agility
 		1252, // Chant of Evasion
 		1260, // The Tact of Pa'agrio
 	]},
-	{ group: 'Max HP/MP', ids: [
+	{ group: 'Max HP/MP/CP', ids: [
+		1501, // Improved Condition
+		1538, // Condition of Pa'agrio
 		1045, // Bless Body
 		1048, // Bless Soul
+		1416, // Pa'agrio's Fist
+	]},
+	{ group: 'Shield', ids: [
+		1503, // Improved Shield Defense
+		1243, // Bless Shield
+		1304, // Advanced Block
+		1250, // Under the Protection of Pa'agrio
+	]},
+	{ group: 'Crit Resist', ids: [
+		1461, // Chant of Protection
+		1542, // Counter Critical
 	]},
 	{ group: 'Prophecy', ids: [
 		1363, // COV
@@ -408,7 +455,7 @@ l2.data.commonBuffs = [
 	]},
 ];
 
-l2.data.commonTriggers = [6059, 6060];
+l2.data.commonTriggers = [6060];
 
 l2.data.clanSkills = [
 	370, // Clan Body
@@ -432,6 +479,8 @@ l2.data.clanSkills = [
 	388, // Clan Resist Sleep
 	389, // Clan Wind Walk
 ];
+
+l2.data.squadSkills = [611, 612, 613, 614, 615, 616];
 
 l2.data.territorySkills = [848, 849, 850, 851, 852, 853, 854, 855, 856];
 

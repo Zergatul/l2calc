@@ -18,27 +18,25 @@ l2.calc.forEachEffect = function (char, stat, callback) {
 l2.calc.checkUsing = function (char, using) {
 	if (!using)
 		return true;
-	if (!char.weapon)
-		return false;
 	switch (using) {
-		case 'Pole': return char.weapon.weaponType == 'pole';
-		case 'Sword': return char.weapon.weaponType == 'sword';
-		case 'Big Sword': return char.weapon.weaponType == 'bigsword';
-		case 'Blunt': return char.weapon.weaponType == 'blunt';
-		case 'Big Blunt': return char.weapon.weaponType == 'bigblunt';
-		case 'Dual Fist': return char.weapon.weaponType == 'dualfist';
-		case 'Bow': return char.weapon.weaponType == 'bow';
-		case 'Dagger': return char.weapon.weaponType == 'dagger';
-		case 'Dual Dagger': return char.weapon.weaponType == 'dualdagger';
-		case 'Rapier': return char.weapon.weaponType == 'rapier';
-		case 'Ancient': return char.weapon.weaponType == 'ancientsword';
-		case 'Dual Sword': return char.weapon.weaponType == 'dual';
-		case 'Crossbow': return char.weapon.weaponType == 'crossbow';
+		case 'Pole': return char.weapon && char.weapon.weaponType == 'pole';
+		case 'Sword': return char.weapon && char.weapon.weaponType == 'sword';
+		case 'Big Sword': return char.weapon && char.weapon.weaponType == 'bigsword';
+		case 'Blunt': return char.weapon && char.weapon.weaponType == 'blunt';
+		case 'Big Blunt': return char.weapon && char.weapon.weaponType == 'bigblunt';
+		case 'Dual Fist': return char.weapon && char.weapon.weaponType == 'dualfist';
+		case 'Bow': return char.weapon && char.weapon.weaponType == 'bow';
+		case 'Dagger': return char.weapon && char.weapon.weaponType == 'dagger';
+		case 'Dual Dagger': return char.weapon && char.weapon.weaponType == 'dualdagger';
+		case 'Rapier': return char.weapon && char.weapon.weaponType == 'rapier';
+		case 'Ancient': return char.weapon && char.weapon.weaponType == 'ancientsword';
+		case 'Dual Sword': return char.weapon && char.weapon.weaponType == 'dual';
+		case 'Crossbow': return char.weapon && char.weapon.weaponType == 'crossbow';
 		case 'Light': return char.armorType == 'light';
 		case 'Heavy': return char.armorType == 'heavy';
 		case 'Magic': return char.armorType == 'magic';
 		case 'not(Magic)': return char.armorType != 'magic';
-		case 'Sigil': return false;
+		case 'Sigil': return char.shield && char.shield.armorType == 'sigil';
 		default: throw 'Using [' + using + '] not implemented';
 	}
 };

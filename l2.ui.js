@@ -7,10 +7,16 @@ l2.ui.disableRecalc = false;
 l2.ui.loadingProcess = false;
 
 l2.ui.storagePrefix = 'c:';
+l2.ui.savesPrefix = 'save:';
 l2.ui.modelEquipments = [
 	'weapon', 'shield', 'helmet', 'bodyUpper', 'bodyLower', 'boots', 'gloves',
 	'cloak', 'underwear', 'belt',
 	'necklace', 'earring1', 'earring2', 'ring1', 'ring2'];
+
+l2.ui.fieldsets = [
+	'equipment', 'selfBuffs', 'toggles',
+	'triggers', 'commonBuffs', 'songs',
+	'dances', 'clanSkills', 'subClassSkills', 'passives'];
 
 l2.ui.bindClasses = function () {
 	$('#l2class').empty();
@@ -297,12 +303,15 @@ l2.ui.bindCommonBuffs = function () {
 				var select = $('<select>');
 				select.change(function () {
 					l2.ui.disableValuesUpdate = true;
+					if ($(this).val() != '') // disable recalc when we check other value from select
+						l2.ui.disableRecalc = true;
 					$(this).children().each(function () {
 						if (this.value == '')
 							return;
 						var id = parseInt(this.value.split(':')[0]);
 						l2.model.commonBuffs.removeById(id);
 					});
+					l2.ui.disableRecalc = false;
 					if ($(this).val() != '') {
 						var ss = $(this).val().split(':');
 						var id = parseInt(ss[0]);
@@ -344,7 +353,7 @@ l2.ui.bindSongs = function () {
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
-		$('#songbuffs > div').append(div);
+		$('#songs > div').append(div);
 	}
 };
 
@@ -360,7 +369,7 @@ l2.ui.bindDances = function () {
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
-		$('#dancebuffs > div').append(div);
+		$('#dances > div').append(div);
 	}
 };
 
@@ -378,6 +387,20 @@ l2.ui.bindClanSkils = function () {
 		div.append(select);
 		div.append($('<span>').text(skill.name));
 		$('#clanskills > div:first').append(div);
+	});
+	l2.data.squadSkills.forEach(function (id) {
+		var skill = l2.data.tools.getSkill(id);
+		var div = $('<div>').addClass('left clan-skill');
+		var select = $('<select>')
+			.attr('data-skill-id', id)
+			.change(l2.ui.createChangeSkillListHandler('clanSkills', id));
+		l2.model.clanSkills.add(id);
+		l2.ui.tools.addOption(select, '', '---');
+		for (var i = 0; i < skill.levels; i++)
+			l2.ui.tools.addOption(select, i + 1, i + 1);
+		div.append(select);
+		div.append($('<span>').text(skill.name));
+		$('#clanskills > div:not(.clear):eq(1)').append(div);
 	});
 	l2.data.territorySkills.forEach(function (id) {
 		var skill = l2.data.tools.getSkill(id);
@@ -450,12 +473,12 @@ l2.ui.consoleTime = function () {
 };
 
 l2.ui.toggleFieldSet = function () {
-	var div = $(this).closest('fieldset').children('div');
+	var elements = $(this).closest('fieldset').children(':not(legend)');
 	var btn = $(this).closest('label').next('span');
 	if ($(this).is(':checked'))
-		div.add(btn).show();
+		elements.add(btn).show();
 	else
-		div.add(btn).hide();
+		elements.add(btn).hide();
 };
 
 l2.ui.clearEquipment = function () {
@@ -477,6 +500,13 @@ l2.ui.clearSelfBuffs = function () {
 l2.ui.clearToggles = function () {
 	l2.ui.disableRecalc = true;
 	l2.model.toggles.forEach(function (t) { t.level = 0; });
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();	
+};
+
+l2.ui.clearTriggers = function () {
+	l2.ui.disableRecalc = true;
+	l2.model.triggers.forEach(function (t) { t.level = 0; });
 	l2.ui.disableRecalc = false;
 	l2.ui.recalc();	
 };
@@ -505,6 +535,13 @@ l2.ui.clearDances = function () {
 l2.ui.clearClanSkills = function () {
 	l2.ui.disableRecalc = true;
 	l2.model.clanSkills.forEach(function (cs) { cs.level = 0; });
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();	
+};
+
+l2.ui.clearSubClassSkills = function () {
+	l2.ui.disableRecalc = true;
+	l2.model.subClassSkills.forEach(function (scs) { scs.level = 0; });
 	l2.ui.disableRecalc = false;
 	l2.ui.recalc();	
 };
@@ -691,6 +728,14 @@ l2.ui.prepareModel = function () {
 	l2.model.addHandler('classId', l2.ui.bindClassSkillsAndTatoo);
 	l2.model.addHandler('level', l2.ui.autoSelectPassives);
 
+	l2.ui.fieldsets.forEach(function (fs) {
+		$('#' + fs.toLowerCase() + '-chb').click(function () {
+			l2.ui.disableValuesUpdate = true;
+			l2.model[fs + 'Visible'] = $(this).is(':checked');
+			l2.ui.disableValuesUpdate = false;
+		});
+	});
+
 	var capStat = function (stat) {
 		return stat.charAt(0).toUpperCase() + stat.substring(1);
 	};
@@ -835,17 +880,6 @@ l2.ui.prepareModel = function () {
 		});
 	});
 
-	l2.model.addHandler('subClassSkills[].level', function (value, s) {
-		var skill = s.skill;
-		if (value) {
-			if (skill.trigger && !l2.model.triggers.findById(skill.trigger))
-				l2.model.triggers.add(skill.trigger);
-		} else {
-			if (skill.trigger)
-				l2.model.triggers.removeById(skill.trigger);
-		}
-	});
-
 	l2.model.addHandler('triggers.add', function (s) {
 		var skill = s.skill;
 		var div = $('<div>').addClass('left trigger-skill');
@@ -885,6 +919,9 @@ l2.ui.prepareModel = function () {
 		if (!l2.ui.disableStorageUpdate)
 			localStorage[l2.ui.storagePrefix + 'commonBuffs'] = l2.model.commonBuffs.toJSON();
 	});
+	l2.model.addHandler('commonBuffs.clear', function () {
+		localStorage[l2.ui.storagePrefix + 'commonBuffs'] = '[]';
+	});
 	l2.model.addHandler('autoSelectPassives', function (val) {
 		if (!l2.ui.disableValuesUpdate) {
 			$('#auto-select-passives').attr('checked', val);
@@ -893,6 +930,75 @@ l2.ui.prepareModel = function () {
 		$('#passives select').attr('disabled', val);
 		if (val)
 			l2.ui.autoSelectPassives();
+	});
+
+	l2.model.addHandler('clanSkills[].level', function (level, s) {
+		if (level && l2.data.squadSkills.indexOf(s.id) >= 0) {
+			l2.ui.disableRecalc = true;
+			l2.model.clanSkills.forEach(function (_s) {
+				if (_s.id == s.id)
+					return;
+				if (l2.data.squadSkills.indexOf(_s.id) >= 0 && _s.level > 0)
+					_s.level = 0;
+			});
+			l2.ui.disableRecalc = false;
+		}
+	});
+
+	var checkForTrigger = function (value, s) {
+		var skill = s.skill;
+		var triggerId = skill.trigger instanceof Array ? skill.trigger[s.level] : skill.trigger;
+		if (triggerId == 5565) // Expose Weak Point - debuff
+			return;
+		if (triggerId) {
+			var modelTrigger = l2.model.triggers.findById(triggerId);
+			if (value) {					
+				if (modelTrigger)
+					modelTrigger.data.push(skill.id);
+				else
+					l2.model.triggers.add(triggerId, [skill.id]);
+			} else
+				if (modelTrigger) {
+					modelTrigger.data = modelTrigger.data.filter(function (id) { return id != skill.id });
+					if (modelTrigger.data.length == 0)
+						l2.model.triggers.removeById(triggerId);
+				}
+		}
+	};
+	l2.model.addHandler('subClassSkills[].level', checkForTrigger);
+	l2.model.addHandler('passives[].level', checkForTrigger);
+	l2.model.addHandler('commonBuffs.add', function (s) { checkForTrigger(s.level, s); });
+	l2.model.addHandler('commonBuffs.remove', function (s) { checkForTrigger(0, s); });
+
+	var checkAbnormalType = function (level, s) {
+		if (level) {
+			var skill = s.skill;
+			l2.ui.disableRecalc = true;
+			l2.model.selfBuffs.forEach(function (s) {
+				if (s.id == skill.id)
+					return;
+				if (l2.data.tools.compareAbnormal(s.skill.abnormalType, skill.abnormalType))
+					s.level = 0;
+			});
+			var idsToRemove = [];
+			l2.model.commonBuffs.forEach(function (s) {
+				if (s.id == skill.id)
+					return;
+				if (l2.data.tools.compareAbnormal(s.skill.abnormalType, skill.abnormalType))
+					idsToRemove.push(s.id);
+			});
+			idsToRemove.forEach(function (id) { l2.model.commonBuffs.removeById(id); });
+			l2.ui.disableRecalc = false;
+		}
+	};
+	l2.model.addHandler('selfBuffs[].level', checkAbnormalType);
+	l2.model.addHandler('commonBuffs.add', function (s) { checkAbnormalType(s.level, s); });
+
+	l2.ui.fieldsets.forEach(function (fs) {
+		l2.model.addHandler(fs + 'Visible', function (value) {
+			if (!l2.ui.disableStorageUpdate)
+				localStorage[l2.ui.storagePrefix + fs + 'Visible'] = value;
+		});
 	});
 
 	l2.model.addGlobalHandler(function (property) {
@@ -918,6 +1024,8 @@ l2.ui.prepareModel = function () {
 		if (property.indexOf('.disabled') > 0)
 			return;
 		if (property.indexOf('.grade') > 0)
+			return;
+		if (property.indexOf('Visible') > 0)
 			return;
 		if (!l2.ui.disableRecalc && !l2.ui.loadingProcess)
 			console.log(property);
@@ -962,6 +1070,13 @@ l2.ui.loadFromStorage = function () {
 		JSON.parse(localStorage[l2.ui.storagePrefix + 'commonBuffs']).forEach(function (cb) {
 			l2.model.commonBuffs.add(cb.id, null, cb.level);
 		});
+
+	l2.ui.fieldsets.forEach(function (fs) {
+		var value = localStorage[l2.ui.storagePrefix + fs + 'Visible'];
+		if (value == 'false')
+			value = false;
+		$('#' + fs.toLowerCase() + '-chb').attr('checked', !!value).each(l2.ui.toggleFieldSet);
+	});
 
 	l2.ui.disableStorageUpdate = false;
 	l2.ui.loadingProcess = false;
@@ -1021,8 +1136,8 @@ $(function () {
 	$('#toggles-chb').click(l2.ui.toggleFieldSet);
 	$('#triggers-chb').click(l2.ui.toggleFieldSet);
 	$('#commonbuffs-chb').click(l2.ui.toggleFieldSet);
-	$('#songbuffs-chb').click(l2.ui.toggleFieldSet);
-	$('#dancebuffs-chb').click(l2.ui.toggleFieldSet);	
+	$('#songs-chb').click(l2.ui.toggleFieldSet);
+	$('#dances-chb').click(l2.ui.toggleFieldSet);	
 	$('#clanskills-chb').click(l2.ui.toggleFieldSet);
 	$('#subclassskills-chb').click(l2.ui.toggleFieldSet);
 	$('#passives-chb').click(l2.ui.toggleFieldSet);	
@@ -1030,11 +1145,12 @@ $(function () {
 	$('#equipment span.clear-btn').click(l2.ui.clearEquipment);
 	$('#selfbuffs span.clear-btn').click(l2.ui.clearSelfBuffs);
 	$('#toggles span.clear-btn').click(l2.ui.clearToggles);
-	//$('#triggers span.clear-btn').click(l2.ui.clearTriggers);
+	$('#triggers span.clear-btn').click(l2.ui.clearTriggers);
 	$('#commonbuffs span.clear-btn').click(l2.ui.clearCommonBuffs);
-	$('#songbuffs span.clear-btn').click(l2.ui.clearSongs);
-	$('#dancebuffs span.clear-btn').click(l2.ui.clearDances);
+	$('#songs span.clear-btn').click(l2.ui.clearSongs);
+	$('#dances span.clear-btn').click(l2.ui.clearDances);
 	$('#clanskills span.clear-btn').click(l2.ui.clearClanSkills);
+	$('#subclassskills span.clear-btn').click(l2.ui.clearSubClassSkills);
 
 	$(window).resize(l2.ui.adjustContainer);
 	l2.ui.adjustContainer();
@@ -1048,7 +1164,17 @@ $(function () {
 			if (property.indexOf(l2.ui.storagePrefix) == 0)
 				obj[property.substring(prefixLength)] = localStorage[property].charAt(0) == '[' ?
 					JSON.parse(localStorage[property]) : localStorage[property];
-		prompt('Save this code', JSON.stringify(obj));
+		var name = prompt('Save name:');
+		if (name != null) {
+			if (name == '') {
+				alert('Name cannot be empty');
+				return;
+			}
+			if (localStorage[l2.ui.savesPrefix + name])
+				if (!confirm('Save with name "' + name + '" already exists. Overwrite?'))
+					return;
+			localStorage[l2.ui.savesPrefix + name] = JSON.stringify(obj);
+		}
 	});
 	$('#loadbtn').click(function () {
 		var json = prompt('Insert code here');

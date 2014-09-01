@@ -202,13 +202,13 @@ select:disabled, input:disabled {
 	border: 2px dotted gray;
 	padding: 4px;
 }
-#equipment {
+#equipment, #commonbuffs {
 	width: 800px;
 }
 #selfbuffs, #toggles {
 	width: 600px;
 }
-#commonbuffs, #triggers, #songbuffs, #dancebuffs, #clanskills, #subclassskills {
+#triggers, #songs, #dances, #clanskills, #subclassskills {
 	width: 600px;
 }
 #passives {
