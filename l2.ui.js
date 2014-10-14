@@ -622,6 +622,8 @@ l2.ui.recalc = function () {
 	$('#speed').text(stats.speed);
 	$('#evasion').text(stats.evasion);
 	$('#mdef').text(stats.mDef);
+
+	$('#realatkspeed').text(stats.realAtkSpeed);
 	$('#pdps').text(l2.ui.tools.formatNumber(Math.round(stats.pDPS)));
 	$('#patkcrit').text(stats.pCritAtk);
 
@@ -882,6 +884,8 @@ l2.ui.prepareModel = function () {
 
 	l2.model.addHandler('triggers.add', function (s) {
 		var skill = s.skill;
+		if (skill == null)
+			return;
 		var div = $('<div>').addClass('left trigger-skill');
 		var label = $('<label>');
 		var input = $('<input>').attr('type', 'checkbox')

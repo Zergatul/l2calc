@@ -56,7 +56,9 @@ l2.data.tools.getBaseCritical = function (weaponType) {
 			return l2.data.weaponBaseData[i].baseCritical;
 	throw 'Unknown weapon type';
 };
-l2.data.tools.getBaseAtkSpeed = function (weaponType) {
+l2.data.tools.getBaseAtkSpeed = function (weaponType, bowFast) {
+	if (weaponType == 'bow')
+		return bowFast ? l2.data.bowAtkSpeed.fast : l2.data.bowAtkSpeed.slow;
 	for (var i = 0; i < l2.data.weaponBaseData.length; i++)
 		if (l2.data.weaponBaseData[i].name == weaponType)
 			return l2.data.weaponBaseData[i].baseAtkSpeed;

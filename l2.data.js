@@ -204,6 +204,13 @@ l2.data.weaponBaseData = [
 	{ name: 'etc', baseCritical: 40, baseAtkSpeed: 379 },
 ];
 
+l2.data.bowAtkSpeed = {
+	fast: 293,
+	slow: 227
+};
+
+l2.data.noWeaponAtkSpeed = 300;
+
 l2.data.weaponEnchant = {
 	'd': { bow: 4, twoHand: 2, oneHand: 2, mAtk: 2 },
 	'c': { bow: 6, twoHand: 4, oneHand: 3, mAtk: 3 },

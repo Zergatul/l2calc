@@ -302,7 +302,7 @@ l2.calc.pCritAtk = function (char, stats) {
 };
 
 l2.calc.atkSpeed = function (char) {
-	var baseWeaponAtkSpeed = char.weapon == null ? 325 : l2.data.tools.getBaseAtkSpeed(char.weapon.weaponType);
+	var baseWeaponAtkSpeed = char.weapon == null ? l2.data.noWeaponAtkSpeed : l2.data.tools.getBaseAtkSpeed(char.weapon.weaponType, char.weapon.bowFast);
 	var dexBonus = l2.data.statBonus['dex'][char.baseStats.dex];
 	var multAtkSpeed = 1;
 	l2.calc.forEachEffect(char, 'pAtkSpd', function (op, val) {
@@ -328,8 +328,15 @@ l2.calc.accuracy = function (char) {
 	return Math.floor(Math.sqrt(char.baseStats.dex) * 6 + char.lvl + addAcc) + l2.data.accuracyFix[char.lvl];
 };
 
+l2.calc.realAtkSpeed = function (char, stats) {
+	if (!char.weapon || !(char.weapon.weaponType == 'bow' || char.weapon.weaponType == 'crossbow'))
+		return stats.atkSpeed;
+	var reuse = char.weapon.reuse || (char.weapon.weaponType == 'bow' ? (char.weapon.bowFast ? 1500 : 820) : 400);
+	return Math.round(500000 * stats.atkSpeed / (500000 + reuse * 329.2));
+};
+
 l2.calc.pDPS = function (char) {
-	return (char.pAtk * (1 - char.pCritical / 1000) + char.pCritAtk * char.pCritical / 1000) * char.atkSpeed / 100;
+	return (char.pAtk * (1 - char.pCritical / 1000) + char.pCritAtk * char.pCritical / 1000) * char.realAtkSpeed / 100;
 };
 
 l2.calc.weaponMAtk = function (char) {
@@ -652,6 +659,7 @@ l2.calc.stats = function () {
 		mDef: l2.calc.mDef(char)
 	};
 
+	stats.realAtkSpeed = l2.calc.realAtkSpeed(char, stats);
 	stats.pCritAtk = l2.calc.pCritAtk(char, stats);
 	stats.pDPS = l2.calc.pDPS(stats);
 
