@@ -450,6 +450,21 @@ window.l2 = window.l2 || {};
 		notifyPropertyChanged('setGrade', setGrade);
 	});
 
+	var residence = null;
+	addModel('residence', function () { return residence; }, function (value) {
+		if (value == '') {
+			residence = null;
+			notifyPropertyChanged('residence', residence);
+		} else {
+			var intVal = parseInt(value);
+			if (!isNaN(intVal) && intVal >= 0) {
+				residence = intVal;
+				notifyPropertyChanged('residence', residence);
+			} else
+				throw 'Invalid residence';
+		}
+	});
+
 	var autoSelectPassives = true;
 	addModel('autoSelectPassives', function () { return autoSelectPassives; }, function (value) {
 		autoSelectPassives = toBool(value);

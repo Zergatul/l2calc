@@ -491,6 +491,62 @@ l2.data.squadSkills = [611, 612, 613, 614, 615, 616];
 
 l2.data.territorySkills = [848, 849, 850, 851, 852, 853, 854, 855, 856];
 
+l2.data.residenceSkills = [
+	{ id: 590, residenceId: [4, 7, 101, 111, 121] },
+	{ id: 591, residenceId: [2, 109, 120] },
+	{ id: 592, residenceId: [3, 9, 108, 109] },
+	{ id: 593, residenceId: [1, 8, 106, 121] },
+	{ id: 594, residenceId: [7, 105, 120] },
+	{ id: 595, residenceId: [6, 104, 119] },
+	{ id: 596, residenceId: [5, 107, 118] },
+	{ id: 597, residenceId: [2, 110, 117] },
+	{ id: 598, residenceId: [4, 107, 116] },
+	{ id: 599, residenceId: [6, 8, 108, 115] },
+	{ id: 600, residenceId: [1, 9, 110, 112] },
+	{ id: 601, residenceId: [3, 103, 118] },
+	{ id: 602, residenceId: [5, 102, 117] },
+	{ id: 603, residenceId: [7, 101, 116] },
+	{ id: 604, residenceId: [8, 102, 115] },
+	{ id: 605, residenceId: [4, 103, 114] },
+	{ id: 606, residenceId: [1, 104, 113] },
+	{ id: 607, residenceId: [6, 105, 112] },
+	{ id: 608, residenceId: [5, 106, 111] },
+	{ id: 609, residenceId: [2, 114] },
+	{ id: 610, residenceId: [3, 9, 109, 113, 117] }];
+
+l2.data.residences = {
+	'1': 'Gludio castle',
+	'2': 'Dion castle',
+	'3': 'Giran castle',
+	'4': 'Oren castle',
+	'5': 'Aden castle',
+	'6': 'Innadril castle',
+	'7': 'Goddard castle',
+	'8': 'Rune castle',
+	'9': 'Schuttgart castle',
+	'101': 'Shanty Fortress',
+	'102': 'Southern Fortress',
+	'103': 'Hive Fortress',
+	'104': 'Valley Fortress',
+	'105': 'Ivory Fortress',
+	'106': 'Narsell Fortress',
+	'107': 'Bayou Fortress',
+	'108': 'White Sands Fortress',
+	'109': 'Borderland Fortress',
+	'110': 'Marshland/Swamp Fortress',
+	'111': 'Archaic Fortress',
+	'112': 'Floran Fortress',
+	'113': 'Cloud Mountain Fortress',
+	'114': 'Tanor Fortress',
+	'115': 'Dragonspine Fortress',
+	'116': 'Antharas Fortress',
+	'117': 'Western Fortress',
+	'118': 'Hunters Fortress',
+	'119': 'Aaru Fortress',
+	'120': 'Demon Fortres',
+	'121': 'Monastic Fortress'
+};
+
 l2.data.subClassSkills = [
 	631, // Emergent Ability - Attack
 	632, // Emergent Ability - Defense

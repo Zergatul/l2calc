@@ -402,6 +402,38 @@ l2.ui.bindClanSkils = function () {
 		div.append($('<span>').text(skill.name));
 		$('#clanskills > div:not(.clear):eq(1)').append(div);
 	});
+	/* residences */
+	var select = $('#clanskills > div:not(.clear):eq(2) > select');
+	l2.ui.tools.addOption(select, '', '---');
+	for (var id in l2.data.residences)
+		l2.ui.tools.addOption(select, id, l2.data.residences[id]);
+	l2.model.addHandler('residence', function (id) {
+		l2.ui.disableRecalc = true;
+		l2.data.residenceSkills.forEach(function (rs) {
+			var model = l2.model.clanSkills.findById(rs.id);
+			if (!model)
+				return;
+			model.level = rs.residenceId.indexOf(id) >= 0 ? 1 : 0;
+		});
+		l2.ui.disableRecalc = false;
+	});
+	l2.data.residenceSkills.forEach(function (rs) {
+		var skill = l2.data.tools.getSkill(rs.id);
+		if (!skill)
+			return;
+		var div = $('<div>').addClass('left clan-skill');
+		var label = $('<label>');
+		var input = $('<input>')
+			.attr('type', 'checkbox')
+			.attr('disabled', true)
+			.attr('data-skill-id', rs.id);
+		l2.model.clanSkills.add(rs.id);
+		label.append(input);
+		label.append(skill.name);
+		div.append(label);
+		$('#clanskills > div:not(.clear):eq(2)').append(div);
+	});
+	/* territory wars */
 	l2.data.territorySkills.forEach(function (id) {
 		var skill = l2.data.tools.getSkill(id);
 		var div = $('<div>').addClass('left clan-skill');
@@ -870,7 +902,7 @@ l2.ui.prepareModel = function () {
 				if (element.is('select'))
 					element.val(value || '');
 				else
-					element.attr('checked', !!value);
+					element[0].checked = !!value;
 			} else
 				l2.ui.disableValuesUpdate = false;
 			if (!l2.ui.disableStorageUpdate)
@@ -1037,10 +1069,11 @@ l2.ui.prepareModel = function () {
 	});
 };
 
-l2.ui.loadFromStorage = function () {
+l2.ui.loadFromStorage = function (showDeltas) {
 	l2.ui.disableStorageUpdate = true;
 	l2.ui.loadingProcess = true;
-	l2.ui.canShowDelta = false;
+	if (!showDeltas)
+		l2.ui.canShowDelta = false;
 
 	var saved = [];
 	for (var property in localStorage)
@@ -1085,7 +1118,8 @@ l2.ui.loadFromStorage = function () {
 	l2.ui.disableStorageUpdate = false;
 	l2.ui.loadingProcess = false;
 	l2.ui.recalc();
-	l2.ui.canShowDelta = true;
+	if (!showDeltas)
+		l2.ui.canShowDelta = true;
 };
 
 $(function () {
@@ -1161,6 +1195,13 @@ $(function () {
 
 	l2.ui.loadFromStorage();
 
+	//
+	for (var property in localStorage)
+		if (property.indexOf(l2.ui.savesPrefix) == 0) {
+			var save = property.substring(l2.ui.savesPrefix.length);
+			l2.ui.tools.addOption($('#saves'), save, save);
+		}
+
 	$('#savebtn').click(function () {
 		var obj = {};
 		var prefixLength = l2.ui.storagePrefix.length;
@@ -1174,20 +1215,51 @@ $(function () {
 				alert('Name cannot be empty');
 				return;
 			}
-			if (localStorage[l2.ui.savesPrefix + name])
+			var over = false;
+			if (localStorage[l2.ui.savesPrefix + name]) {
 				if (!confirm('Save with name "' + name + '" already exists. Overwrite?'))
 					return;
+				over = true;
+			}
 			localStorage[l2.ui.savesPrefix + name] = JSON.stringify(obj);
+			if (!over)
+				l2.ui.tools.addOption($('#saves'), name, name);
 		}
 	});
 	$('#loadbtn').click(function () {
-		var json = prompt('Insert code here');
-		if (json != null) {
-			var obj = JSON.parse(json);
-			for (var property in obj)
-				localStorage[l2.ui.storagePrefix + property] = obj[property] instanceof Array ?
-					JSON.stringify(obj[property]) : obj[property];
-			l2.ui.loadFromStorage();
+		var save = $('#saves').val();
+		if (!save)
+			return;
+		var obj = JSON.parse(localStorage[l2.ui.savesPrefix + save]);
+		for (var prop in obj)
+			if (obj[prop] instanceof Array)
+				localStorage[l2.ui.storagePrefix + prop] = JSON.stringify(obj[prop]);
+			else
+				localStorage[l2.ui.storagePrefix + prop] = obj[prop];
+		l2.ui.loadFromStorage(true);
+	});
+	$('#deletebtn').click(function () {
+		var save = $('#saves').val();
+		if (!save)
+			return;
+		if (confirm('Do you really want to delete ' + save + ' save?')) {
+			delete localStorage[l2.ui.savesPrefix + save];
+			var option;
+			$('#saves > option').each(function () {
+				if (this.value == save)
+					option = this;
+			});
+			if (option)
+				$(option).remove();
 		}
 	});
+	// load share code
+	/*var json = prompt('Insert code here');
+	if (json != null) {
+		var obj = JSON.parse(json);
+		for (var property in obj)
+			localStorage[l2.ui.storagePrefix + property] = obj[property] instanceof Array ?
+				JSON.stringify(obj[property]) : obj[property];
+		l2.ui.loadFromStorage();
+	}*/
 });
