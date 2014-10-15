@@ -1231,6 +1231,9 @@ $(function () {
 		if (!save)
 			return;
 		var obj = JSON.parse(localStorage[l2.ui.savesPrefix + save]);
+		for (var prop in localStorage)
+			if (prop.indexOf(l2.ui.storagePrefix) == 0)
+				delete localStorage[prop];
 		for (var prop in obj)
 			if (obj[prop] instanceof Array)
 				localStorage[l2.ui.storagePrefix + prop] = JSON.stringify(obj[prop]);
