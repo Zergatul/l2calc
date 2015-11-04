@@ -994,10 +994,12 @@ l2.ui.prepareModel = function () {
 
 	var checkForTrigger = function (value, s) {
 		var skill = s.skill;
+		if (l2.data.skipTriggers.indexOf(s.id) >= 0)
+			return;
 		var triggerId = skill.trigger instanceof Array ? skill.trigger[s.level] : skill.trigger;
 		if (triggerId == 5565) // Expose Weak Point - debuff
 			return;
-		if (triggerId) {
+		if (triggerId && l2.data.commonTriggers.indexOf(triggerId) == -1) {
 			var modelTrigger = l2.model.triggers.findById(triggerId);
 			if (value) {					
 				if (modelTrigger)
