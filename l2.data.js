@@ -462,7 +462,7 @@ l2.data.commonBuffs = [
 	]},
 ];
 
-l2.data.commonTriggers = [6060];
+l2.data.commonTriggers = [6060, 5427, 5428];
 
 l2.data.clanSkills = [
 	370, // Clan Body

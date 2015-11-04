@@ -204,6 +204,16 @@ l2.ui.bindSelfBuffs = function () {
 	});
 };
 
+l2.ui.clearSelfTriggers = function () {
+	var selfTogglesIds = [];
+	l2.model.triggers.forEach(function (t) {
+		if (l2.data.commonTriggers.indexOf(t.id) == -1)
+			selfTogglesIds.push(t.id);
+	});
+	for (var i = 0; i < selfTogglesIds.length; i++)
+		l2.model.triggers.removeById(selfTogglesIds[i]);
+};
+
 l2.ui.bindToggles = function () {
 	var skills = {};
 	var classesId = l2.data.tools.getBaseClasses(l2.model.classId);
@@ -243,6 +253,7 @@ l2.ui.bindToggles = function () {
 
 l2.ui.bindClassSkillsAndTatoo = function () {
 	l2.ui.disableRecalc = true;
+	l2.ui.clearSelfTriggers();
 	l2.ui.bindPassives();
 	l2.ui.bindSelfBuffs();
 	l2.ui.bindToggles();
@@ -1010,12 +1021,21 @@ l2.ui.prepareModel = function () {
 		if (level) {
 			var skill = s.skill;
 			l2.ui.disableRecalc = true;
+
 			l2.model.selfBuffs.forEach(function (s) {
 				if (s.id == skill.id)
 					return;
 				if (l2.data.tools.compareAbnormal(s.skill.abnormalType, skill.abnormalType))
 					s.level = 0;
 			});
+
+			l2.model.triggers.forEach(function (s) {
+				if (s.id == skill.id)
+					return;
+				if (l2.data.tools.compareAbnormal(s.skill.abnormalType, skill.abnormalType))
+					s.level = 0;
+			});
+
 			var idsToRemove = [];
 			l2.model.commonBuffs.forEach(function (s) {
 				if (s.id == skill.id)
@@ -1024,10 +1044,12 @@ l2.ui.prepareModel = function () {
 					idsToRemove.push(s.id);
 			});
 			idsToRemove.forEach(function (id) { l2.model.commonBuffs.removeById(id); });
+			
 			l2.ui.disableRecalc = false;
 		}
 	};
 	l2.model.addHandler('selfBuffs[].level', checkAbnormalType);
+	l2.model.addHandler('triggers[].level', checkAbnormalType);
 	l2.model.addHandler('commonBuffs.add', function (s) { checkAbnormalType(s.level, s); });
 
 	l2.ui.fieldsets.forEach(function (fs) {
@@ -1099,7 +1121,11 @@ l2.ui.loadFromStorage = function (showDeltas) {
 	['selfBuffs', 'toggles', 'dances', 'songs', 'clanSkills', 'subClassSkills', 'passives'].forEach(function (type) {
 		if (localStorage[l2.ui.storagePrefix + type])
 			JSON.parse(localStorage[l2.ui.storagePrefix + type]).forEach(function (s) {
-				l2.model[type].findById(s.id).level = s.level;
+				var m = l2.model[type].findById(s.id);
+				if (m)
+					m.level = s.level;
+				else
+					console.log('possible error');
 			});
 	});
 

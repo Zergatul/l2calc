@@ -15,3 +15,11 @@ l2.data.tools.getSkill(205).effects = [
 
 // Weapon Grade Penalty, patk
 l2.data.tools.getSkill(6209).effects.filter(function (e) { return e.stat == 'pAtk'; })[0].finalChange = true;
+
+// hide Counter Mind
+l2.data.tools.getSkill(535).trigger = undefined;
+l2.data.tools.getSkill(535).effectType = '';
+
+// hide Evasion Counter
+l2.data.tools.getSkill(818).trigger = undefined;
+l2.data.tools.getSkill(818).effectType = '';
