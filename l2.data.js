@@ -222,14 +222,14 @@ l2.data.weaponEnchant.s80 = l2.data.weaponEnchant.s;
 l2.data.weaponEnchant.s84 = l2.data.weaponEnchant.s;
 
 l2.data.baseHPCoef = [
-	{ id:  0, a: 100, b: 100, c: 100, cpMod: 0.9, name: 'Human Fighter' },
-	{ id:  1, a: 100, b: 100, c: 100, cpMod: 0.9, name: 'Warrior' },
+	{ id:  0, a: 68.3, b: 11.635, c: 0.065, cpMod: 0.9, name: 'Human Fighter' },
+	{ id:  1, a: -270, b: 26.85, c: 0.15, cpMod: 0.9, name: 'Warrior' },
 	{ id:  2, a: -620.4, b: 34.01, c: 0.19, cpMod: 0.9, name: 'Gladiator' },
 	{ id:  3, a: -795.6, b: 37.59, c: 0.21, cpMod: 0.8, name: 'Warlord' },
-	{ id:  4, a: 100, b: 100, c: 100, cpMod: 0.9, name: 'Human Knight' },
+	{ id:  4, a: -210.3, b: 24.165, c: 0.135, cpMod: 0.9, name: 'Human Knight' },
 	{ id:  5, a: -604.5, b: 32.22, c: 0.18, cpMod: 0.6, name: 'Paladin' },
 	{ id:  6, a: -604.5, b: 32.22, c: 0.18, cpMod: 0.6, name: 'Dark Avenger' },
-	{ id:  7, a: 100, b: 100, c: 100, cpMod: 0.9, name: 'Rogue' },
+	{ id:  7, a: -170.5, b: 22.375, c: 0.125, cpMod: 0.9, name: 'Rogue' },
 	{ id:  8, a: -477.1, b: 28.64, c: 0.16, cpMod: 0.5, name: 'Treasure Hunter' },
 	{ id:  9, a: -564.7, b: 30.43, c: 0.17, cpMod: 0.7, name: 'Hawkeye' },
 	{ id: 10, a: 85.7, b: 15.215, c: 0.085, cpMod: 0.5, name: 'Human Mystic' },
@@ -463,7 +463,7 @@ l2.data.commonBuffs = [
 ];
 
 l2.data.commonTriggers = [6060, 5427, 5428];
-l2.data.skipTriggers = [535, 818, 1564];
+l2.data.skipTriggers = [535, 818, 1564, 467];
 
 l2.data.clanSkills = [
 	370, // Clan Body

@@ -14,14 +14,15 @@ namespace l2calc
 {
     static class Program
     {
-        static string _folder = @"c:\Users\Igor_Budzhak\Documents\l2calc\";
+        static string _folder = @"";
 
         [STAThread]
         static void Main(string[] args)
         {
             /*r = new Regex(@"^.+?(\d[0-9.]+).+?(\d[0-9.]+).+?(\d[0-9.]+).+?$");
             ParseSkillNameDat(250, 42, ParsingCallback);*/
-            Skills();
+            //Skills();
+            Items();
         }
 
         static void Items()
@@ -32,7 +33,7 @@ namespace l2calc
             sb.AppendLine();
             sb.AppendLine("l2.data.items = {");
 
-            var files = Directory.EnumerateFiles(@"C:\Users\Igor_Budzhak\Dropbox\l2\hfdata\items\", "*.xml");
+            var files = Directory.EnumerateFiles(@"D:\Dropbox\l2\hfdata\items\", "*.xml");
             foreach (string file in files)
             {
                 var doc = XDocument.Load(file);
@@ -118,10 +119,13 @@ namespace l2calc
                     }
                     if (type == "Armor")
                     {
-                        if (readSet("duration") != null)
-                            continue;
-                        if (readSet("time") != null)
-                            continue;
+                        if (id != "13754" && id != "13753" && id != "13752")
+                        {
+                            if (readSet("duration") != null)
+                                continue;
+                            if (readSet("time") != null)
+                                continue;
+                        }
 
                         var bodypart = readSet("bodypart");
                         var armorType = readSet("armor_type");
@@ -319,7 +323,7 @@ namespace l2calc
                             }
                             sb.AppendFormat(", trigger: {0}", triggeredId);
                         }
-                        
+
                         var @for = skill.Element("for");
 
                         if (@for == null)
@@ -498,10 +502,10 @@ namespace l2calc
             if (el.Elements(tag1).Count() > 1)
                 throw new Exception();
             return attrs.Select(attr => new
-                {
-                    element = el.Element(tag1).Elements(tag2).SingleOrDefault(e => e.Attribute(attr) != null),
-                    attr = attr
-                })
+            {
+                element = el.Element(tag1).Elements(tag2).SingleOrDefault(e => e.Attribute(attr) != null),
+                attr = attr
+            })
                 .Select(_ => _.element == null ? null : _.element.GetAttr(_.attr))
                 .ToArray();
         }
