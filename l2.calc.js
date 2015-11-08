@@ -9,7 +9,7 @@ l2.calc.forEachEffect = function (char, stat, callback) {
 		for (var j = 0; j < skill.effects.length; j++)
 			if (skill.effects[j].stat == stat) {
 				var val = (typeof skill.effects[j].val == 'number' ? skill.effects[j].val : skill.effects[j].val[s.lvl - 1]);
-				if (l2.calc.checkConditions(char, skill.effects[j].using, skill.effects[j].hp, skill.effects[j].atkFrom))
+				if (l2.calc.checkConditions(char, skill.effects[j].using, skill.effects[j].hp, skill.effects[j].atkFrom, skill.effects[j].moving))
 					callback(skill.effects[j].op, val, skill.effects[j].finalChange);
 			}
 	});
@@ -41,7 +41,7 @@ l2.calc.checkUsing = function (char, using) {
 	}
 };
 
-l2.calc.checkConditions = function (char, usings, hp, atkFrom) {
+l2.calc.checkConditions = function (char, usings, hp, atkFrom, moving) {
 	if (usings) {
 		var ok = false;
 		var parts = usings.split(',');
@@ -53,6 +53,8 @@ l2.calc.checkConditions = function (char, usings, hp, atkFrom) {
 	if (hp && char.hpPerc > hp)
 		return false;
 	if (atkFrom && char.atkFrom != atkFrom)
+		return false;
+	if (moving && char.moving != moving)
 		return false;
 	return true;
 };
@@ -452,6 +454,45 @@ l2.calc.mDef = function (char) {
 	return Math.floor(jewelryMdef * char.lm * menBonus * multMdef + addMdef);
 };
 
+l2.calc.mpRegen = function (char) {
+	var baseMPRegen;
+	if (char.lvl <= 10)
+		baseMPRegen = 0.9;
+	else if (char.lvl <= 20)
+		baseMPRegen = 1.2;
+	else if (char.lvl <= 30)
+		baseMPRegen = 1.5;
+	else if (char.lvl <= 40)
+		baseMPRegen = 1.8;
+	else if (char.lvl <= 50)
+		baseMPRegen = 2.1;
+	else if (char.lvl <= 60)
+		baseMPRegen = 2.4;
+	else if (char.lvl <= 70)
+		baseMPRegen = 2.7;
+	else
+		baseMPRegen = 3.0;
+	var moveMult;
+	switch (char.moving) {
+		case 'staying': moveMult = 1.5; break;
+		case 'running': moveMult = 0.7; break;
+		case 'walking': moveMult = 1.1; break;
+		case 'sitting': moveMult = 2.5; break;
+		default:
+			throw 'Invalid moving';
+	}
+	var addMPRegen = 0;
+	var multMPRegen = 1;
+	l2.calc.forEachEffect(char, 'regMp', function (op, val) {
+		if (op == 'add') { addMPRegen += val; return; }
+		if (op == 'mul') { multMPRegen *= val; return; }
+		throw 'not implemented';
+	});
+	var menBonus = l2.data.statBonus['men'][char.baseStats.men];
+	var mpRegen = baseMPRegen * menBonus * char.lm * multMPRegen * moveMult + addMPRegen;
+	return Math.floor(mpRegen * 10) / 10;
+};
+
 l2.calc.checkSet = function (char) {
 	var equipedSet = null;
 	var enchant6 = false;
@@ -577,6 +618,7 @@ l2.calc.stats = function () {
 		lm: (l2.model.level + 89) / 100,
 		hpPerc: l2.model.hpPercent,
 		atkFrom: l2.model.position,
+		moving: l2.model.moving,
 		effects: []
 	};
 
@@ -656,7 +698,8 @@ l2.calc.stats = function () {
 		castSpeed: l2.calc.castSpeed(char),
 		speed: l2.calc.speed(char),
 		evasion: l2.calc.evasion(char),
-		mDef: l2.calc.mDef(char)
+		mDef: l2.calc.mDef(char),
+		mpRegen: l2.calc.mpRegen(char)
 	};
 
 	stats.realAtkSpeed = l2.calc.realAtkSpeed(char, stats);

@@ -438,6 +438,15 @@ window.l2 = window.l2 || {};
 			throw 'Invalid position';
 	});
 
+	var moving = 'staying';
+	addModel('moving', function () { return moving; }, function (value) {
+		if (['staying', 'running', 'walking', 'sitting'].indexOf(value) >= 0) {
+			moving = value;
+			notifyPropertyChanged('moving', moving);
+		} else
+			throw 'Invalid moving';
+	});
+
 	var setGrade = null;
 	addModel('setGrade', function () { return setGrade; }, function (value) {
 		if (['d', 'c', 'b', 'a', 's', 's80', 's84'].indexOf(value) >= 0)

@@ -670,6 +670,8 @@ l2.ui.recalc = function () {
 	$('#pdps').text(l2.ui.tools.formatNumber(Math.round(stats.pDPS)));
 	$('#patkcrit').text(stats.pCritAtk);
 
+	$('#mpregen').text(stats.mpRegen);
+
 	var prevStats = l2.ui.prevStats;
 	l2.ui.prevStats = stats;
 
@@ -714,6 +716,10 @@ l2.ui.bindProfessionFieldSet = function () {
 
 	['front', 'side', 'behind'].forEach(function (from) {
 		l2.ui.tools.addOption('#atkfrom', from, from);
+	});
+
+	['staying', 'running', 'walking', 'sitting'].forEach(function (moving) {
+		l2.ui.tools.addOption('#moving', moving, moving);
 	});
 };
 

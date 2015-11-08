@@ -1834,8 +1834,8 @@ l2.data.skills = [
 	{ id: 1287, levels: 1, name: 'Seed of Wind', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'holy_attack', effects: [
 		{ stat: 'windPower', val: 20, op: 'add' } ]},
 	{ id: 1297, levels: 6, name: 'Clear Mind', target: 'SELF', operateType: 'P', effects: [
-		{ stat: 'regMp', val: [3.2, 4, 4.3, 5.1, 5.8, 6.2], op: 'add' },
-		{ stat: 'regMp', val: [2.6, 3.2, 3.5, 4.1, 4.7, 4.9], op: 'add' } ]},
+		{ stat: 'regMp', val: [3.2, 4, 4.3, 5.1, 5.8, 6.2], op: 'add', moving: 'walking' },
+		{ stat: 'regMp', val: [2.6, 3.2, 3.5, 4.1, 4.7, 4.9], op: 'add', moving: 'staying' } ]},
 	{ id: 1299, levels: 2, name: 'Servitor Empowerment', target: 'PET', operateType: 'A2', effectType: 'ImmobilePetBuff', abnormalType: 'pd_up_special', effects: [
 		{ stat: 'pDef', val: [1800, 3600], op: 'add' },
 		{ stat: 'mDef', val: [1350, 2700], op: 'add' },
