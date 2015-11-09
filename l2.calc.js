@@ -94,6 +94,7 @@ l2.calc.HP = function (char) {
 		_class = l2.data.tools.getClass(_class.parent);
 	if (_class.prof == 1 && char.lvl < 20)
 		_class = l2.data.tools.getClass(_class.parent);
+	
 	var coefs = l2.data.tools.getBaseHPCoefs(_class.id);
 	var baseHP = coefs.a + coefs.b * char.lvl + coefs.c * char.lvl * char.lvl;
 	var addHP = 0;
@@ -118,6 +119,36 @@ l2.calc.HP = function (char) {
 	});
 	var conBonus = l2.data.statBonus['con'][char.baseStats.con];
 	return Math.floor(baseHP * conBonus * multHP + addHP);
+};
+
+l2.calc.MP = function (char) {
+	var coefs = l2.data.baseMP[l2.data.subRace[char._class.subRace].fighter ? 'fighter' : 'mystic'];
+	var coef;
+	if (char.lvl > 40 && char._class.prof >= 2)
+		coef = coefs[2];
+	else if (char.lvl > 20 && char._class.prof >= 1)
+		coef = coefs[1];
+	else
+		coef = coefs[0];
+	var lvlDelta = char.lvl - coef.baseLvl;
+	var baseMP = coef.base + coef.baseAdd * lvlDelta + coef.acc * lvlDelta * (lvlDelta - 1) / 2;
+
+	var addMP = 0;
+	var multMP = 1;
+	l2.calc.forEachEffect(char, 'maxMp', function (op, val) {
+		if (op == 'add') { addMP += val; return; }
+		if (op == 'sub') { addMP -= val; return; }
+		if (op == 'mul') { multMP *= val; return; }
+		throw 'not implemented';
+	});
+
+	['bodyUpper', 'bodyLower', 'underwear', 'ring1', 'ring2', 'earring1', 'earring2', 'necklace'].forEach(function (part) {
+		if (char[part] && char[part].maxMp)
+			addMP += char[part].maxMp;
+	});
+
+	var menBonus = l2.data.statBonus['men'][char.baseStats.men];
+	return Math.floor(baseMP * menBonus * multMP + addMP);
 };
 
 l2.calc.CP = function (char) {
@@ -275,14 +306,14 @@ l2.calc.pAtk = function (char) {
 l2.calc.pCritical = function (char) {
 	var weaponBaseCritical = char.weapon == null ? 40 : l2.data.tools.getBaseCritical(char.weapon.weaponType);
 	var dexBonus = l2.data.statBonus['dex'][char.baseStats.dex];
-	var baseCritial = weaponBaseCritical * dexBonus;
+	var baseCritical = weaponBaseCritical * dexBonus;
 	var addCritial = 0;
 	l2.calc.forEachEffect(char, 'rCrit', function (op, val) {
-		if (op == 'basemul') { addCritial += baseCritial * val; return; }
+		if (op == 'basemul') { addCritial += baseCritical * val; return; }
 		if (op == 'add') { addCritial += val; return; }
 		throw 'not implemented';
 	});
-	return Math.min(Math.round(baseCritial + addCritial), 500);
+	return Math.min(Math.round(baseCritical + addCritial), 500);
 };
 
 l2.calc.pCritMultiplier = function (char) {
@@ -301,6 +332,26 @@ l2.calc.pCritAtk = function (char, stats) {
 		throw 'not implemented';
 	});
 	return Math.floor(stats.pAtk * stats.pCritMultiplier + addCritPAtk);
+};
+
+l2.calc.mCritical = function (char) {
+	var baseCritical = 80 * l2.data.statBonus['wit'][char.baseStats.wit];
+	var addCritial = 0;
+	l2.calc.forEachEffect(char, 'mCritRate', function (op, val) {
+		if (op == 'basemul') { addCritial += baseCritical * val; return; }
+		if (op == 'add') { addCritial += val * 10; return; }
+		throw 'not implemented';
+	});
+	return Math.min(Math.floor(baseCritical + addCritial), 300);
+};
+
+l2.calc.mCritMultiplier = function (char) {
+	var mult = 2.5;
+	l2.calc.forEachEffect(char, 'mCritPower', function (op, val) {
+		if (op == 'mul') { mult *= val; return; }
+		throw 'not implemented';
+	});
+	return mult;
 };
 
 l2.calc.atkSpeed = function (char) {
@@ -339,6 +390,11 @@ l2.calc.realAtkSpeed = function (char, stats) {
 
 l2.calc.pDPS = function (char) {
 	return (char.pAtk * (1 - char.pCritical / 1000) + char.pCritAtk * char.pCritical / 1000) * char.realAtkSpeed / 100;
+};
+
+l2.calc.mDPS = function (char) {
+	var mPower = Math.sqrt(char.mAtk);
+	return (mPower * (1 - char.mCritical / 1000) + mPower * char.mCritMultiplier * char.mCritical / 1000) * char.castSpeed / 100;
 };
 
 l2.calc.weaponMAtk = function (char) {
@@ -686,7 +742,7 @@ l2.calc.stats = function () {
 	var stats = {
 		baseStats: char.baseStats,
 		hp: l2.calc.HP(char),
-		//mp: l2.calc.MP(char),
+		mp: l2.calc.MP(char),
 		cp: l2.calc.CP(char),
 		pDef: l2.calc.pDef(char),
 		pAtk: l2.calc.pAtk(char),
@@ -694,6 +750,8 @@ l2.calc.stats = function () {
 		accuracy: l2.calc.accuracy(char),
 		pCritical: l2.calc.pCritical(char),
 		pCritMultiplier: l2.calc.pCritMultiplier(char),
+		mCritical: l2.calc.mCritical(char),
+		mCritMultiplier: l2.calc.mCritMultiplier(char),
 		atkSpeed: l2.calc.atkSpeed(char),
 		castSpeed: l2.calc.castSpeed(char),
 		speed: l2.calc.speed(char),
@@ -705,6 +763,7 @@ l2.calc.stats = function () {
 	stats.realAtkSpeed = l2.calc.realAtkSpeed(char, stats);
 	stats.pCritAtk = l2.calc.pCritAtk(char, stats);
 	stats.pDPS = l2.calc.pDPS(stats);
+	stats.mDPS = l2.calc.mDPS(stats);
 
 	return stats;
 };

@@ -111,7 +111,7 @@ l2.data.skills = [
 		{ stat: 'sDef', val: [1.3, 1.4, 1.5, 1.6], op: 'mul' },
 		{ stat: 'pDef', val: [1, 1, 1.1, 1.1], op: 'mul', using: 'Heavy' } ]},
 	{ id: 163, levels: 1, name: 'Spellcraft', target: 'SELF', operateType: 'P', effects: [
-		{ stat: 'mAtkSpd', val: 0.5, op: 'mul' } ]},
+		{ stat: 'mAtkSpd', val: 0.5, op: 'mul', using: 'not(Magic)' } ]},
 	{ id: 164, levels: 3, name: 'Quick Recycle', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'mReuse', val: [0.9, 0.85, 0.8], op: 'mul' } ]},
 	{ id: 168, levels: 3, name: 'Boost Attack Speed', target: 'SELF', operateType: 'P', effects: [

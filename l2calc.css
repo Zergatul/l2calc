@@ -136,6 +136,7 @@ select:disabled, input:disabled {
 }
 .astat {
 	padding-left: 8px;
+	width: 70px;
 }
 .astat-header {
 	width: 100px;

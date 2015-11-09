@@ -293,8 +293,21 @@ l2.data.baseHPCoef = [
 	{ id: 126, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Warder' },
 	{ id: 129, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Female Soul Breaker' },
 	{ id: 130, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Arbalester' },
-	{ id: 135, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Inspector' },
+	{ id: 135, a: 1, b: 1, c: 1, cpMod: 0.5, name: 'Inspector' }
 ];
+
+l2.data.baseMP = {
+	'fighter': [
+		{ base: 30, baseAdd: 5.46, acc: 0.06, baseLvl: 1 },
+		{ base: 153.9, baseAdd: 9.99, acc: 0.09, baseLvl: 21 },
+		{ base: 378.6, baseAdd: 19.65, acc: 0.15, baseLvl: 41 }
+	],
+	'mystic': [
+		{ base: 40, baseAdd: 7.28, acc: 0.08, baseLvl: 1 },
+		{ base: 205.2, baseAdd: 13.32, acc: 0.12, baseLvl: 21 },
+		{ base: 504.80, baseAdd: 26.2, acc: 0.2, baseLvl: 41 }
+	]
+};
 
 l2.data.accuracyFix = Array.apply(null, new Array(70)).map(Number.prototype.valueOf, 0).concat(
 	[1, 2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 16, 18, 20, 22, 24]);
@@ -368,6 +381,9 @@ l2.data.commonBuffs = [
 		1059, // Empower
 		1006, // Chant of Fire
 		1008, // The Glory of Pa'agrio
+	]},
+	{ group: 'M. Critical', ids: [
+		1303, // Wild Magic
 	]},
 	{ group: 'Atk Spd/Vamp', ids: [
 		1519, // Chant of Blood Awakening
@@ -463,7 +479,7 @@ l2.data.commonBuffs = [
 ];
 
 l2.data.commonTriggers = [6060, 5427, 5428];
-l2.data.skipTriggers = [535, 818, 1564, 467];
+l2.data.skipTriggers = [535, 818, 1564, 467, 679, 685, 691, 697, 709, 714];
 
 l2.data.clanSkills = [
 	370, // Clan Body

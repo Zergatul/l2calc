@@ -653,6 +653,7 @@ l2.ui.recalc = function () {
 	$('#men').text(stats.baseStats.men);
 
 	$('#hp').text(stats.hp);
+	$('#mp').text(stats.mp);
 	$('#cp').text(stats.cp);
 	$('#pdef').text(stats.pDef);
 	$('#patk').text(stats.pAtk);
@@ -660,6 +661,8 @@ l2.ui.recalc = function () {
 	$('#accuracy').text(stats.accuracy);
 	$('#pcritical').text(stats.pCritical);
 	$('#pcritmult').text(stats.pCritMultiplier.toFixed(5));
+	$('#mcritical').text(stats.mCritical);
+	$('#mcritmult').text(stats.mCritMultiplier.toFixed(5));
 	$('#atkspd').text(stats.atkSpeed);
 	$('#castspd').text(stats.castSpeed);
 	$('#speed').text(stats.speed);
@@ -669,6 +672,7 @@ l2.ui.recalc = function () {
 	$('#realatkspeed').text(stats.realAtkSpeed);
 	$('#pdps').text(l2.ui.tools.formatNumber(Math.round(stats.pDPS)));
 	$('#patkcrit').text(stats.pCritAtk);
+	$('#mdps').text(l2.ui.tools.formatNumber(Math.round(stats.mDPS)));
 
 	$('#mpregen').text(stats.mpRegen);
 
