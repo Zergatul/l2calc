@@ -29,9 +29,9 @@ l2.data.subRace = [
 		int: 31, str: 27, con: 31, men: 42, dex: 24, wit: 15 }},
 	{ id:  8, race: 4, name: 'Dwarven Fighter', fighter: 1, baseSpeed: 115, stats: {
 		int: 20, str: 39, con: 45, men: 27, dex: 29, wit: 10 }},
-	{ id:  9, race: 5, name: 'Kamael Male Fighter', fighter: 1, baseSpeed: 1, stats: {
+	{ id:  9, race: 5, name: 'Kamael Male Fighter', fighter: 1, baseSpeed: 122, stats: {
 		int: 29, str: 41, con: 31, men: 25, dex: 33, wit: 11 }},
-	{ id: 10, race: 5, name: 'Kamael Female Fighter', fighter: 1, baseSpeed: 1, stats: {
+	{ id: 10, race: 5, name: 'Kamael Female Fighter', fighter: 1, baseSpeed: 122, stats: {
 		int: 28, str: 39, con: 30, men: 27, dex: 35, wit: 11 }}
 ];
 
