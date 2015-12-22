@@ -61,26 +61,32 @@ l2.calc.checkConditions = function (char, usings, hp, atkFrom, moving) {
 
 l2.calc.baseStats = function (char) {
 	l2.calc.forEachEffect(char, 'STR', function (op, val) {
+		if (op == 'set') { return; }
 		if (op == 'add') { char.baseStats.str += val; return; }
 		throw 'not implemented';
 	});
 	l2.calc.forEachEffect(char, 'DEX', function (op, val) {
+		if (op == 'set') { return; }
 		if (op == 'add') { char.baseStats.dex += val; return; }
 		throw 'not implemented';
 	});
 	l2.calc.forEachEffect(char, 'CON', function (op, val) {
+		if (op == 'set') { return; }
 		if (op == 'add') { char.baseStats.con += val; return; }
 		throw 'not implemented';
 	});
 	l2.calc.forEachEffect(char, 'INT', function (op, val) {
+		if (op == 'set') { return; }
 		if (op == 'add') { char.baseStats.int += val; return; }
 		throw 'not implemented';
 	});
 	l2.calc.forEachEffect(char, 'WIT', function (op, val) {
+		if (op == 'set') { return; }
 		if (op == 'add') { char.baseStats.wit += val; return; }
 		throw 'not implemented';
 	});
 	l2.calc.forEachEffect(char, 'MEN', function (op, val) {
+		if (op == 'set') { return; }
 		if (op == 'add') { char.baseStats.men += val; return; }
 		throw 'not implemented';
 	});
@@ -382,7 +388,7 @@ l2.calc.accuracy = function (char) {
 };
 
 l2.calc.realAtkSpeed = function (char, stats) {
-	if (!char.weapon || !(char.weapon.weaponType == 'bow' || char.weapon.weaponType == 'crossbow'))
+	if (!char.weapon || !(char.weapon.weaponType == 'bow' || char.weapon.weaponType == 'crossbow') || char.inTrueTransformation)
 		return stats.atkSpeed;
 	var reuse = char.weapon.reuse || (char.weapon.weaponType == 'bow' ? (char.weapon.bowFast ? 1500 : 820) : 400);
 	return Math.round(500000 * stats.atkSpeed / (500000 + reuse * 329.2));
@@ -675,7 +681,8 @@ l2.calc.stats = function () {
 		hpPerc: l2.model.hpPercent,
 		atkFrom: l2.model.position,
 		moving: l2.model.moving,
-		effects: []
+		effects: [],
+		transformId: l2.model.transformId
 	};
 
 	l2.ui.modelEquipments.forEach(function (model) {
@@ -700,6 +707,34 @@ l2.calc.stats = function () {
 	l2.calc.checkWeaponPenalty(char);
 
 	l2.calc.checkSet(char);
+
+	if (char.transformId) {
+		var trans = l2.data.tools.getSkill(char.transformId);
+		if (trans.effects)
+			trans.effects.forEach(function (eff) {
+				if (eff.op != 'set')
+					return;
+				if (['STR', 'DEX', 'CON', 'INT', 'WIT', 'MEN'].indexOf(eff.stat) < 0)
+					return;
+				char.baseStats[eff.stat.toLowerCase()] = eff.val;
+			});
+
+		if (l2.data.transformsDontChangeAtkType.indexOf(char.transformId) == -1) {
+			char.effects.push({
+				id: l2.data.transformHiddenPassiveId,
+				lvl: 1,
+				skill: l2.data.tools.getSkill(l2.data.transformHiddenPassiveId)
+			});
+
+			char.inTrueTransformation = true;
+		}
+
+		char.effects.push({
+			id: char.transformId,
+			lvl: trans.levels,
+			skill: trans
+		});
+	}
 
 	var skillCallback = function (s) {
 		if (s.level > 0)

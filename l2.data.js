@@ -597,3 +597,112 @@ l2.data.subClassSkills = [
 	1490, // Healer Ability - Heal
 	1491, // Summoner Ability - Spirit
 ];
+
+l2.data.commonTransforms = [
+	656,
+	657,
+	658,
+	659,
+	660,
+	661,
+	662,
+
+	663,
+	664,
+	665,
+	666,
+	667,
+	668,
+	669,
+
+	670,
+	671,
+	672,
+	673,
+	674,
+
+	541,
+	544,
+	547,
+	550,
+	553,
+	557,
+
+	617,
+	618
+];
+
+l2.data.transforms = {
+	// Transform Grail Apostle -543 [559, 560, 561, 562]
+	541: {
+		buffs: [561, 562]
+	},
+	544: {}, // Transform Unicorn -546 [563, 564, 565, 567]
+	547: {}, // Transform Lilim Knight -549 [568, 569, 570, 571]
+	550: {}, // Transform Golem Guardian -552 [572, 573, 574, 575]
+	// Transform Inferno Drake -555 [576, 577, 578, 579]
+	553: {
+		buffs: [579]
+	},
+	// Transform Dragon Bomber -558 [580, 581, 582, 583]
+	557: {
+		buffs: [583]
+	},
+
+	// Transform Onyx Beast [584, 585]
+	617: {
+		buffs: [585]
+	},
+	// Transform Death Blader
+	618: {}
+
+	656: {}, // Transform Divine Warrior
+	657: {}, // Transform Divine Knight
+	658: {}, // Transform Divine Rogue
+	659: {}, // Transform Divine Wizard
+	660: {}, // Transform Divine Summoner
+	661: {}, // Transform Divine Healer
+	662: {}, // Transform Divine Enchanter
+
+	// Transform Zaken [715, 716, 717, 718, 719]
+	663: {},
+	// Transform Anakim [720, 721, 722, 723, 724, 619]
+	664: {},
+	// Transform Venom
+	665: {
+		buffs: [727]
+	},
+	// Transform Gordon [728, 729, 730],
+	666: {},
+	// Transform Ranku [731, 732]
+	667: {},
+	// Transform Kechi
+	668: {},
+	// Transform Demon Prince [735, 736, 737]
+	669: {
+		buffs: [737]
+	},
+
+	// Transform Heretic [738, 739, 740, 741]
+	670: {},
+	// Transform Vale Master [742, 743, 744, 745]
+	671: {},
+	// Transform Saber Tooth Tiger [746, 747, 748]
+	672: {
+		buffs: [748]
+	},
+	// Transform Oel Mahum [749, 750, 751]
+	673: {
+		buffs: [750]
+	},
+	// Transform Doll Blader [752, 753, 754]
+	674: {
+		buffs: [754]
+	}
+};
+
+l2.data.transformHiddenPassiveId = 5491;
+
+l2.data.transformsDontChangeAtkType = [1520, 1521, 1522, 810, 811, 812, 813];
+
+l2.data.skipTransformations = [841, 842];

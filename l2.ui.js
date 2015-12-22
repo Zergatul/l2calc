@@ -16,7 +16,9 @@ l2.ui.modelEquipments = [
 l2.ui.fieldsets = [
 	'equipment', 'selfBuffs', 'toggles',
 	'triggers', 'commonBuffs', 'songs',
-	'dances', 'clanSkills', 'subClassSkills', 'passives'];
+	'dances', 'clanSkills', 'subClassSkills',
+	'transforms',
+	'passives'];
 
 l2.ui.bindClasses = function () {
 	$('#l2class').empty();
@@ -251,12 +253,69 @@ l2.ui.bindToggles = function () {
 	});
 };
 
+l2.ui.bindSelfTransforms = function () {
+	var skills = {};
+	var classesId = l2.data.tools.getBaseClasses(l2.model.classId);
+	classesId.forEach(function (classId) {
+		l2.data.tools.getSkillTree(classId).forEach(function (skill) {
+			if (skills[skill.id])
+				skills[skill.id].push(skill);
+			else
+				skills[skill.id] = [skill];
+		});
+	});
+	l2.model.transforms.clear();
+	for (var id in skills) {
+		var skill = l2.data.tools.getSkill(id);
+		skills[id].sort(function (s1, s2) {
+			return s1.lvl - s2.lvl;
+		});
+		if (skill && skill.effectType == 'Transformation' && skill.abnormalType == 'transform')
+			l2.model.transforms.add(skill.id, skills[id]);
+	}
+
+	if ($('#trans-main input[type=checkbox]:checked')) {
+		l2.ui.disableValuesUpdate = true;
+		l2.model.transformId = null;
+		l2.ui.disableValuesUpdate = false;
+	}
+	$('#trans-main > div.trans-skill:gt(0)').remove();
+	l2.model.transforms.forEach(function (sb) {
+		var skill = sb.skill;
+		if (l2.data.skipTransformations.indexOf(skill.id) >= 0)
+			return;
+		var div = $('<div>').addClass('left trans-skill');
+		var label = $('<label>');
+		var input = $('<input>').attr('type', 'checkbox')
+			.attr('data-skill-id', skill.id)
+		input.change(function () {
+			l2.ui.disableValuesUpdate = true;
+			if (input.is(':checked')) {
+				l2.model.transformId = skill.id;
+				$('#trans-main select').val('');
+				$('#trans-main input[type=checkbox]').each(function () {
+					if (this == input[0])
+						return;
+					this.checked = false;
+				});
+			} else
+				l2.model.transformId = null;
+			l2.ui.disableValuesUpdate = false;
+		});
+		label.append(input);
+		label.append(skill.name);
+		div.append(label);
+		$('#trans-main').append(div);
+	});
+};
+
 l2.ui.bindClassSkillsAndTatoo = function () {
 	l2.ui.disableRecalc = true;
 	l2.ui.clearSelfTriggers();
 	l2.ui.bindPassives();
 	l2.ui.bindSelfBuffs();
 	l2.ui.bindToggles();
+	l2.ui.bindSelfTransforms();
 	l2.ui.autoSelectPassives();
 	l2.ui.bindClassTatoos();
 	l2.ui.disableRecalc = false;
@@ -492,6 +551,20 @@ l2.ui.bindSubClassSkills = function () {
 	});
 };
 
+l2.ui.bindTransforms = function () {
+	var select = $('#trans-main select').change(function() {
+		$('#trans-main input[type=checkbox]').attr('checked', false);
+		l2.ui.disableValuesUpdate = true;
+		l2.model.transformId = this.value;
+		l2.ui.disableValuesUpdate = false;
+	});
+	l2.ui.tools.addOption(select, '', '---');
+	l2.data.commonTransforms.forEach(function (id) {
+		var skill = l2.data.tools.getSkill(id);
+		l2.ui.tools.addOption(select, id, skill.name);
+	});
+};
+
 l2.ui.bindCommonTriggers = function () {
 	l2.data.commonTriggers.forEach(function (id) {
 		l2.model.triggers.add(id);
@@ -504,6 +577,7 @@ l2.ui.bindBuffs = function () {
 	l2.ui.bindDances();
 	l2.ui.bindClanSkils();
 	l2.ui.bindSubClassSkills();
+	l2.ui.bindTransforms();
 	l2.ui.bindCommonTriggers();
 };
 
@@ -586,7 +660,15 @@ l2.ui.clearSubClassSkills = function () {
 	l2.ui.disableRecalc = true;
 	l2.model.subClassSkills.forEach(function (scs) { scs.level = 0; });
 	l2.ui.disableRecalc = false;
-	l2.ui.recalc();	
+	l2.ui.recalc();
+};
+
+l2.ui.clearTransform = function () {
+	l2.ui.disableRecalc = true;
+	l2.model.transformId = null;
+	l2.model.transformBuffs.forEach(function (tb) { tb.level = 0; });
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();
 };
 
 l2.ui.formatPercent = function (val) {
@@ -1064,6 +1146,29 @@ l2.ui.prepareModel = function () {
 	l2.model.addHandler('triggers[].level', checkAbnormalType);
 	l2.model.addHandler('commonBuffs.add', function (s) { checkAbnormalType(s.level, s); });
 
+	l2.model.addHandler('transformId', function (id) {
+		var select = $('#trans-main select');
+		if (id == null) {
+			select.val('');
+			$('#trans-main input[type=checkbox]').attr('checked', false);
+		} else {
+			var option = select.children('option[value=' + id + ']');
+			if (option.length)
+				option.attr('selected', true);
+			else {
+				var input = $('#trans-main > div input[type=checkbox][data-skill-id=' + id + ']');
+				if (input.length)
+					input.attr('checked', true);
+				else {
+					console.log('Cannot set transform');
+					id = null;
+				}
+			}
+		}
+		if (!l2.ui.disableStorageUpdate)
+			localStorage[l2.ui.storagePrefix + 'transformId'] = id == null ? '' : id;
+	});
+
 	l2.ui.fieldsets.forEach(function (fs) {
 		l2.model.addHandler(fs + 'Visible', function (value) {
 			if (!l2.ui.disableStorageUpdate)
@@ -1146,6 +1251,9 @@ l2.ui.loadFromStorage = function (showDeltas) {
 			l2.model.commonBuffs.add(cb.id, null, cb.level);
 		});
 
+	if (localStorage[l2.ui.storagePrefix + 'transformId'])
+		l2.model.transformId = localStorage[l2.ui.storagePrefix + 'transformId'];
+
 	l2.ui.fieldsets.forEach(function (fs) {
 		var value = localStorage[l2.ui.storagePrefix + fs + 'Visible'];
 		if (value == 'false')
@@ -1213,10 +1321,11 @@ $(function () {
 	$('#triggers-chb').click(l2.ui.toggleFieldSet);
 	$('#commonbuffs-chb').click(l2.ui.toggleFieldSet);
 	$('#songs-chb').click(l2.ui.toggleFieldSet);
-	$('#dances-chb').click(l2.ui.toggleFieldSet);	
+	$('#dances-chb').click(l2.ui.toggleFieldSet);
 	$('#clanskills-chb').click(l2.ui.toggleFieldSet);
 	$('#subclassskills-chb').click(l2.ui.toggleFieldSet);
-	$('#passives-chb').click(l2.ui.toggleFieldSet);	
+	$('#transforms-chb').click(l2.ui.toggleFieldSet);
+	$('#passives-chb').click(l2.ui.toggleFieldSet);
 
 	$('#equipment span.clear-btn').click(l2.ui.clearEquipment);
 	$('#selfbuffs span.clear-btn').click(l2.ui.clearSelfBuffs);
@@ -1227,6 +1336,7 @@ $(function () {
 	$('#dances span.clear-btn').click(l2.ui.clearDances);
 	$('#clanskills span.clear-btn').click(l2.ui.clearClanSkills);
 	$('#subclassskills span.clear-btn').click(l2.ui.clearSubClassSkills);
+	$('#transforms span.clear-btn').click(l2.ui.clearTransform);
 
 	$(window).resize(l2.ui.adjustContainer);
 	l2.ui.adjustContainer();

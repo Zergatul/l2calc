@@ -369,6 +369,7 @@ window.l2 = window.l2 || {};
 		dances: new L2SkillList('dances'),
 		clanSkills: new L2SkillList('clanSkills'),
 		subClassSkills: new L2SkillList('subClassSkills'),
+		transforms: new L2SkillList('transforms'),
 		passives: new L2SkillList('passives')
 	};
 
@@ -471,6 +472,21 @@ window.l2 = window.l2 || {};
 				notifyPropertyChanged('residence', residence);
 			} else
 				throw 'Invalid residence';
+		}
+	});
+
+	var transformId = null;
+	addModel('transformId', function () { return transformId; }, function (value) {
+		if (value == '' || value == null) {
+			transformId = null;
+			notifyPropertyChanged('transformId', transformId);
+		} else {
+			var intVal = parseInt(value);
+			if (!isNaN(intVal) && intVal >= 0) {
+				transformId = intVal;
+				notifyPropertyChanged('transformId', transformId);
+			} else
+				throw 'Invalid transformId';
 		}
 	});
 
