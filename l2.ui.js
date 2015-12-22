@@ -158,6 +158,17 @@ l2.ui.autoSelectPassives = function () {
 	l2.ui.recalc();
 };
 
+l2.ui.autoSelectTransformPassives = function () {
+	l2.model.transformPassives.forEach(function (s) {
+		var tpInfo = l2.data.transformPassives[s.id];
+		if (tpInfo == null)
+			console.log('Transform passive skill no info!');
+		else {
+			s.level = tpInfo.getLevel(l2.model.level);
+		}
+	});
+};
+
 l2.ui.createChangeSkillListHandler = function (type, id) {
 	return function () {
 		l2.ui.disableValuesUpdate = true;
@@ -301,12 +312,57 @@ l2.ui.bindSelfTransforms = function () {
 			} else
 				l2.model.transformId = null;
 			l2.ui.disableValuesUpdate = false;
+			l2.ui.bindTransformSkills();
 		});
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
 		$('#trans-main').append(div);
 	});
+};
+
+l2.ui.bindTransformSkills = function () {
+	l2.model.transformBuffs.clear();
+	l2.model.transformPassives.clear();
+	$('#trans-passives').empty();
+	$('#trans-self-buffs').empty();
+
+	if (l2.model.transformId != null) {
+		var transInfo = l2.data.transforms[l2.model.transformId];
+		if (transInfo != null) {
+			if (transInfo.passives)
+				transInfo.passives.forEach(function (id) {
+					var skill = l2.data.tools.getSkill(id);
+					var select = $('<select>')
+						.attr('disabled', true)
+						.attr('data-skill-id', id);
+					l2.ui.tools.addOption(select, '---', '');
+					for (var i = 0; i < skill.levels; i++)
+						l2.ui.tools.addOption(select, i + 1, i + 1);
+					var div = $('<div>').addClass('left trans-skill');
+					div.append(select).append($('<span>').text(skill.name));
+					$('#trans-passives').append(div);
+
+					l2.model.transformPassives.add(id);
+				});
+			l2.ui.autoSelectTransformPassives();
+			if (transInfo.buffs)
+				transInfo.buffs.forEach(function (id) {
+					var skill = l2.data.tools.getSkill(id);
+					var select = $('<select>')
+						.attr('data-skill-id', id);
+					select.change(l2.ui.createChangeSkillListHandler('transformBuffs', skill.id));
+					l2.ui.tools.addOption(select, '---', '');
+					for (var i = 0; i < skill.levels; i++)
+						l2.ui.tools.addOption(select, i + 1, i + 1);
+					var div = $('<div>').addClass('left trans-skill');
+					div.append(select).append($('<span>').text(skill.name));
+					$('#trans-self-buffs').append(div);
+
+					l2.model.transformBuffs.add(id);
+				});
+		}
+	}
 };
 
 l2.ui.bindClassSkillsAndTatoo = function () {
@@ -556,6 +612,7 @@ l2.ui.bindTransforms = function () {
 		$('#trans-main input[type=checkbox]').attr('checked', false);
 		l2.ui.disableValuesUpdate = true;
 		l2.model.transformId = this.value;
+		l2.ui.bindTransformSkills();
 		l2.ui.disableValuesUpdate = false;
 	});
 	l2.ui.tools.addOption(select, '', '---');
@@ -666,7 +723,6 @@ l2.ui.clearSubClassSkills = function () {
 l2.ui.clearTransform = function () {
 	l2.ui.disableRecalc = true;
 	l2.model.transformId = null;
-	l2.model.transformBuffs.forEach(function (tb) { tb.level = 0; });
 	l2.ui.disableRecalc = false;
 	l2.ui.recalc();
 };
@@ -864,6 +920,7 @@ l2.ui.prepareModel = function () {
 	l2.model.addHandler('prof', l2.ui.bindClasses);
 	l2.model.addHandler('classId', l2.ui.bindClassSkillsAndTatoo);
 	l2.model.addHandler('level', l2.ui.autoSelectPassives);
+	l2.model.addHandler('level', l2.ui.autoSelectTransformPassives);
 
 	l2.ui.fieldsets.forEach(function (fs) {
 		$('#' + fs.toLowerCase() + '-chb').click(function () {
@@ -1116,6 +1173,9 @@ l2.ui.prepareModel = function () {
 			var skill = s.skill;
 			l2.ui.disableRecalc = true;
 
+			var disableValuesUpdate = l2.ui.disableValuesUpdate;
+			l2.ui.disableValuesUpdate = false;
+
 			l2.model.selfBuffs.forEach(function (s) {
 				if (s.id == skill.id)
 					return;
@@ -1124,6 +1184,13 @@ l2.ui.prepareModel = function () {
 			});
 
 			l2.model.triggers.forEach(function (s) {
+				if (s.id == skill.id)
+					return;
+				if (l2.data.tools.compareAbnormal(s.skill.abnormalType, skill.abnormalType))
+					s.level = 0;
+			});
+
+			l2.model.transformBuffs.forEach(function (s) {
 				if (s.id == skill.id)
 					return;
 				if (l2.data.tools.compareAbnormal(s.skill.abnormalType, skill.abnormalType))
@@ -1140,11 +1207,13 @@ l2.ui.prepareModel = function () {
 			idsToRemove.forEach(function (id) { l2.model.commonBuffs.removeById(id); });
 			
 			l2.ui.disableRecalc = false;
+			l2.ui.disableValuesUpdate = disableValuesUpdate;
 		}
 	};
 	l2.model.addHandler('selfBuffs[].level', checkAbnormalType);
 	l2.model.addHandler('triggers[].level', checkAbnormalType);
 	l2.model.addHandler('commonBuffs.add', function (s) { checkAbnormalType(s.level, s); });
+	l2.model.addHandler('transformBuffs[].level', checkAbnormalType);
 
 	l2.model.addHandler('transformId', function (id) {
 		var select = $('#trans-main select');
@@ -1165,8 +1234,31 @@ l2.ui.prepareModel = function () {
 				}
 			}
 		}
+		if (!l2.ui.disableValuesUpdate)
+			l2.ui.bindTransformSkills();
+		l2.ui.autoSelectTransformPassives();
 		if (!l2.ui.disableStorageUpdate)
 			localStorage[l2.ui.storagePrefix + 'transformId'] = id == null ? '' : id;
+	});
+
+	l2.model.addHandler('transformPassives[].level', function (level, s) {
+		if (!l2.ui.disableValuesUpdate) {
+			var select = $('#trans-passives select[data-skill-id=' + s.id + ']');
+			if (level == 0)
+				select.val('');
+			else
+				select.val(level);
+		}
+	});
+
+	l2.model.addHandler('transformBuffs[].level', function (level, s) {
+		if (!l2.ui.disableValuesUpdate) {
+			var select = $('#trans-self-buffs select[data-skill-id=' + s.id + ']');
+			if (level == 0)
+				select.val('');
+			else
+				select.val(level);
+		}
 	});
 
 	l2.ui.fieldsets.forEach(function (fs) {

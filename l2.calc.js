@@ -719,7 +719,9 @@ l2.calc.stats = function () {
 				char.baseStats[eff.stat.toLowerCase()] = eff.val;
 			});
 
-		if (l2.data.transformsDontChangeAtkType.indexOf(char.transformId) == -1) {
+		var transInfo = l2.data.transforms[char.transformId];
+
+		if (!transInfo.light) {
 			char.effects.push({
 				id: l2.data.transformHiddenPassiveId,
 				lvl: 1,
@@ -754,6 +756,8 @@ l2.calc.stats = function () {
 	l2.model.clanSkills.forEach(skillCallback);
 	l2.model.subClassSkills.forEach(skillCallback);
 	l2.model.passives.forEach(skillCallback);
+	l2.model.transformPassives.forEach(skillCallback)
+	l2.model.transformBuffs.forEach(skillCallback)
 
 	l2.calc.baseStats(char);
 

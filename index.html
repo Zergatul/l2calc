@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>L2 Calc</title>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 	<script type="text/javascript" src="jquery-2.1.1.js"></script>
 	<script type="text/javascript" src="l2.data.js"></script>
 	<script type="text/javascript" src="l2.data.items.js"></script>
@@ -474,21 +475,23 @@
 				<label><input type="checkbox" id="transforms-chb" checked="checked" />Transformations</label>
 				<span class="clear-btn">Clear</span>
 			</legend>
-			<div id="trans-main">
-				<div class="left trans-skill">
-					<span>Common transformations: </span>
-					<select></select>
+			<div>
+				<div id="trans-main">
+					<div class="left trans-skill">
+						<span>Common transformations: </span>
+						<select></select>
+					</div>
 				</div>
+				<div class="clear"></div>
+				<hr />
+				Self buffs:<br/>
+				<div id="trans-self-buffs"></div>
+				<div class="clear"></div>
+				<hr />
+				Passives:<br/>
+				<div id="trans-passives"></div>
+				<div class="clear"></div>
 			</div>
-			<div class="clear"></div>
-			<hr />
-			Self buffs:<br/>
-			<div id="trans-self-buffs"></div>
-			<div class="clear"></div>
-			<hr />
-			Passives:<br/>
-			<div id="trans-passives"></div>
-			<div class="clear"></div>
 		</fieldset>
 		<div class="clear"></div>
 		<fieldset id="passives">

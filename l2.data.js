@@ -654,7 +654,7 @@ l2.data.transforms = {
 		buffs: [585]
 	},
 	// Transform Death Blader
-	618: {}
+	618: {},
 
 	656: {}, // Transform Divine Warrior
 	657: {}, // Transform Divine Knight
@@ -698,11 +698,59 @@ l2.data.transforms = {
 	// Transform Doll Blader [752, 753, 754]
 	674: {
 		buffs: [754]
-	}
+	},
+
+	// Vanguard
+	810: { // Paladin
+		buffs: [956],
+		passives: [293],
+		light: true
+	},
+	811: { // Dark Avenger
+		buffs: [956],
+		passives: [144],
+		light: true
+	},
+	812: { // Temple Knight
+		buffs: [956],
+		passives: [293],
+		light: true
+	},
+	813: { // Shillien Knight
+		buffs: [956],
+		passives: [144],
+		light: true
+	},
+
+	// Inquisitor
+	1520: { // Bishop
+		light: true
+	},
+	1521: { // EE
+		light: true
+	},
+	1522: { // SE
+		light: true
+	},
 };
 
 l2.data.transformHiddenPassiveId = 5491;
 
-l2.data.transformsDontChangeAtkType = [1520, 1521, 1522, 810, 811, 812, 813];
-
 l2.data.skipTransformations = [841, 842];
+
+l2.data.transformPassives = {
+	144: {
+		getLevel: function (charLevel) {
+			if (charLevel <= 42)
+				return 0;
+			return Math.min(37, charLevel - 42);
+		}
+	},
+	293: {
+		getLevel: function (charLevel) {
+			if (charLevel <= 42)
+				return 0;
+			return Math.min(20, Math.floor((charLevel - 42) / 2));
+		}
+	}
+};

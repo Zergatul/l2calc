@@ -370,6 +370,8 @@ window.l2 = window.l2 || {};
 		clanSkills: new L2SkillList('clanSkills'),
 		subClassSkills: new L2SkillList('subClassSkills'),
 		transforms: new L2SkillList('transforms'),
+		transformBuffs: new L2SkillList('transformBuffs'),
+		transformPassives: new L2SkillList('transformPassives'),
 		passives: new L2SkillList('passives')
 	};
 
