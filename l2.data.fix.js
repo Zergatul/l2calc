@@ -23,3 +23,7 @@ l2.data.tools.getSkill(535).effectType = '';
 // hide Evasion Counter
 l2.data.tools.getSkill(818).trigger = undefined;
 l2.data.tools.getSkill(818).effectType = '';
+
+// hide Mutual Response
+l2.data.tools.getSkill(1498).trigger = undefined;
+l2.data.tools.getSkill(1498).effectType = '';
