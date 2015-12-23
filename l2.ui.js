@@ -319,6 +319,7 @@ l2.ui.bindSelfTransforms = function () {
 		div.append(label);
 		$('#trans-main').append(div);
 	});
+	l2.ui.bindTransformSkills();
 };
 
 l2.ui.bindTransformSkills = function () {
