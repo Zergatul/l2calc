@@ -338,7 +338,7 @@ window.l2 = window.l2 || {};
 		};
 	};
 
-	window.l2.model = {
+	var characterModel = {
 		addHandler: addHandler,
 		addGlobalHandler: addGlobalHandler,
 		getValue: getValue,
@@ -374,6 +374,8 @@ window.l2 = window.l2 || {};
 		transformPassives: new L2SkillList('transformPassives'),
 		passives: new L2SkillList('passives')
 	};
+
+	window.l2.model = characterModel;
 
 	var addModel = function (property, getter, setter) {
 		Object.defineProperty(window.l2.model, property, {
@@ -492,6 +494,18 @@ window.l2 = window.l2 || {};
 		}
 	});
 
+	var summonId = null;
+	addModel('summonId', function () { return summonId; }, function (value) {
+		summonId = value;
+		notifyPropertyChanged('summonId', summonId);
+	});
+
+	var summonLevel = null;
+	addModel('summonLevel', function () { return summonLevel; }, function (value) {
+		summonLevel = value;
+		notifyPropertyChanged('summonLevel', summonLevel);
+	});
+
 	var autoSelectPassives = true;
 	addModel('autoSelectPassives', function () { return autoSelectPassives; }, function (value) {
 		autoSelectPassives = toBool(value);
@@ -508,5 +522,19 @@ window.l2 = window.l2 || {};
 			notifyPropertyChanged(fs + 'Visible', checkboxes[fs]);
 		});
 	});
+
+	var summonModel = {
+		selfBuffs: new L2SkillList('selfBuffs'),
+		triggers: new L2SkillList('triggers'),
+		commonBuffs: new L2SkillList('commonBuffs'),		
+		songs: new L2SkillList('songs'),
+		dances: new L2SkillList('dances')
+	};
+
+	summonModel.summonModel = summonModel;
+	summonModel.characterModel = characterModel;
+
+	characterModel.summonModel = summonModel;
+	characterModel.characterModel = characterModel;
 
 })();

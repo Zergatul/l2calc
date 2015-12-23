@@ -5,6 +5,7 @@ l2.ui.disableValuesUpdate = false;
 l2.ui.disableStorageUpdate = false;
 l2.ui.disableRecalc = false;
 l2.ui.loadingProcess = false;
+l2.ui.summonView = false;
 
 l2.ui.storagePrefix = 'c:';
 l2.ui.savesPrefix = 'save:';
@@ -375,6 +376,7 @@ l2.ui.bindClassSkillsAndTatoo = function () {
 	l2.ui.bindSelfTransforms();
 	l2.ui.autoSelectPassives();
 	l2.ui.bindClassTatoos();
+	l2.ui.bindSummons();
 	l2.ui.disableRecalc = false;
 };
 
@@ -411,6 +413,37 @@ l2.ui.bindClassTatoos = function () {
 			slot.add.stat = slot.add.stat;
 		}
 	}
+};
+
+l2.ui.bindSummons = function () {
+	var select = $('#summons-select');
+	select.empty();
+	l2.ui.tools.addOption(select, '', '---');
+
+	var classesId = l2.data.tools.getBaseClasses(l2.model.classId);
+	var summons = [];
+	classesId.forEach(function (classId) {
+		l2.data.tools.getSkillTree(classId).forEach(function (skill) {
+			var summonInfo = l2.data.summons.filter(function (si) { return si.id == skill.id; })[0];
+			if (summonInfo)
+				summons.push({ skill: skill, summonInfo: summonInfo });
+		});
+	});
+
+	summons.sort(function (i1, i2) {
+		var delta = i1.skill.minLvl - i2.skill.minLvl;
+		if (delta != 0)
+			return delta;
+		if (i1.summonInfo.name < i2.summonInfo.name)
+			return -1;
+		if (i1.summonInfo.name > i2.summonInfo.name)
+			return 1;
+		return 0;
+	});
+
+	summons.forEach(function (_) {
+		l2.ui.tools.addOption(select, _.skill.id + ':' + _.skill.lvl, '[' + _.skill.minLvl + '] ' + _.summonInfo.name + ' (' + _.skill.lvl + ')');
+	});
 };
 
 l2.ui.bindCommonBuffs = function () {
@@ -476,7 +509,8 @@ l2.ui.bindSongs = function () {
 		var input = $('<input>').attr('type', 'checkbox')
 			.attr('data-skill-id', skill.id)
 		input.change(l2.ui.createChangeSkillListHandler('songs', skill.id));
-		l2.model.songs.add(skill.id);
+		l2.model.characterModel.songs.add(skill.id);
+		l2.model.summonModel.songs.add(skill.id);
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
@@ -492,7 +526,8 @@ l2.ui.bindDances = function () {
 		var input = $('<input>').attr('type', 'checkbox')
 			.attr('data-skill-id', skill.id);
 		input.change(l2.ui.createChangeSkillListHandler('dances', skill.id));
-		l2.model.dances.add(skill.id);
+		l2.model.characterModel.dances.add(skill.id);
+		l2.model.summonModel.dances.add(skill.id);
 		label.append(input);
 		label.append(skill.name);
 		div.append(label);
@@ -782,7 +817,17 @@ l2.ui.recalc = function () {
 
 	console.log('recalc ' + new Date().getMilliseconds());
 
-	var stats = l2.calc.stats();
+	if (l2.ui.summonView)
+	{
+		console.log('summon recalc');
+		return;
+	}
+
+	var stats;
+	if (l2.ui.summonView)
+		stats = l2.calc.summonStats();
+	else
+		stats = l2.calc.stats();
 
 	$('#str').text(stats.baseStats.str);
 	$('#dex').text(stats.baseStats.dex);
@@ -886,6 +931,67 @@ l2.ui.bindEquipmentFieldSet = function () {
 	});
 
 	$('#set').change(l2.ui.applySet);
+};
+
+l2.ui.bindCurrentModelToUI = function () {
+	$('#commonbuffs select').val('');
+	l2.model.commonBuffs.forEach(function (s) {
+		$('option[value="' + s.id + ':' + s.level + '"]').attr('selected', true);
+	});
+
+	$('#songs input[data-skill-id]').attr('checked', false);
+	l2.model.songs.forEach(function (s) {
+		if (s.level)
+			$('input[data-skill-id=' + s.id + ']')[0].checked = true;
+	});
+
+	$('#dances input[data-skill-id]').attr('checked', false);
+	l2.model.dances.forEach(function (s) {
+		if (s.level)
+			$('input[data-skill-id=' + s.id + ']')[0].checked = true;
+	});
+};
+
+l2.ui.bindSummonsFieldSet = function () {
+	$('#summons-select').change(function () {
+		if (this.value == '') {
+			l2.model.summonId = null;
+			l2.model.summonLevel = null;
+			$('#ui-switcher').hide();
+		} else {
+			var parts = this.value.split(':');
+			l2.model.summonId = parseInt(parts[0]);
+			l2.model.summonLevel = parseInt(parts[1]);
+			$('#ui-switcher').show();
+		}
+	});
+	$('#showUIfor').change(function () {
+		if (this.checked) {
+			$('#profession select, #profession button').attr('disabled', true);
+			$('#bstats select, #bstats input').each(function () {
+				if (this.disabled)
+					$(this).attr('prev-disabled', '1');
+				else
+					$(this).attr('disabled', true);
+			});
+			$('#equipment, #selfbuffs, #toggles, #clanskills, #subclassskills, #transforms, #passives').hide();
+			l2.model = l2.model.summonModel;
+			l2.ui.summonView = true;
+			l2.ui.bindCurrentModelToUI();
+		} else {
+			$('#profession select, #profession button').attr('disabled', false);
+			$('#bstats select, #bstats input').each(function () {
+				if ($(this).attr('prev-disabled'))
+					$(this).removeAttr('prev-disabled');
+				else
+					this.disabled = false;
+			});
+			$('#equipment, #selfbuffs, #toggles, #clanskills, #subclassskills, #transforms, #passives').show();
+			l2.model = l2.model.characterModel;
+			l2.ui.summonView = false;
+			l2.ui.bindCurrentModelToUI();
+		}
+	});
 };
 
 l2.ui.prepareModel = function () {
@@ -1191,12 +1297,13 @@ l2.ui.prepareModel = function () {
 					s.level = 0;
 			});
 
-			l2.model.transformBuffs.forEach(function (s) {
-				if (s.id == skill.id)
-					return;
-				if (l2.data.tools.compareAbnormal(s.skill.abnormalType, skill.abnormalType))
-					s.level = 0;
-			});
+			if (!l2.ui.summonView)
+				l2.model.transformBuffs.forEach(function (s) {
+					if (s.id == skill.id)
+						return;
+					if (l2.data.tools.compareAbnormal(s.skill.abnormalType, skill.abnormalType))
+						s.level = 0;
+				});
 
 			var idsToRemove = [];
 			l2.model.commonBuffs.forEach(function (s) {
@@ -1375,6 +1482,7 @@ $(function () {
 	l2.ui.bindProfessionFieldSet();
 	l2.ui.bindBaseStatsFieldSet();
 	l2.ui.bindEquipmentFieldSet();
+	l2.ui.bindSummonsFieldSet();
 
 	l2.model.tatoo1.add.stat = 'str';
 	l2.model.tatoo1.add.value = 1;

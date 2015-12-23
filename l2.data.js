@@ -754,3 +754,35 @@ l2.data.transformPassives = {
 		}
 	}
 };
+
+l2.data.summons = [
+	{ id: 25, name: 'Mechanic Golem' },
+	{ id: 283, name: 'Dark Panther' },
+	{ id: 1111, name: 'Kat the Cat' },
+	{ id: 1128, name: 'Shadow' },
+	{ id: 1129, name: 'Reanimated Man' },
+	{ id: 1154, name: 'Corrupted Man' },
+	{ id: 1225, name: 'Mew the Cat' },
+	{ id: 1226, name: 'Boxer the Unicorn' },
+	{ id: 1227, name: 'Mirage the Unicorn' },
+	{ id: 1228, name: 'Silhouette' },
+	{ id: 1276, name: 'Kai the Cat' },
+	{ id: 1277, name: 'Merrow the Unicorn' },
+	{ id: 1278, name: 'Soulless' },
+	{ id: 1331, name: 'Feline Queen' },
+	{ id: 1332, name: 'Unicorn Seraphim' },
+	{ id: 1333, name: 'Nightshade' },
+	{ id: 1334, name: 'Cursed Man' },
+	{ id: 1406, name: 'Feline King' },
+	{ id: 1407, name: 'Magnus the Unicorn' },
+	{ id: 1408, name: 'Spectral Lord' }	
+];
+
+l2.data.summonBaseStats = {
+	str: 40,
+	dex: 30,
+	con: 43,
+	int: 21,
+	wit: 20,
+	men: 25
+};

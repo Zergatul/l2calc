@@ -193,8 +193,10 @@ select:disabled, input:disabled {
 	float: left;
 }
 #bstats {
-	width: 340px;
-	float: left;
+	width: 300px;
+}
+#summons {
+	width: 300px;
 }
 #stats {
 	width: 400px;
@@ -222,4 +224,70 @@ select:disabled, input:disabled {
 #profession button {
 	border: 1px solid black;
 	border-radius: 3px;
+}
+
+/* Switch button */
+input.cmn-toggle-yes-no + label {
+  padding: 2px;
+  width: 120px;
+  height: 20px;
+}
+input.cmn-toggle-yes-no + label:before, input.cmn-toggle-yes-no + label:after {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  color: #fff;
+  font-family: Tahoma;
+  font-weight: bold;
+  font-size: 12px;
+  text-align: center;
+  line-height: 20px;
+}
+input.cmn-toggle-yes-no + label:before {
+  background-color: #609966;
+  content: attr(data-off);
+  -webkit-transition: -webkit-transform 0.5s;
+  -moz-transition: -moz-transform 0.5s;
+  -o-transition: -o-transform 0.5s;
+  transition: transform 0.5s;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+input.cmn-toggle-yes-no + label:after {
+  background-color: #996060;
+  content: attr(data-on);
+  -webkit-transition: -webkit-transform 0.5s;
+  -moz-transition: -moz-transform 0.5s;
+  -o-transition: -o-transform 0.5s;
+  transition: transform 0.5s;
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+input.cmn-toggle-yes-no:checked + label:before {
+  -webkit-transform: rotateY(180deg);
+  -moz-transform: rotateY(180deg);
+  -ms-transform: rotateY(180deg);
+  -o-transform: rotateY(180deg);
+  transform: rotateY(180deg);
+}
+input.cmn-toggle-yes-no:checked + label:after {
+  -webkit-transform: rotateY(0);
+  -moz-transform: rotateY(0);
+  -ms-transform: rotateY(0);
+  -o-transform: rotateY(0);
+  transform: rotateY(0);
 }

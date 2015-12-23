@@ -50,57 +50,76 @@
 		<br />
 		<button id="sharebtn" style="display:none;">Share</button>
 	</fieldset>
-	<fieldset id="bstats">
-		<legend>Base Stats</legend>
-		<div class="left bstat-header">STR</div>
-		<div class="left bstat" id="str">00</div>
-		<div class="left bstat-divider"></div>
-		<div class="left bstat-header">DEX</div>
-		<div class="left bstat" id="dex">00</div>
-		<div class="left bstat-divider"></div>
-		<div class="left bstat-header">CON</div>
-		<div class="left bstat" id="con">00</div>
-		<div class="clear"></div>
-		<div class="left bstat-header">INT</div>
-		<div class="left bstat" id="int">00</div>
-		<div class="left bstat-divider"></div>
-		<div class="left bstat-header">WIT</div>
-		<div class="left bstat" id="wit">00</div>
-		<div class="left bstat-divider"></div>
-		<div class="left bstat-header">MEN</div>
-		<div class="left bstat" id="men">00</div>
-		<div class="clear"></div>
-		<hr />
-		<div id="tatoo-slot-1">
-			<div class="left tatoo-header">Tatoo Slot 1: </div>
-			<div class="left"><input type="checkbox" class="tatoo-chb" data-model="tatoo1.checked" /></div>
-			<div class="left"><select class="tatoo-stat" data-model="tatoo1.add.stat"></select></div>
-			<div class="left"><select class="tatoo-add" data-model="tatoo1.add.value"></select></div>
-			<div class="left"><select class="tatoo-stat" data-model="tatoo1.sub.stat"></select></div>
-			<div class="left"><select class="tatoo-sub" data-model="tatoo1.sub.value"></select></div>
-		</div>
-		<div class="clear"></div>
-		<div id="tatoo-slot-2">
-			<div class="left tatoo-header">Tatoo Slot 2: </div>
-			<div class="left"><input type="checkbox" class="tatoo-chb" data-model="tatoo2.checked" /></div>
-			<div class="left"><select class="tatoo-stat" data-model="tatoo2.add.stat"></select></div>
-			<div class="left"><select class="tatoo-add" data-model="tatoo2.add.value"></select></div>
-			<div class="left"> </div>
-			<div class="left"><select class="tatoo-stat" data-model="tatoo2.sub.stat"></select></div>
-			<div class="left"><select class="tatoo-sub" data-model="tatoo2.sub.value"></select></div>
-		</div>
-		<div class="clear"></div>
-		<div id="tatoo-slot-3">
-			<div class="left tatoo-header">Tatoo Slot 3: </div>
-			<div class="left"><input type="checkbox" class="tatoo-chb" data-model="tatoo3.checked" /></div>
-			<div class="left"><select class="tatoo-stat" data-model="tatoo3.add.stat"></select></div>
-			<div class="left"><select class="tatoo-add" data-model="tatoo3.add.value"></select></div>
-			<div class="left"> </div>
-			<div class="left"><select class="tatoo-stat" data-model="tatoo3.sub.stat"></select></div>
-			<div class="left"><select class="tatoo-sub" data-model="tatoo3.sub.value"></select></div>
-		</div>
-		<div class="clear"></div>
-	</fieldset>
+	<div style="float: left;">
+		<fieldset id="bstats">
+			<legend>Base Stats</legend>
+			<div class="left bstat-header">STR</div>
+			<div class="left bstat" id="str">00</div>
+			<div class="left bstat-divider"></div>
+			<div class="left bstat-header">DEX</div>
+			<div class="left bstat" id="dex">00</div>
+			<div class="left bstat-divider"></div>
+			<div class="left bstat-header">CON</div>
+			<div class="left bstat" id="con">00</div>
+			<div class="clear"></div>
+			<div class="left bstat-header">INT</div>
+			<div class="left bstat" id="int">00</div>
+			<div class="left bstat-divider"></div>
+			<div class="left bstat-header">WIT</div>
+			<div class="left bstat" id="wit">00</div>
+			<div class="left bstat-divider"></div>
+			<div class="left bstat-header">MEN</div>
+			<div class="left bstat" id="men">00</div>
+			<div class="clear"></div>
+			<hr />
+			<div id="tatoo-slot-1">
+				<div class="left tatoo-header">Tatoo Slot 1: </div>
+				<div class="left"><input type="checkbox" class="tatoo-chb" data-model="tatoo1.checked" /></div>
+				<div class="left"><select class="tatoo-stat" data-model="tatoo1.add.stat"></select></div>
+				<div class="left"><select class="tatoo-add" data-model="tatoo1.add.value"></select></div>
+				<div class="left"><select class="tatoo-stat" data-model="tatoo1.sub.stat"></select></div>
+				<div class="left"><select class="tatoo-sub" data-model="tatoo1.sub.value"></select></div>
+			</div>
+			<div class="clear"></div>
+			<div id="tatoo-slot-2">
+				<div class="left tatoo-header">Tatoo Slot 2: </div>
+				<div class="left"><input type="checkbox" class="tatoo-chb" data-model="tatoo2.checked" /></div>
+				<div class="left"><select class="tatoo-stat" data-model="tatoo2.add.stat"></select></div>
+				<div class="left"><select class="tatoo-add" data-model="tatoo2.add.value"></select></div>
+				<div class="left"> </div>
+				<div class="left"><select class="tatoo-stat" data-model="tatoo2.sub.stat"></select></div>
+				<div class="left"><select class="tatoo-sub" data-model="tatoo2.sub.value"></select></div>
+			</div>
+			<div class="clear"></div>
+			<div id="tatoo-slot-3">
+				<div class="left tatoo-header">Tatoo Slot 3: </div>
+				<div class="left"><input type="checkbox" class="tatoo-chb" data-model="tatoo3.checked" /></div>
+				<div class="left"><select class="tatoo-stat" data-model="tatoo3.add.stat"></select></div>
+				<div class="left"><select class="tatoo-add" data-model="tatoo3.add.value"></select></div>
+				<div class="left"> </div>
+				<div class="left"><select class="tatoo-stat" data-model="tatoo3.sub.stat"></select></div>
+				<div class="left"><select class="tatoo-sub" data-model="tatoo3.sub.value"></select></div>
+			</div>
+			<div class="clear"></div>
+		</fieldset>
+		<fieldset id="summons">
+			<legend>Summons</legend>
+			<span>Summon:</span>
+			<select id="summons-select"></select>
+			<div id="ui-switcher" style="display: none;">
+				<div style="float: left; height: 30px;">
+					<div style="padding-top: 8px;">Show UI for:</div>
+				</div>
+				<div style="float: left; width: 100px; height: 30px; padding-top: 5px; padding-left: 6px;">
+					<div style="height: 20px; position: relative;">
+						<input type="checkbox" id="showUIfor" class="cmn-toggle cmn-toggle-yes-no" style="display: none;" />
+						<label for="showUIfor" data-on="Summon" data-off="Character" style="cursor: pointer;"></label>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</fieldset>
+	</div>
 	<fieldset id="stats">
 		<legend>Stats</legend>
 		<div class="left stat-header">HP</div>

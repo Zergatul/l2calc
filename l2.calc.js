@@ -806,3 +806,9 @@ l2.calc.stats = function () {
 
 	return stats;
 };
+
+l2.calc.summonStats = function () {
+	var stats = {
+		baseStats: l2.data.summonBaseStats
+	}
+};
