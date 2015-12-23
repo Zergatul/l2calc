@@ -220,7 +220,7 @@ l2.ui.bindSelfBuffs = function () {
 l2.ui.clearSelfTriggers = function () {
 	var selfTogglesIds = [];
 	l2.model.triggers.forEach(function (t) {
-		if (l2.data.commonTriggers.indexOf(t.id) == -1)
+		if (l2.data.commonTriggers.indexOf(t.id) == -1 && t.id != 6059) // skip counter critical
 			selfTogglesIds.push(t.id);
 	});
 	for (var i = 0; i < selfTogglesIds.length; i++)
