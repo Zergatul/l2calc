@@ -7,7 +7,9 @@ l2.ui.disableRecalc = false;
 l2.ui.loadingProcess = false;
 l2.ui.summonView = false;
 
-l2.ui.storagePrefix = 'c:';
+l2.ui.storageCharacterPrefix = 'c:';
+l2.ui.storageSummonPrefix = 's:';
+
 l2.ui.savesPrefix = 'save:';
 l2.ui.modelEquipments = [
 	'weapon', 'shield', 'helmet', 'bodyUpper', 'bodyLower', 'boots', 'gloves',
@@ -20,6 +22,13 @@ l2.ui.fieldsets = [
 	'dances', 'clanSkills', 'subClassSkills',
 	'transforms',
 	'passives'];
+
+l2.ui.getStoragePrefix = function () {
+	if (l2.ui.summonView)
+		return l2.ui.storageSummonPrefix;
+	else
+		return l2.ui.storageCharacterPrefix;
+};
 
 l2.ui.bindClasses = function () {
 	$('#l2class').empty();
@@ -424,7 +433,7 @@ l2.ui.bindSummons = function () {
 	var summons = [];
 	classesId.forEach(function (classId) {
 		l2.data.tools.getSkillTree(classId).forEach(function (skill) {
-			var summonInfo = l2.data.summons.filter(function (si) { return si.id == skill.id; })[0];
+			var summonInfo = l2.data.summons[skill.id];
 			if (summonInfo)
 				summons.push({ skill: skill, summonInfo: summonInfo });
 		});
@@ -684,11 +693,14 @@ l2.ui.consoleTime = function () {
 
 l2.ui.toggleFieldSet = function () {
 	var elements = $(this).closest('fieldset').children(':not(legend)');
-	var btn = $(this).closest('label').next('span');
-	if ($(this).is(':checked'))
-		elements.add(btn).show();
-	else
-		elements.add(btn).hide();
+	var btnClear = $(this).closest('label').next('span');
+	var btnCopy = $(this).closest('label').next('span').next('span');
+	if ($(this).is(':checked')) {
+		elements.add(btnClear).show();
+		if (l2.ui.summonView)
+			btnCopy.show();
+	} else
+		elements.add(btnClear).add(btnCopy).hide();
 };
 
 l2.ui.clearEquipment = function () {
@@ -763,6 +775,36 @@ l2.ui.clearTransform = function () {
 	l2.ui.recalc();
 };
 
+l2.ui.copyCommonBuffs = function () {
+	l2.ui.disableRecalc = true;
+	l2.model.summonModel.commonBuffs.clear();
+	l2.model.characterModel.commonBuffs.forEach(function (s) {
+		l2.model.summonModel.commonBuffs.add(s.id, null, s.level);
+	});
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();
+};
+
+l2.ui.copySongs = function () {
+	l2.ui.disableRecalc = true;
+	l2.model.summonModel.songs.forEach(function (s) { s.level = 0; });
+	l2.model.characterModel.songs.forEach(function (s) {
+		l2.model.summonModel.songs.findById(s.id).level = s.level;
+	});
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();
+};
+
+l2.ui.copyDances = function () {
+	l2.ui.disableRecalc = true;
+	l2.model.summonModel.dances.forEach(function (s) { s.level = 0; });
+	l2.model.characterModel.dances.forEach(function (s) {
+		l2.model.summonModel.dances.findById(s.id).level = s.level;
+	});
+	l2.ui.disableRecalc = false;
+	l2.ui.recalc();
+};
+
 l2.ui.formatPercent = function (val) {
 	if (val >= 10)
 		return Math.round(val).toString();
@@ -817,12 +859,6 @@ l2.ui.recalc = function () {
 
 	console.log('recalc ' + new Date().getMilliseconds());
 
-	if (l2.ui.summonView)
-	{
-		console.log('summon recalc');
-		return;
-	}
-
 	var stats;
 	if (l2.ui.summonView)
 		stats = l2.calc.summonStats();
@@ -836,9 +872,12 @@ l2.ui.recalc = function () {
 	$('#wit').text(stats.baseStats.wit);
 	$('#men').text(stats.baseStats.men);
 
+	if (l2.ui.summonView)
+		$('#summon-level').text(stats.level);
 	$('#hp').text(stats.hp);
 	$('#mp').text(stats.mp);
-	$('#cp').text(stats.cp);
+	if (!l2.ui.summonView)
+		$('#cp').text(stats.cp);
 	$('#pdef').text(stats.pDef);
 	$('#patk').text(stats.pAtk);
 	$('#matk').text(stats.mAtk);
@@ -860,7 +899,7 @@ l2.ui.recalc = function () {
 
 	$('#mpregen').text(stats.mpRegen);
 
-	var prevStats = l2.ui.prevStats;
+	/*var prevStats = l2.ui.prevStats;
 	l2.ui.prevStats = stats;
 
 	if (l2.ui.canShowDelta && prevStats) {
@@ -877,7 +916,7 @@ l2.ui.recalc = function () {
 		l2.ui.highlightStat(prevStats, stats, 'pCritical', $('#pcritical').next(), 0);
 		l2.ui.highlightStat(prevStats, stats, 'evasion', $('#evasion').next(), 0);
 		l2.ui.highlightStat(prevStats, stats, 'speed', $('#speed').next(), 0);
-	}
+	}*/
 };
 
 l2.ui.adjustContainer = function () {
@@ -934,17 +973,24 @@ l2.ui.bindEquipmentFieldSet = function () {
 };
 
 l2.ui.bindCurrentModelToUI = function () {
+	$('#commonbuffs-chb')[0].checked = l2.model.commonBuffsVisible;
+	l2.ui.toggleFieldSet.call($('#commonbuffs-chb'));
 	$('#commonbuffs select').val('');
 	l2.model.commonBuffs.forEach(function (s) {
-		$('option[value="' + s.id + ':' + s.level + '"]').attr('selected', true);
+		var value = s.id + ':' + s.level;
+		$('option[value="' + value + '"]').parent().val(value);
 	});
 
+	$('#songs-chb')[0].checked = l2.model.songsVisible;
+	l2.ui.toggleFieldSet.call($('#songs-chb'));
 	$('#songs input[data-skill-id]').attr('checked', false);
 	l2.model.songs.forEach(function (s) {
 		if (s.level)
 			$('input[data-skill-id=' + s.id + ']')[0].checked = true;
 	});
 
+	$('#dances-chb')[0].checked = l2.model.dancesVisible;
+	l2.ui.toggleFieldSet.call($('#dances-chb'));
 	$('#dances input[data-skill-id]').attr('checked', false);
 	l2.model.dances.forEach(function (s) {
 		if (s.level)
@@ -955,18 +1001,22 @@ l2.ui.bindCurrentModelToUI = function () {
 l2.ui.bindSummonsFieldSet = function () {
 	$('#summons-select').change(function () {
 		if (this.value == '') {
-			l2.model.summonId = null;
-			l2.model.summonLevel = null;
+			l2.model.characterModel.summonId = null;
+			l2.model.characterModel.summonLevel = null;
 			$('#ui-switcher').hide();
 		} else {
 			var parts = this.value.split(':');
-			l2.model.summonId = parseInt(parts[0]);
-			l2.model.summonLevel = parseInt(parts[1]);
+			l2.model.characterModel.summonId = parseInt(parts[0]);
+			l2.model.characterModel.summonLevel = parseInt(parts[1]);
 			$('#ui-switcher').show();
 		}
+		l2.ui.adjustContainer();
+		l2.ui.recalc();
 	});
 	$('#showUIfor').change(function () {
 		if (this.checked) {
+			$('#stat-hid-level').show();
+			$('#stat-hid-cp').hide();
 			$('#profession select, #profession button').attr('disabled', true);
 			$('#bstats select, #bstats input').each(function () {
 				if (this.disabled)
@@ -978,7 +1028,11 @@ l2.ui.bindSummonsFieldSet = function () {
 			l2.model = l2.model.summonModel;
 			l2.ui.summonView = true;
 			l2.ui.bindCurrentModelToUI();
+			l2.ui.recalc();
 		} else {
+			$('#stat-hid-level').hide();
+			$('#stat-hid-cp').show();
+			$('.copy-btn').hide();
 			$('#profession select, #profession button').attr('disabled', false);
 			$('#bstats select, #bstats input').each(function () {
 				if ($(this).attr('prev-disabled'))
@@ -990,6 +1044,7 @@ l2.ui.bindSummonsFieldSet = function () {
 			l2.model = l2.model.characterModel;
 			l2.ui.summonView = false;
 			l2.ui.bindCurrentModelToUI();
+			l2.ui.recalc();
 		}
 	});
 };
@@ -1012,7 +1067,7 @@ l2.ui.prepareModel = function () {
 		});
 		l2.model.addHandler(model, function (value) {
 			if (!l2.ui.disableStorageUpdate)
-				localStorage[l2.ui.storagePrefix + model] = value == null ? '' : value;
+				localStorage[l2.ui.getStoragePrefix() + model] = value == null ? '' : value;
 		});
 	}).change(function () {
 		l2.ui.disableValuesUpdate = true;
@@ -1173,11 +1228,11 @@ l2.ui.prepareModel = function () {
 			} else
 				l2.ui.disableValuesUpdate = false;
 			if (!l2.ui.disableStorageUpdate)
-				localStorage[l2.ui.storagePrefix + type] = l2.model[type].toJSON();
+				localStorage[l2.ui.getStoragePrefix() + type] = l2.model[type].toJSON();
 		});
 		l2.model.addHandler(type + '.clear', function () {
 			if (!l2.ui.disableStorageUpdate)
-				localStorage[l2.ui.storagePrefix + type] = l2.model[type].toJSON();
+				localStorage[l2.ui.getStoragePrefix() + type] = l2.model[type].toJSON();
 		});
 	});
 
@@ -1209,7 +1264,7 @@ l2.ui.prepareModel = function () {
 		} else
 			l2.ui.disableValuesUpdate = false;
 		if (!l2.ui.disableStorageUpdate)
-			localStorage[l2.ui.storagePrefix + 'commonBuffs'] = l2.model.commonBuffs.toJSON();
+			localStorage[l2.ui.getStoragePrefix() + 'commonBuffs'] = l2.model.commonBuffs.toJSON();
 	});
 	l2.model.addHandler('commonBuffs.remove', function (s) {
 		if (!l2.ui.disableValuesUpdate) {
@@ -1220,10 +1275,10 @@ l2.ui.prepareModel = function () {
 		} else
 			l2.ui.disableValuesUpdate = false;
 		if (!l2.ui.disableStorageUpdate)
-			localStorage[l2.ui.storagePrefix + 'commonBuffs'] = l2.model.commonBuffs.toJSON();
+			localStorage[l2.ui.getStoragePrefix() + 'commonBuffs'] = l2.model.commonBuffs.toJSON();
 	});
 	l2.model.addHandler('commonBuffs.clear', function () {
-		localStorage[l2.ui.storagePrefix + 'commonBuffs'] = '[]';
+		localStorage[l2.ui.getStoragePrefix() + 'commonBuffs'] = '[]';
 	});
 	l2.model.addHandler('autoSelectPassives', function (val) {
 		if (!l2.ui.disableValuesUpdate) {
@@ -1346,7 +1401,7 @@ l2.ui.prepareModel = function () {
 			l2.ui.bindTransformSkills();
 		l2.ui.autoSelectTransformPassives();
 		if (!l2.ui.disableStorageUpdate)
-			localStorage[l2.ui.storagePrefix + 'transformId'] = id == null ? '' : id;
+			localStorage[l2.ui.getStoragePrefix() + 'transformId'] = id == null ? '' : id;
 	});
 
 	l2.model.addHandler('transformPassives[].level', function (level, s) {
@@ -1372,7 +1427,7 @@ l2.ui.prepareModel = function () {
 	l2.ui.fieldsets.forEach(function (fs) {
 		l2.model.addHandler(fs + 'Visible', function (value) {
 			if (!l2.ui.disableStorageUpdate)
-				localStorage[l2.ui.storagePrefix + fs + 'Visible'] = value;
+				localStorage[l2.ui.getStoragePrefix() + fs + 'Visible'] = value;
 		});
 	});
 
@@ -1416,7 +1471,7 @@ l2.ui.loadFromStorage = function (showDeltas) {
 
 	var saved = [];
 	for (var property in localStorage)
-		if (property.indexOf(l2.ui.storagePrefix) == 0)
+		if (property.indexOf(l2.ui.storageCharacterPrefix) == 0)
 			saved.push({
 				model: property.substring(2)
 			});
@@ -1432,13 +1487,13 @@ l2.ui.loadFromStorage = function (showDeltas) {
 		return lo2 - lo1;
 	});
 	saved.forEach(function (m) {
-		l2.model.setValue(m.model, localStorage[l2.ui.storagePrefix + m.model]);
+		l2.model.characterModel.setValue(m.model, localStorage[l2.ui.storageCharacterPrefix + m.model]);
 	});
 
 	['selfBuffs', 'toggles', 'dances', 'songs', 'clanSkills', 'subClassSkills', 'passives'].forEach(function (type) {
-		if (localStorage[l2.ui.storagePrefix + type])
-			JSON.parse(localStorage[l2.ui.storagePrefix + type]).forEach(function (s) {
-				var m = l2.model[type].findById(s.id);
+		if (localStorage[l2.ui.storageCharacterPrefix + type])
+			JSON.parse(localStorage[l2.ui.storageCharacterPrefix + type]).forEach(function (s) {
+				var m = l2.model.characterModel[type].findById(s.id);
 				if (m)
 					m.level = s.level;
 				else
@@ -1446,20 +1501,48 @@ l2.ui.loadFromStorage = function (showDeltas) {
 			});
 	});
 
-	if (localStorage[l2.ui.storagePrefix + 'commonBuffs'])
-		JSON.parse(localStorage[l2.ui.storagePrefix + 'commonBuffs']).forEach(function (cb) {
-			l2.model.commonBuffs.add(cb.id, null, cb.level);
+	if (localStorage[l2.ui.storageCharacterPrefix + 'commonBuffs'])
+		JSON.parse(localStorage[l2.ui.storageCharacterPrefix + 'commonBuffs']).forEach(function (cb) {
+			l2.model.characterModel.commonBuffs.add(cb.id, null, cb.level);
 		});
 
-	if (localStorage[l2.ui.storagePrefix + 'transformId'])
-		l2.model.transformId = localStorage[l2.ui.storagePrefix + 'transformId'];
+	if (localStorage[l2.ui.storageCharacterPrefix + 'transformId'])
+		l2.model.characterModel.transformId = localStorage[l2.ui.storageCharacterPrefix + 'transformId'];
 
 	l2.ui.fieldsets.forEach(function (fs) {
-		var value = localStorage[l2.ui.storagePrefix + fs + 'Visible'];
+		var value = localStorage[l2.ui.storageCharacterPrefix + fs + 'Visible'];
 		if (value == 'false')
 			value = false;
+		l2.model.characterModel[fs + 'Visible'] = !!value;
 		$('#' + fs.toLowerCase() + '-chb').attr('checked', !!value).each(l2.ui.toggleFieldSet);
 	});
+
+	saved = [];
+	for (var property in localStorage)
+		if (property.indexOf(l2.ui.storageSummonPrefix) == 0)
+			saved.push({
+				model: property.substring(2)
+			});
+
+	['dances', 'songs'].forEach(function (type) {
+		if (localStorage[l2.ui.storageSummonPrefix + type])
+			JSON.parse(localStorage[l2.ui.storageSummonPrefix + type]).forEach(function (s) {
+				var m = l2.model.summonModel[type].findById(s.id);
+				if (m) {
+					l2.ui.disableValuesUpdate = true;
+					m.level = s.level;
+					l2.ui.disableValuesUpdate = false;
+				} else
+					console.log('possible error');
+			});
+	});
+
+	if (localStorage[l2.ui.storageSummonPrefix + 'commonBuffs'])
+		JSON.parse(localStorage[l2.ui.storageSummonPrefix + 'commonBuffs']).forEach(function (cb) {
+			l2.ui.disableValuesUpdate = true;
+			l2.model.summonModel.commonBuffs.add(cb.id, null, cb.level);
+			l2.ui.disableValuesUpdate = false;
+		});
 
 	l2.ui.disableStorageUpdate = false;
 	l2.ui.loadingProcess = false;
@@ -1528,16 +1611,20 @@ $(function () {
 	$('#transforms-chb').click(l2.ui.toggleFieldSet);
 	$('#passives-chb').click(l2.ui.toggleFieldSet);
 
-	$('#equipment span.clear-btn').click(l2.ui.clearEquipment);
-	$('#selfbuffs span.clear-btn').click(l2.ui.clearSelfBuffs);
-	$('#toggles span.clear-btn').click(l2.ui.clearToggles);
-	$('#triggers span.clear-btn').click(l2.ui.clearTriggers);
-	$('#commonbuffs span.clear-btn').click(l2.ui.clearCommonBuffs);
-	$('#songs span.clear-btn').click(l2.ui.clearSongs);
-	$('#dances span.clear-btn').click(l2.ui.clearDances);
-	$('#clanskills span.clear-btn').click(l2.ui.clearClanSkills);
-	$('#subclassskills span.clear-btn').click(l2.ui.clearSubClassSkills);
-	$('#transforms span.clear-btn').click(l2.ui.clearTransform);
+	$('#equipment span.clear-btn[data-action=clear]').click(l2.ui.clearEquipment);
+	$('#selfbuffs span.clear-btn[data-action=clear]').click(l2.ui.clearSelfBuffs);
+	$('#toggles span.clear-btn[data-action=clear]').click(l2.ui.clearToggles);
+	$('#triggers span.clear-btn[data-action=clear]').click(l2.ui.clearTriggers);
+	$('#commonbuffs span.clear-btn[data-action=clear]').click(l2.ui.clearCommonBuffs);
+	$('#songs span.clear-btn[data-action=clear]').click(l2.ui.clearSongs);
+	$('#dances span.clear-btn[data-action=clear]').click(l2.ui.clearDances);
+	$('#clanskills span.clear-btn[data-action=clear]').click(l2.ui.clearClanSkills);
+	$('#subclassskills span.clear-btn[data-action=clear]').click(l2.ui.clearSubClassSkills);
+	$('#transforms span.clear-btn[data-action=clear]').click(l2.ui.clearTransform);
+
+	$('#commonbuffs span.clear-btn[data-action=copy]').click(l2.ui.copyCommonBuffs);
+	$('#songs span.clear-btn[data-action=copy]').click(l2.ui.copySongs);
+	$('#dances span.clear-btn[data-action=copy]').click(l2.ui.copyDances);
 
 	$(window).resize(l2.ui.adjustContainer);
 	l2.ui.adjustContainer();
@@ -1551,7 +1638,7 @@ $(function () {
 			l2.ui.tools.addOption($('#saves'), save, save);
 		}
 
-	$('#savebtn').click(function () {
+	/*$('#savebtn').click(function () {
 		var obj = {};
 		var prefixLength = l2.ui.storagePrefix.length;
 		for (var property in localStorage)
@@ -1604,7 +1691,7 @@ $(function () {
 			if (option)
 				$(option).remove();
 		}
-	});
+	});*/
 	// load share code
 	/*var json = prompt('Insert code here');
 	if (json != null) {

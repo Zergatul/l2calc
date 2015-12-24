@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="l2.data.armorsets.js"></script>
 	<script type="text/javascript" src="l2.data.skilltree.js"></script>
 	<script type="text/javascript" src="l2.data.skills.js"></script>
+	<script type="text/javascript" src="l2.data.summons.js"></script>
 	<script type="text/javascript" src="l2.ui.js"></script>
 	<script type="text/javascript" src="l2.ui.tools.js"></script>
 	<script type="text/javascript" src="l2.calc.js"></script>
@@ -21,34 +22,34 @@
 	<fieldset id="profession">
 		<legend>Profession</legend>
 		<div class="left prof-header">Race:</div>
-		<select id="race" data-model="raceId" data-load-order="3"></select>
+		<select id="race" data-model="raceId" data-load-order="3" autocomplete="off"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Prof:</div>
-		<select id="prof" data-model="prof" data-load-order="2"></select>
+		<select id="prof" data-model="prof" data-load-order="2" autocomplete="off"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Class:</div>
-		<select id="l2class" data-model="classId" data-load-order="1"></select>
+		<select id="l2class" data-model="classId" data-load-order="1" autocomplete="off"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Level:</div>
-		<select id="lvl" data-model="level"></select>
+		<select id="lvl" data-model="level" autocomplete="off"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">HP:</div>
-		<select id="hpperc" data-model="hpPercent"></select>
+		<select id="hpperc" data-model="hpPercent" autocomplete="off"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Pos:</div>
-		<select id="atkfrom" data-model="position"></select>
+		<select id="atkfrom" data-model="position" autocomplete="off"></select>
 		<div class="clear"></div>
 		<div class="left prof-header">Move:</div>
-		<select id="moving" data-model="moving"></select>
+		<select id="moving" data-model="moving" autocomplete="off"></select>
 		<div class="clear"></div>
 		<hr />
 		<div class="clear"></div>
-		<select id="saves"></select>
-		<button id="loadbtn">Load</button>
-		<button id="savebtn">Save</button>
-		<button id="deletebtn">Del</button>
+		<select id="saves" autocomplete="off"></select>
+		<button id="loadbtn" autocomplete="off">Load</button>
+		<button id="savebtn" autocomplete="off">Save</button>
+		<button id="deletebtn" autocomplete="off">Del</button>
 		<br />
-		<button id="sharebtn" style="display:none;">Share</button>
+		<button id="sharebtn" style="display:none;" autocomplete="off">Share</button>
 	</fieldset>
 	<div style="float: left;">
 		<fieldset id="bstats">
@@ -105,14 +106,14 @@
 		<fieldset id="summons">
 			<legend>Summons</legend>
 			<span>Summon:</span>
-			<select id="summons-select"></select>
+			<select id="summons-select" autocomplete="off"></select>
 			<div id="ui-switcher" style="display: none;">
 				<div style="float: left; height: 30px;">
 					<div style="padding-top: 8px;">Show UI for:</div>
 				</div>
 				<div style="float: left; width: 100px; height: 30px; padding-top: 5px; padding-left: 6px;">
 					<div style="height: 20px; position: relative;">
-						<input type="checkbox" id="showUIfor" class="cmn-toggle cmn-toggle-yes-no" style="display: none;" />
+						<input type="checkbox" id="showUIfor" class="cmn-toggle cmn-toggle-yes-no" style="display: none;" autocomplete="off" />
 						<label for="showUIfor" data-on="Summon" data-off="Character" style="cursor: pointer;"></label>
 					</div>
 				</div>
@@ -122,6 +123,12 @@
 	</div>
 	<fieldset id="stats">
 		<legend>Stats</legend>
+		<div id="stat-hid-level" style="display: none;">
+			<div class="left stat-header">Level</div>
+			<div class="left stat" id="summon-level">50000</div>
+			<div class="left stat-delta"></div>
+			<div class="clear"></div>
+		</div>
 		<div class="left stat-header">HP</div>
 		<div class="left stat" id="hp">50000</div>
 		<div class="left stat-delta"></div>
@@ -130,10 +137,12 @@
 		<div class="left stat" id="mp">50000</div>
 		<div class="left stat-delta"></div>
 		<div class="clear"></div>
-		<div class="left stat-header">CP</div>
-		<div class="left stat" id="cp">50000</div>
-		<div class="left stat-delta"></div>
-		<div class="clear"></div>
+		<div id="stat-hid-cp">
+			<div class="left stat-header">CP</div>
+			<div class="left stat" id="cp">50000</div>
+			<div class="left stat-delta"></div>
+			<div class="clear"></div>
+		</div>
 		<div class="left stat-header">P. Atk</div>
 		<div class="left stat" id="patk">50000</div>
 		<div class="left stat-delta"></div>
@@ -205,7 +214,7 @@
 		<fieldset id="equipment">
 			<legend>
 				<label><input type="checkbox" id="equipment-chb" checked="checked" />Equipment</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
 			</legend>
 			<div>
 				<div class="left eq-header">Weapon</div>
@@ -409,7 +418,7 @@
 		<fieldset id="selfbuffs">
 			<legend>
 				<label><input type="checkbox" id="selfbuffs-chb" checked="checked" />Self Buffs</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
 			</legend>
 			<div></div>
 		</fieldset>
@@ -417,7 +426,7 @@
 		<fieldset id="toggles">
 			<legend>
 				<label><input type="checkbox" id="toggles-chb" checked="checked" />Toggles</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
 			</legend>
 			<div></div>
 		</fieldset>
@@ -425,7 +434,7 @@
 		<fieldset id="triggers">
 			<legend>
 				<label><input type="checkbox" id="triggers-chb" checked="checked" />Triggers</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
 			</legend>
 			<div></div>
 		</fieldset>
@@ -433,7 +442,8 @@
 		<fieldset id="commonbuffs">
 			<legend>
 				<label><input type="checkbox" id="commonbuffs-chb" checked="checked" />Common Buffs</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
+				<span class="clear-btn copy-btn" data-action="copy" style="display: none;">Copy from character</span>
 			</legend>
 			<div></div>
 		</fieldset>
@@ -441,7 +451,8 @@
 		<fieldset id="songs">
 			<legend>
 				<label><input type="checkbox" id="songs-chb" checked="checked" />Songs</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
+				<span class="clear-btn copy-btn" data-action="copy" style="display: none;">Copy from character</span>
 			</legend>
 			<div></div>
 		</fieldset>
@@ -449,7 +460,8 @@
 		<fieldset id="dances">
 			<legend>
 				<label><input type="checkbox" id="dances-chb" checked="checked" />Dances</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
+				<span class="clear-btn copy-btn" data-action="copy" style="display: none;">Copy from character</span>
 			</legend>
 			<div></div>
 		</fieldset>
@@ -457,7 +469,7 @@
 		<fieldset id="clanskills">
 			<legend>
 				<label><input type="checkbox" id="clanskills-chb" checked="checked" />Clan Skills</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
 			</legend>
 			<div></div>
 			<div class="clear"></div>
@@ -480,7 +492,7 @@
 		<fieldset id="subclassskills">
 			<legend>
 				<label><input type="checkbox" id="subclassskills-chb" checked="checked" />Sub Class Skills</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
 			</legend>
 			<div></div>
 			<div class="clear"></div>
@@ -492,7 +504,7 @@
 		<fieldset id="transforms">
 			<legend>
 				<label><input type="checkbox" id="transforms-chb" checked="checked" />Transformations</label>
-				<span class="clear-btn">Clear</span>
+				<span class="clear-btn" data-action="clear">Clear</span>
 			</legend>
 			<div>
 				<div id="trans-main">

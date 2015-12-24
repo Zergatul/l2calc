@@ -512,14 +512,14 @@ window.l2 = window.l2 || {};
 		notifyPropertyChanged('autoSelectPassives', autoSelectPassives);
 	});
 
-	var checkboxes = {};
+	var checkboxes1 = {};
 	l2.ui.fieldsets.forEach(function (fs) {
-		checkboxes[fs] = true;
+		checkboxes1[fs] = true;
 		addModel(fs + 'Visible', function () {
-			return checkboxes[fs];
+			return checkboxes1[fs];
 		}, function (value) {
-			checkboxes[fs] = toBool(value);
-			notifyPropertyChanged(fs + 'Visible', checkboxes[fs]);
+			checkboxes1[fs] = toBool(value);
+			notifyPropertyChanged(fs + 'Visible', checkboxes1[fs]);
 		});
 	});
 
@@ -530,6 +530,21 @@ window.l2 = window.l2 || {};
 		songs: new L2SkillList('songs'),
 		dances: new L2SkillList('dances')
 	};
+
+	window.l2.model = summonModel;
+
+	var checkboxes2 = {};
+	l2.ui.fieldsets.forEach(function (fs) {
+		checkboxes2[fs] = true;
+		addModel(fs + 'Visible', function () {
+			return checkboxes2[fs];
+		}, function (value) {
+			checkboxes2[fs] = toBool(value);
+			notifyPropertyChanged(fs + 'Visible', checkboxes2[fs]);
+		});
+	});
+
+	window.l2.model = characterModel;
 
 	summonModel.summonModel = summonModel;
 	summonModel.characterModel = characterModel;

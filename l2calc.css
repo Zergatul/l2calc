@@ -79,6 +79,9 @@ select:disabled, input:disabled {
 	position:relative;
 	top:1px;
 }
+.copy-btn {
+	width: 180px;
+}
 
 .prof-header {
 	width: 40px;

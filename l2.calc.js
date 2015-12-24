@@ -15,6 +15,27 @@ l2.calc.forEachEffect = function (char, stat, callback) {
 	});
 };
 
+l2.calc.forEachEffectSummon = function (summon, stat, callback) {
+	summon.effects.forEach(function (s) {
+		var skill = l2.data.tools.getSkill(s.id);
+		if (!skill || !skill.effects)
+			return;
+		for (var j = 0; j < skill.effects.length; j++)
+			if (skill.effects[j].stat == stat) {
+				var val = (typeof skill.effects[j].val == 'number' ? skill.effects[j].val : skill.effects[j].val[s.lvl - 1]);
+				if (l2.calc.checkConditions(summon, skill.effects[j].using, skill.effects[j].hp, skill.effects[j].atkFrom, skill.effects[j].moving))
+					callback(skill.effects[j].op, val, skill.effects[j].finalChange);
+			}
+	});
+	summon.passives.forEach(function (s) {
+		s.effects.forEach(function (eff) {
+			if (eff.stat == stat) {
+				callback(eff.op, eff.val);
+			}
+		});
+	});
+};
+
 l2.calc.checkUsing = function (char, using) {
 	if (!using)
 		return true;
@@ -756,8 +777,8 @@ l2.calc.stats = function () {
 	l2.model.clanSkills.forEach(skillCallback);
 	l2.model.subClassSkills.forEach(skillCallback);
 	l2.model.passives.forEach(skillCallback);
-	l2.model.transformPassives.forEach(skillCallback)
-	l2.model.transformBuffs.forEach(skillCallback)
+	l2.model.transformPassives.forEach(skillCallback);
+	l2.model.transformBuffs.forEach(skillCallback);
 
 	l2.calc.baseStats(char);
 
@@ -807,8 +828,216 @@ l2.calc.stats = function () {
 	return stats;
 };
 
+l2.calc.summonHP = function (summon) {
+	var addHP = 0;
+	var multHP = 1;
+	l2.calc.forEachEffectSummon(summon, 'maxHp', function (op, val) {
+		if (op == 'add') { addHP += val; return; }
+		if (op == 'sub') { addHP -= val; return; }
+		if (op == 'mul') { multHP *= val; return; }
+		throw 'not implemented';
+	});
+	var conBonus = l2.data.statBonus['con'][summon.baseStats.con];
+	return Math.floor(summon.info.hp * conBonus * multHP + addHP);
+};
+
+l2.calc.summonMP = function (summon) {
+	var addMP = 0;
+	var multMP = 1;
+	l2.calc.forEachEffectSummon(summon, 'maxMp', function (op, val) {
+		if (op == 'add') { addHP += val; return; }
+		if (op == 'sub') { addHP -= val; return; }
+		if (op == 'mul') { multHP *= val; return; }
+		throw 'not implemented';
+	});
+	var menBonus = l2.data.statBonus['men'][summon.baseStats.men];
+	return Math.floor(summon.info.mp * menBonus * multMP + addMP);
+};
+
+l2.calc.summonPDef = function (summon) {
+	var addPdef = 0;
+	var multPdef = 1;
+	l2.calc.forEachEffectSummon(summon, 'pDef', function (op, val) {
+		if (op == 'add') { addPdef += val; return; }
+		if (op == 'mul') { multPdef *= val; return; }
+		throw 'not implemented';
+	});
+	return Math.floor(summon.info.pDef * summon.lm * multPdef + addPdef);
+};
+
+l2.calc.summonMDef = function (summon) {
+	var addMdef = 0;
+	var multMdef = 1;
+	l2.calc.forEachEffectSummon(summon, 'pDef', function (op, val) {
+		if (op == 'add') { addMdef += val; return; }
+		if (op == 'mul') { multMdef *= val; return; }
+		throw 'not implemented';
+	});
+	var menBonus = l2.data.statBonus['men'][summon.baseStats.men];
+	return Math.floor(summon.info.mDef * menBonus * summon.lm * multMdef + addMdef);
+};
+
+l2.calc.summonPAtk = function (summon) {
+	var addPatk = 0;
+	var multPatk = 1;
+	l2.calc.forEachEffectSummon(summon, 'pAtk', function (op, val) {
+		if (op == 'add') { addPatk += val; return; }
+		if (op == 'mul') { multPatk *= val; return; }
+		throw 'not implemented';
+	});
+	var strBonus = l2.data.statBonus['str'][summon.baseStats.str];
+	return Math.floor(summon.info.pAtk * strBonus * summon.lm * multPatk + addPatk);
+};
+
+l2.calc.summonMAtk = function (summon) {
+	var addMatk = 0;
+	var multMatk = 1;
+	l2.calc.forEachEffectSummon(summon, 'mAtk', function (op, val) {
+		if (op == 'add') { addMatk += val; return; }
+		if (op == 'mul') { multMatk *= val; return; }
+		throw 'not implemented';
+	});
+	var intBonus = l2.data.statBonus['int'][summon.baseStats.int];
+	return Math.floor(summon.info.mAtk * intBonus * intBonus * summon.lm * summon.lm * multMatk + addMatk);
+};
+
+l2.calc.summonAccuracy = function (summon) {
+	var addAcc = 0;
+	l2.calc.forEachEffectSummon(summon, 'accCombat', function (op, val) {
+		if (op == 'add') { addAcc += val; return; }
+		if (op == 'sub') { addAcc -= val; return; }
+		throw 'not implemented';
+	});
+	return Math.floor(Math.sqrt(summon.baseStats.dex) * 6 + summon.lvl + addAcc + summon.info.acc) + l2.data.accuracyFix[summon.lvl];
+};
+
+l2.calc.summonEvasion = function (summon) {
+	var addEva = 0;
+	l2.calc.forEachEffectSummon(summon, 'rEvas', function (op, val) {
+		if (op == 'add') { addEva += val; return; }
+		if (op == 'sub') { addEva -= val; return; }
+		throw 'not implemented';
+	});
+	return Math.floor(Math.sqrt(summon.baseStats.dex) * 6 + summon.lvl + addEva + summon.info.eva);
+};
+
+l2.calc.summonPCritical = function (summon) {
+	var dexBonus = l2.data.statBonus['dex'][summon.baseStats.dex];
+	var baseCritical = summon.info.crit * dexBonus;
+	var addCritial = 0;
+	l2.calc.forEachEffectSummon(summon, 'rCrit', function (op, val) {
+		if (op == 'basemul') { addCritial += baseCritical * val; return; }
+		if (op == 'add') { addCritial += val; return; }
+		throw 'not implemented';
+	});
+	return Math.min(Math.round(baseCritical + addCritial), 500);
+};
+
+l2.calc.summonAtkSpeed = function (summon) {
+	var dexBonus = l2.data.statBonus['dex'][summon.baseStats.dex];
+	var multAtkSpeed = 1;
+	l2.calc.forEachEffectSummon(summon, 'pAtkSpd', function (op, val) {
+		if (op == 'mul') { multAtkSpeed *= val; return; }
+		throw 'not implemented';
+	});
+	return Math.min(Math.floor(dexBonus * summon.info.pSpd * multAtkSpeed), 1500);
+};
+
+l2.calc.summonCastSpeed = function (summon) {
+	var addCSpeed = 0;
+	var multCSpeed = 1;
+	l2.calc.forEachEffectSummon(summon, 'mAtkSpd', function (op, val) {
+		if (op == 'add') { addCSpeed += val; return; }
+		if (op == 'mul') { multCSpeed *= val; return; }
+		throw 'not implemented';
+	});
+	var witBonus = l2.data.statBonus['wit'][summon.baseStats.wit];
+	return Math.floor(333 * witBonus * multCSpeed + addCSpeed);
+};
+
+l2.calc.summonPCritMultiplier = function (summon) {
+	var mult = 2;
+	l2.calc.forEachEffectSummon(summon, 'cAtk', function (op, val) {
+		if (op == 'mul') { mult *= val; return; }
+		throw 'not implemented';
+	});
+	return mult;
+};
+
+l2.calc.summonPCritAtk = function (summon, stats) {
+	var addCritPAtk = 0;
+	l2.calc.forEachEffectSummon(summon, 'cAtkAdd', function (op, val) {
+		if (op == 'add') { addCritPAtk += val; return; };
+		throw 'not implemented';
+	});
+	return Math.floor(stats.pAtk * stats.pCritMultiplier + addCritPAtk);
+};
+
 l2.calc.summonStats = function () {
+	var summonId = l2.model.characterModel.summonId;
+	var summonLevel = l2.model.characterModel.summonLevel;
+	var npcIds = [];
+	for (var id in l2.data.summons[summonId].stats)
+		npcIds.push(id);
+	npcIds.sort(function (id1, id2) { return id1 - id2; });
+	var summonInfo = l2.data.summons[summonId].stats[npcIds[summonLevel - 1]];
+
+	var summon = {
+		baseStats: { int: summonInfo.int, str: summonInfo.str, con: summonInfo.con, men: summonInfo.men, dex: summonInfo.dex, wit: summonInfo.wit },
+		info: summonInfo,
+		lvl: summonInfo.lvl,
+		lm: (summonInfo.lvl + 89) / 100,
+		hpPerc: 100,
+		atkFrom: 'behind',
+		moving: 'staying',
+		effects: [],
+		passives: []
+	};
+
+	var skillCallback = function (s) {
+		if (s.level > 0)
+			summon.effects.push({
+				id: s.id,
+				lvl: s.level,
+				skill: s.skill
+			});
+	};
+
+	l2.model.summonModel.commonBuffs.forEach(skillCallback);
+	l2.model.summonModel.triggers.forEach(skillCallback);
+	l2.model.summonModel.songs.forEach(skillCallback);
+	l2.model.summonModel.dances.forEach(skillCallback);
+
+	summonInfo.skills.forEach(function (sn) {
+		summon.passives.push(l2.data.npcSkills[sn]);
+	});
+
 	var stats = {
-		baseStats: l2.data.summonBaseStats
-	}
+		level: summon.lvl,
+		baseStats: summon.baseStats,
+		hp: l2.calc.summonHP(summon),
+		mp: l2.calc.summonMP(summon),
+		cp: 0,
+		pDef: l2.calc.summonPDef(summon),
+		pAtk: l2.calc.summonPAtk(summon),
+		mAtk: l2.calc.summonMAtk(summon),
+		accuracy: l2.calc.summonAccuracy(summon),
+		evasion: l2.calc.summonEvasion(summon),
+		pCritical: l2.calc.summonPCritical(summon),
+		pCritMultiplier: l2.calc.summonPCritMultiplier(summon),
+		mCritical: 1,
+		mCritMultiplier: 1,
+		atkSpeed: l2.calc.summonAtkSpeed(summon),
+		castSpeed: l2.calc.summonCastSpeed(summon),
+		speed: 1,		
+		mDef: l2.calc.summonMDef(summon),
+		mpRegen: 1
+	};
+
+	stats.realAtkSpeed = stats.atkSpeed;
+	stats.pCritAtk = l2.calc.summonPCritAtk(summon, stats);
+	stats.pDPS = l2.calc.pDPS(stats);
+	stats.mDPS = l2.calc.mDPS(stats);
+
+	return stats;
 };
