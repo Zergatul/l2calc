@@ -39,3 +39,5 @@ save triggers to localstorage
 remember div scroll position during summon/character switches
 
 i am on summon view, i can turn off summons, but actually i remain on the summon view
+
+add back +% -% after recalc

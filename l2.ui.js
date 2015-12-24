@@ -201,6 +201,8 @@ l2.ui.bindSelfBuffs = function () {
 				skills[skill.id] = [skill];
 		});
 	});
+
+	// for character
 	l2.model.selfBuffs.clear();
 	for (var id in skills) {
 		var skill = l2.data.tools.getSkill(id);
@@ -213,18 +215,19 @@ l2.ui.bindSelfBuffs = function () {
 
 	$('#selfbuffs > div > div.self-skill').remove();
 	l2.model.selfBuffs.forEach(function (sb) {
-		var skill = sb.skill;
-		var div = $('<div>').addClass('left self-skill');
-		var select = $('<select>');
-		select.attr('data-skill-id', skill.id);
-		select.change(l2.ui.createChangeSkillListHandler('selfBuffs', skill.id));
-		l2.ui.tools.addOption(select, '', '---');
-		for (var i = 0; i < sb.data.length; i++)
-			l2.ui.tools.addOption(select, sb.data[i].lvl, sb.data[i].lvl + ' [' + sb.data[i].minLvl + ']');
-		div.append(select);
-		div.append($('<span>').text(skill.name));
-		$('#selfbuffs > div').append(div);
+		l2.modelView.addSelfBuff(sb, 0);
 	});
+
+	// for summon buffs
+	l2.model.summonModel.selfBuffs.clear();
+	for (var id in skills) {
+		var skill = l2.data.tools.getSkill(id);
+		skills[id].sort(function (s1, s2) {
+			return s1.lvl - s2.lvl;
+		});
+		if (skill && skill.operateType.charAt(0) == 'A' && skill.target == 'PET' && skill.effects && skill.effectType != 'Debuff' && skill.effectType != 'Transformation')
+			l2.model.summonModel.selfBuffs.add(skill.id, skills[id]);
+	}
 };
 
 l2.ui.clearSelfTriggers = function () {
@@ -235,10 +238,6 @@ l2.ui.clearSelfTriggers = function () {
 	});
 	for (var i = 0; i < selfTogglesIds.length; i++)
 		l2.model.triggers.removeById(selfTogglesIds[i]);
-};
-
-l2.ui.clearCounterCritical = function () {
-	$('input[data-skill-id=6059]').closest('div').remove();
 };
 
 l2.ui.bindToggles = function () {
@@ -454,9 +453,40 @@ l2.ui.bindSummons = function () {
 		return 0;
 	});
 
+	enchSummons = [];
+	if (l2.model.characterModel.prof == 3) {
+		var skillIds = [];
+		summons.forEach(function (_) {
+			if (skillIds.indexOf(_.skill.id) == -1)
+				skillIds.push(_.skill.id);
+		});
+		var skillIdMaxLvl = [];
+		skillIds.forEach(function (id) {
+			if (summons.some(function (_) { return _.skill.id == id && _.skill.minLvl > 40; }))
+				skillIdMaxLvl.push(id);
+		});
+		skillIdMaxLvl.forEach(function (id) {
+			for (var e = 1; e <= 30; e++) {
+				for (var npcid in l2.data.summons[id].stats)
+					if (l2.data.summons[id].stats[npcid].name.indexOf('_ep_' + (e < 10 ? '0' + e : e)) > 0)
+						enchSummons.push({
+							skill: { id: id, enchant: e },
+							summonInfo: l2.data.summons[id]
+						});
+			}
+		});
+	}
+
 	summons.forEach(function (_) {
 		l2.ui.tools.addOption(select, _.skill.id + ':' + _.skill.lvl, '[' + _.skill.minLvl + '] ' + _.summonInfo.name + ' (' + _.skill.lvl + ')');
 	});
+
+	if (enchSummons.length) {
+		$('<option>').text('*******').attr('disabled', true).appendTo(select);
+		enchSummons.forEach(function (_) {
+			l2.ui.tools.addOption(select, _.skill.id + ':' + (100 + _.skill.enchant), '[+' + _.skill.enchant + '] ' + _.summonInfo.name);
+		});
+	}
 };
 
 l2.ui.bindCommonBuffs = function () {
@@ -906,8 +936,13 @@ l2.ui.recalc = function () {
 
 	$('#mpregen').text(stats.mpRegen);
 
-	/*var prevStats = l2.ui.prevStats;
-	l2.ui.prevStats = stats;
+	if (l2.ui.summonView) {
+		var prevStats = l2.ui.summonPrevStats;
+		l2.ui.summonPrevStats = stats;
+	} else {
+		var prevStats = l2.ui.characterPrevStats;
+		l2.ui.characterPrevStats = stats;
+	}
 
 	if (l2.ui.canShowDelta && prevStats) {
 		l2.ui.highlightStat(prevStats, stats, 'hp', $('#hp').next(), 1);
@@ -923,7 +958,7 @@ l2.ui.recalc = function () {
 		l2.ui.highlightStat(prevStats, stats, 'pCritical', $('#pcritical').next(), 0);
 		l2.ui.highlightStat(prevStats, stats, 'evasion', $('#evasion').next(), 0);
 		l2.ui.highlightStat(prevStats, stats, 'speed', $('#speed').next(), 0);
-	}*/
+	}
 };
 
 l2.ui.adjustContainer = function () {
@@ -1006,18 +1041,25 @@ l2.ui.bindCurrentModelToUI = function () {
 
 	$('#triggers-chb')[0].checked = l2.model.triggersVisible;
 	l2.ui.toggleFieldSet.call($('#triggers-chb'));
-	$('#triggers input[data-skill-id]').attr('checked', false);
+	$('div.trigger-skill').remove();
 	l2.model.triggers.forEach(function (s) {
-		if (s.level)
-			$('input[data-skill-id=' + s.id + ']')[0].checked = true;
+		l2.modelView.addTrigger(s, null, l2.ui.summonView);
+	});
+
+	$('#selfbuffs-chb')[0].checked = l2.model.selfBuffsVisible;
+	l2.ui.toggleFieldSet.call($('#selfbuffs-chb'));
+	$('div.self-skill').remove();
+	l2.model.selfBuffs.forEach(function (sb) {
+		l2.modelView.addSelfBuff(sb, l2.ui.summonView);
 	});
 };
 
 l2.ui.bindSummonsFieldSet = function () {
 	$('#summons-select').change(function () {
+		l2.ui.disableRecalc = true;
 		if (this.value == '') {
 			l2.model.characterModel.summonId = null;
-			l2.model.characterModel.summonLevel = null;
+			l2.model.characterModel.summonLevel = null;			
 			$('#ui-switcher').hide();
 		} else {
 			var parts = this.value.split(':');
@@ -1025,6 +1067,7 @@ l2.ui.bindSummonsFieldSet = function () {
 			l2.model.characterModel.summonLevel = parseInt(parts[1]);
 			$('#ui-switcher').show();
 		}
+		l2.ui.disableRecalc = false;
 		l2.ui.adjustContainer();
 		l2.ui.recalc();
 	});
@@ -1039,12 +1082,9 @@ l2.ui.bindSummonsFieldSet = function () {
 				else
 					$(this).attr('disabled', true);
 			});
-			$('#equipment, #selfbuffs, #toggles, #clanskills, #subclassskills, #transforms, #passives').hide();
+			$('#equipment, #toggles, #clanskills, #subclassskills, #transforms, #passives').hide();
 			l2.model = l2.model.summonModel;
 			l2.ui.summonView = true;
-			l2.ui.clearSelfTriggers();
-			l2.ui.clearCounterCritical();
-			l2.model.triggers.removeById(6059);
 			l2.ui.bindCurrentModelToUI();
 			l2.ui.recalc();
 		} else {
@@ -1058,10 +1098,9 @@ l2.ui.bindSummonsFieldSet = function () {
 				else
 					this.disabled = false;
 			});
-			$('#equipment, #selfbuffs, #toggles, #clanskills, #subclassskills, #transforms, #passives').show();
+			$('#equipment, #toggles, #clanskills, #subclassskills, #transforms, #passives').show();
 			l2.model = l2.model.characterModel;
 			l2.ui.summonView = false;
-			l2.ui.clearSelfTriggers();
 			l2.ui.bindCurrentModelToUI();
 			l2.ui.recalc();
 		}
@@ -1255,21 +1294,8 @@ l2.ui.prepareModel = function () {
 		});
 	});
 
-	l2.model.addHandler('triggers.add', function (s) {
-		if (l2.ui.disableValuesUpdate)
-			return;
-		var skill = s.skill;
-		if (skill == null)
-			return;
-		var div = $('<div>').addClass('left trigger-skill');
-		var label = $('<label>');
-		var input = $('<input>').attr('type', 'checkbox')
-			.attr('data-skill-id', skill.id);
-		input.change(l2.ui.createChangeSkillListHandler('triggers', skill.id));
-		label.append(input);
-		label.append(skill.name);
-		div.append(label);
-		$('#triggers > div').append(div);
+	l2.model.addHandler('triggers.add', function (s, sender, isSummon) {
+		l2.modelView.addTrigger(s, sender, isSummon);
 	});
 	l2.model.addHandler('triggers.remove', function (s) {
 		var skill = s.skill;
@@ -1324,7 +1350,7 @@ l2.ui.prepareModel = function () {
 		}
 	});
 
-	var checkForTrigger = function (value, s) {
+	var checkForTrigger = function (value, s, isSummon) {
 		var skill = s.skill;
 		if (l2.data.skipTriggers.indexOf(s.id) >= 0)
 			return;
@@ -1332,24 +1358,28 @@ l2.ui.prepareModel = function () {
 		if (triggerId == 5565) // Expose Weak Point - debuff
 			return;
 		if (triggerId && l2.data.commonTriggers.indexOf(triggerId) == -1) {
-			var modelTrigger = l2.model.triggers.findById(triggerId);
-			if (value) {					
+			if (skill.effectOn == 'summon')
+				var model = l2.model.summonModel;
+			else
+				var model = isSummon ? l2.model.summonModel : l2.model.characterModel;
+			var modelTrigger = model.triggers.findById(triggerId);
+			if (value) {
 				if (modelTrigger)
 					modelTrigger.data.push(skill.id);
 				else
-					l2.model.triggers.add(triggerId, [skill.id]);
+					model.triggers.add(triggerId, [skill.id]);
 			} else
 				if (modelTrigger) {
 					modelTrigger.data = modelTrigger.data.filter(function (id) { return id != skill.id });
 					if (modelTrigger.data.length == 0)
-						l2.model.triggers.removeById(triggerId);
+						model.triggers.removeById(triggerId);
 				}
 		}
 	};
 	l2.model.addHandler('subClassSkills[].level', checkForTrigger);
 	l2.model.addHandler('passives[].level', checkForTrigger);
-	l2.model.addHandler('commonBuffs.add', function (s) { checkForTrigger(s.level, s); });
-	l2.model.addHandler('commonBuffs.remove', function (s) { checkForTrigger(0, s); });
+	l2.model.addHandler('commonBuffs.add', function (s, sender, isSummon) { checkForTrigger(s.level, s, isSummon); });
+	l2.model.addHandler('commonBuffs.remove', function (s, sender, isSummon) { checkForTrigger(0, s, isSummon); });
 
 	var checkAbnormalType = function (level, s) {
 		if (level) {

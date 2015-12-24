@@ -2143,7 +2143,7 @@ l2.data.skills = [
 		{ stat: 'runSpd', val: 0.5, op: 'mul' },
 		{ stat: 'accCombat', val: 12, op: 'sub' } ]},
 	{ id: 1496, levels: 1, name: 'Servitor Barrier', target: 'PET', operateType: 'A2', effectType: 'Invincible', abnormalType: 'invincibility' },
-	{ id: 1497, levels: 1, name: 'Excessive Loyalty', target: 'SELF', operateType: 'P', trigger: 5570, effectType: 'ChanceSkillTrigger' },
+	{ id: 1497, levels: 1, name: 'Excessive Loyalty', target: 'SELF', operateType: 'P', trigger: 5570, effectType: 'ChanceSkillTrigger', effectOn: 'summon' },
 	{ id: 1498, levels: 1, name: 'Mutual Response', target: 'SELF', operateType: 'P', trigger: 5571, effectType: 'ChanceSkillTrigger' },
 	{ id: 1499, levels: 1, name: 'Improved Combat', target: 'ONE', operateType: 'A2', effectType: 'Buff', abnormalType: 'improve_pa_pd_up', effects: [
 		{ stat: 'pAtk', val: 1.15, op: 'mul' },
@@ -2240,7 +2240,16 @@ l2.data.skills = [
 		{ stat: 'earthRes', val: 20, op: 'add' } ]},
 	{ id: 1556, levels: 1, name: 'Arcane Shield', target: 'SELF', operateType: 'A2', effectType: 'Buff', abnormalType: 'mana_shield', effects: [
 		{ stat: 'manaShield', val: 70, op: 'add' } ]},
-	{ id: 1557, levels: 1, name: 'Servitor Share', target: 'PET', operateType: 'A2', effectType: 'ServitorShare' },
+	{ id: 1557, levels: 1, name: 'Servitor Share', target: 'PET', operateType: 'A2', effectType: 'ServitorShare', effects: [
+		{ stat: 'pAtk', val: 50, op: 'addPercForSummon' },
+		{ stat: 'pDef', val: 50, op: 'addPercForSummon' },
+		{ stat: 'mAtk', val: 25, op: 'addPercForSummon' },
+		{ stat: 'mDef', val: 25, op: 'addPercForSummon' },
+		{ stat: 'maxHp', val: 10, op: 'addPercForSummon' },
+		{ stat: 'maxMp', val: 10, op: 'addPercForSummon' },
+		{ stat: 'rCrit', val: 20, op: 'addPercForSummon' },
+		{ stat: 'pAtkSpd', val: 10, op: 'addPercForSummon' },
+		{ stat: 'mAtkSpd', val: 3, op: 'addPercForSummon' } ]},
 	{ id: 1559, levels: 3, name: 'Potential Ability', target: 'SELF', operateType: 'P', effects: [
 		{ stat: 'rCrit', val: [0.2, 0.3, 0.4], op: 'basemul', using: 'Dagger,Dual Dagger,Light' },
 		{ stat: 'cAtkAdd', val: [177, 295, 384], op: 'add', using: 'Dagger,Dual Dagger,Light' } ]},

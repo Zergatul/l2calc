@@ -5,10 +5,10 @@ window.l2 = window.l2 || {};
 	var handlers = {};
 	var globalHandlers = [];
 
-	var notifyPropertyChanged = function (property, value, sender) {
+	var notifyPropertyChanged = function (property, value, sender, isSummon) {
 		if (handlers[property])
 			handlers[property].forEach(function (handler) {
-				handler(value, sender);
+				handler(value, sender, isSummon);
 			});
 		globalHandlers.forEach(function (handler) {
 			handler(property, value);
@@ -287,17 +287,18 @@ window.l2 = window.l2 || {};
 		})
 	};
 
-	var L2SkillList = function (type) {
+	var L2SkillList = function (type, isSummon) {
 		this.type = type;
+		this.isSummon = !!isSummon;
 		var list = [];
 		this.add = function (id, data, level) {
 			var skill = new L2Skill(id, data, this, level);
 			list.push(skill);
-			notifyPropertyChanged(type + '.add', skill);
+			notifyPropertyChanged(type + '.add', skill, null, this.isSummon);
 		};
 		this.clear = function () {
 			list.forEach(function (s) {
-				notifyPropertyChanged(type + '.remove', s);
+				notifyPropertyChanged(type + '.remove', s, null, this.isSummon);
 			});
 			list = [];
 			notifyPropertyChanged(type + '.clear');
@@ -326,7 +327,7 @@ window.l2 = window.l2 || {};
 				}
 			if (index >= 0) {
 				var removed = list.splice(index, 1);
-				notifyPropertyChanged(type + '.remove', removed[0]);
+				notifyPropertyChanged(type + '.remove', removed[0], null, this.isSummon);
 			}
 		};
 		this.toJSON = function () {
@@ -524,11 +525,11 @@ window.l2 = window.l2 || {};
 	});
 
 	var summonModel = {
-		selfBuffs: new L2SkillList('selfBuffs'),
-		triggers: new L2SkillList('triggers'),
-		commonBuffs: new L2SkillList('commonBuffs'),		
-		songs: new L2SkillList('songs'),
-		dances: new L2SkillList('dances')
+		selfBuffs: new L2SkillList('selfBuffs', 1),
+		triggers: new L2SkillList('triggers', 1),
+		commonBuffs: new L2SkillList('commonBuffs', 1),
+		songs: new L2SkillList('songs', 1),
+		dances: new L2SkillList('dances', 1)
 	};
 
 	window.l2.model = summonModel;
