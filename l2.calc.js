@@ -23,8 +23,8 @@ l2.calc.forEachEffectSummon = function (summon, stat, callback) {
 		for (var j = 0; j < skill.effects.length; j++)
 			if (skill.effects[j].stat == stat) {
 				var val = (typeof skill.effects[j].val == 'number' ? skill.effects[j].val : skill.effects[j].val[s.lvl - 1]);
-				if (l2.calc.checkConditions(summon, skill.effects[j].using, skill.effects[j].hp, skill.effects[j].atkFrom, skill.effects[j].moving))
-					callback(skill.effects[j].op, val, skill.effects[j].finalChange);
+				if (l2.calc.checkConditionsSummon(summon, skill.effects[j].using))
+					callback(skill.effects[j].op, val);
 			}
 	});
 	summon.passives.forEach(function (s) {
@@ -62,6 +62,21 @@ l2.calc.checkUsing = function (char, using) {
 	}
 };
 
+l2.calc.checkUsingSummon = function (summon, using) {
+	if (!using)
+		return true;
+	switch (using) {
+		case 'Sword': return true;
+		/*case 'Light': return char.armorType == 'light';
+		case 'Heavy': return char.armorType == 'heavy';
+		case 'Magic': return char.armorType == 'magic';
+		case 'not(Magic)': return char.armorType != 'magic';
+		case 'Sigil': return char.shield && char.shield.armorType == 'sigil';
+		default: throw 'Using [' + using + '] not implemented';*/
+		default: return false;
+	}
+};
+
 l2.calc.checkConditions = function (char, usings, hp, atkFrom, moving) {
 	if (usings) {
 		var ok = false;
@@ -77,6 +92,18 @@ l2.calc.checkConditions = function (char, usings, hp, atkFrom, moving) {
 		return false;
 	if (moving && char.moving != moving)
 		return false;
+	return true;
+};
+
+l2.calc.checkConditionsSummon = function (char, usings) {
+	if (usings) {
+		var ok = false;
+		var parts = usings.split(',');
+		for (var i = 0; i < parts.length; i++)
+			ok = ok || l2.calc.checkUsingSummon(char, parts[i]);
+		if (!ok)
+			return false;
+	}
 	return true;
 };
 

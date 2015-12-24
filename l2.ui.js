@@ -237,6 +237,10 @@ l2.ui.clearSelfTriggers = function () {
 		l2.model.triggers.removeById(selfTogglesIds[i]);
 };
 
+l2.ui.clearCounterCritical = function () {
+	$('input[data-skill-id=6059]').closest('div').remove();
+};
+
 l2.ui.bindToggles = function () {
 	var skills = {};
 	var classesId = l2.data.tools.getBaseClasses(l2.model.classId);
@@ -669,7 +673,10 @@ l2.ui.bindTransforms = function () {
 
 l2.ui.bindCommonTriggers = function () {
 	l2.data.commonTriggers.forEach(function (id) {
-		l2.model.triggers.add(id);
+		l2.model.characterModel.triggers.add(id);
+		l2.ui.disableValuesUpdate = true;
+		l2.model.summonModel.triggers.add(id);
+		l2.ui.disableValuesUpdate = false;
 	});	
 };
 
@@ -996,6 +1003,14 @@ l2.ui.bindCurrentModelToUI = function () {
 		if (s.level)
 			$('input[data-skill-id=' + s.id + ']')[0].checked = true;
 	});
+
+	$('#triggers-chb')[0].checked = l2.model.triggersVisible;
+	l2.ui.toggleFieldSet.call($('#triggers-chb'));
+	$('#triggers input[data-skill-id]').attr('checked', false);
+	l2.model.triggers.forEach(function (s) {
+		if (s.level)
+			$('input[data-skill-id=' + s.id + ']')[0].checked = true;
+	});
 };
 
 l2.ui.bindSummonsFieldSet = function () {
@@ -1027,6 +1042,9 @@ l2.ui.bindSummonsFieldSet = function () {
 			$('#equipment, #selfbuffs, #toggles, #clanskills, #subclassskills, #transforms, #passives').hide();
 			l2.model = l2.model.summonModel;
 			l2.ui.summonView = true;
+			l2.ui.clearSelfTriggers();
+			l2.ui.clearCounterCritical();
+			l2.model.triggers.removeById(6059);
 			l2.ui.bindCurrentModelToUI();
 			l2.ui.recalc();
 		} else {
@@ -1043,6 +1061,7 @@ l2.ui.bindSummonsFieldSet = function () {
 			$('#equipment, #selfbuffs, #toggles, #clanskills, #subclassskills, #transforms, #passives').show();
 			l2.model = l2.model.characterModel;
 			l2.ui.summonView = false;
+			l2.ui.clearSelfTriggers();
 			l2.ui.bindCurrentModelToUI();
 			l2.ui.recalc();
 		}
@@ -1237,6 +1256,8 @@ l2.ui.prepareModel = function () {
 	});
 
 	l2.model.addHandler('triggers.add', function (s) {
+		if (l2.ui.disableValuesUpdate)
+			return;
 		var skill = s.skill;
 		if (skill == null)
 			return;
