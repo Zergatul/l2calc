@@ -872,9 +872,9 @@ l2.calc.summonMP = function (summon) {
 	var addMP = 0;
 	var multMP = 1;
 	l2.calc.forEachEffectSummon(summon, 'maxMp', function (op, val) {
-		if (op == 'add') { addHP += val; return; }
-		if (op == 'sub') { addHP -= val; return; }
-		if (op == 'mul') { multHP *= val; return; }
+		if (op == 'add') { addMP += val; return; }
+		if (op == 'sub') { addMP -= val; return; }
+		if (op == 'mul') { multMP *= val; return; }
 		throw 'not implemented';
 	});
 	var menBonus = l2.data.statBonus['men'][summon.baseStats.men];
