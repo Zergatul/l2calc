@@ -421,12 +421,8 @@ l2.calc.atkSpeed = function (char) {
 
 l2.calc.accuracy = function (char) {
 	var addAcc = 0;
-	if (char.weapon) {
-		if (['dagger', 'bow', 'pole', 'dualdagger'].indexOf(char.weapon.weaponType) >= 0)
-			addAcc -= 3.75;
-		if (['blunt', 'bigblunt', 'dualfist'].indexOf(char.weapon.weaponType) >= 0)
-			addAcc += 4.75;
-	}
+	if (char.weapon)
+		addAcc += l2.data.tools.getBaseAccuracy(char.weapon.weaponType);
 	l2.calc.forEachEffect(char, 'accCombat', function (op, val) {
 		if (op == 'add') { addAcc += val; return; }
 		if (op == 'sub') { addAcc -= val; return; }

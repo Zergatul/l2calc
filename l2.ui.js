@@ -1061,6 +1061,10 @@ l2.ui.bindSummonsFieldSet = function () {
 			l2.model.characterModel.summonId = null;
 			l2.model.characterModel.summonLevel = null;			
 			$('#ui-switcher').hide();
+			if ($('#showUIfor').is(':checked')) {
+				$('#showUIfor')[0].checked = false;
+				$('#showUIfor').trigger('change');
+			}
 		} else {
 			var parts = this.value.split(':');
 			l2.model.characterModel.summonId = parseInt(parts[0]);

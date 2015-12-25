@@ -64,6 +64,12 @@ l2.data.tools.getBaseAtkSpeed = function (weaponType, bowFast) {
 			return l2.data.weaponBaseData[i].baseAtkSpeed;
 	throw 'Unknown weapon type';
 };
+l2.data.tools.getBaseAccuracy = function (weaponType) {
+	for (var i = 0; i < l2.data.weaponBaseData.length; i++)
+		if (l2.data.weaponBaseData[i].name == weaponType)
+			return l2.data.weaponBaseData[i].accuracy;
+	throw 'Unknown weapon type';
+};
 l2.data.tools.sortItems = function (items) {
 	items.sort(function (i1, i2) {
 		if (i1.name < i2.name) return -1;

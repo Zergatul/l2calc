@@ -180,7 +180,6 @@ l2.data.weaponTypes = [
 	{ name: 'Pole', code: 'pole' },
 	{ name: 'Rapier', code: 'rapier' },
 	{ name: 'Dagger', code: 'dagger' },
-	{ name: 'Fist', code: 'fist' },
 	{ name: '2H Blunt', code: 'bigblunt' },
 	{ name: 'Bow', code: 'bow' },
 	{ name: 'Crossbow', code: 'crossbow' },
@@ -190,18 +189,20 @@ l2.data.weaponTypes = [
 l2.data.twoHand = ['bow', 'pole', 'bigsword', 'bigblunt', 'dual', 'dualfist', 'dualdagger', 'crossbow', 'ancient'];
 
 l2.data.weaponBaseData = [
-	{ name: 'bigsword', baseCritical: 80, baseAtkSpeed: 325 },
-	{ name: 'sword', baseCritical: 80, baseAtkSpeed: 379 },
-	{ name: 'pole', baseCritical: 80, baseAtkSpeed: 325 },
-	{ name: 'dual', baseCritical: 80, baseAtkSpeed: 325 },
-	{ name: 'bigblunt', baseCritical: 40, baseAtkSpeed: 325 },
-	{ name: 'blunt', baseCritical: 40, baseAtkSpeed: 379 },
-	{ name: 'fist', baseCritical: 40, baseAtkSpeed: 325 },
-	{ name: 'dualfist', baseCritical: 40, baseAtkSpeed: 325 },
-	{ name: 'dagger', baseCritical: 120, baseAtkSpeed: 433 },
-	{ name: 'bow', baseCritical: 120, baseAtkSpeed: 293 },
-	{ name: 'crossbow', baseCritical: 100, baseAtkSpeed: 1 },
-	{ name: 'etc', baseCritical: 40, baseAtkSpeed: 379 },
+	{ name: 'bigsword',   baseCritical: 80,  baseAtkSpeed: 325, accuracy: 0,     random: 10 },
+	{ name: 'sword',      baseCritical: 80,  baseAtkSpeed: 379, accuracy: 0,     random: 10 },
+	{ name: 'pole',       baseCritical: 80,  baseAtkSpeed: 325, accuracy: -3.75, random: 10 },
+	{ name: 'dual',       baseCritical: 80,  baseAtkSpeed: 325, accuracy: 0,     random: 10 },
+	{ name: 'bigblunt',   baseCritical: 40,  baseAtkSpeed: 325, accuracy: 4.75,  random: 20 },
+	{ name: 'blunt',      baseCritical: 40,  baseAtkSpeed: 379, accuracy: 4.75,  random: 20 },
+	{ name: 'dualfist',   baseCritical: 40,  baseAtkSpeed: 325, accuracy: 4.75,  random:  5 },
+	{ name: 'dagger',     baseCritical: 120, baseAtkSpeed: 433, accuracy: -3.75, random:  5 },
+	{ name: 'dualdagger', baseCritical: 120, baseAtkSpeed: 433, accuracy: -3.75, random: 10 },
+	{ name: 'bow',        baseCritical: 120, baseAtkSpeed: 293, accuracy: -3.75, random:  5 },
+	{ name: 'crossbow',   baseCritical: 100, baseAtkSpeed: 303, accuracy: -1.5,  random: 10 },
+	{ name: 'rapier',     baseCritical: 100, baseAtkSpeed: 406, accuracy: -1.5,  random: 40 },
+	{ name: 'ancient',    baseCritical: 80,  baseAtkSpeed: 350, accuracy: 2,     random: 15 },
+	{ name: 'etc',        baseCritical: 40,  baseAtkSpeed: 379, accuracy: 0,     random:  0 },
 ];
 
 l2.data.bowAtkSpeed = {

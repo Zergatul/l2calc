@@ -18,8 +18,6 @@ penalty when grade > lvl
 
 savings (show last 3 as buttons, all other in select)
 
-weaponBaseData - add dual daggers
-
 rare items - not always correctly showing (for example some non grade items have skills)
 
 my gnom mdef = wrong - check!
@@ -37,7 +35,3 @@ last to do: cool saving on localstorage
 save triggers to localstorage
 
 remember div scroll position during summon/character switches
-
-i am on summon view, i can turn off summons, but actually i remain on the summon view
-
-add back +% -% after recalc
